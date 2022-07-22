@@ -3,7 +3,7 @@
 
 # include <iostream>
 # include <string>
-
+# include "Iterator.hpp"
 template <class X>
 class my_allocator
 {
@@ -29,6 +29,7 @@ class Vector
 		//typedef implementation defined
 		typedef T										value_type;
 		
+		typedef Iterator<pointer>						_Iterator;
 		// 23.2.4.2 capacity:
 		typedef Allocator								allocator_type;
 		typedef typename Allocator::pointer				pointer;
