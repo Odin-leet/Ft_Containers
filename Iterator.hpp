@@ -11,20 +11,23 @@ class Iterator
 
 	public:
 
-		Iterator()
+		typedef T iterator_type;
+		typedef typename _iterators_traits<iterator_type>::value_type        value_type;
+    	typedef typename _iterators_traits<iterator_type>::difference_type   difference_type;
+    	typedef typename _iterators_traits<iterator_type>::pointer           pointer;
+   		typedef typename _iterators_traits<iterator_type>::reference         reference;
+		Iterator(pointer lop = nullptr)
 		{
-			Pointer = nullptr;
+			Pointer = lop;
 		}
 		
 		Iterator( Iterator const & src ): Pointer (src.Pointer)
 		{
 		}
-		~Iterator();
-		typedef Iterator iterator_type;
-		typedef typename _iterators_traits<iterator_type>::value_type        value_type;
-    	typedef typename _iterators_traits<iterator_type>::difference_type   difference_type;
-    	typedef typename _iterators_traits<iterator_type>::pointer           pointer;
-   		typedef typename _iterators_traits<iterator_type>::reference         reference;
+		~Iterator()
+		{
+
+		}
 		Iterator& operator+=(difference_type n)
 		{
 				Pointer += n;
@@ -36,12 +39,12 @@ class Iterator
 			temp += n;
 			return (temp);
 		}
-		Iterator& operator-=(difference_type value)
+		Iterator& operator-=(difference_type n)
 		{
 				Pointer -= n;
 				return *this;
 		}
-		Iterator operator-(difference_type value)
+		Iterator operator-(difference_type n)
 		{
 			Iterator  temp = *this;
 			temp -= n;
@@ -53,10 +56,14 @@ class Iterator
 		}
 		value_type operator[](difference_type n)
 		{
-			return (*(this->Pointer + n));
+			return (*(Pointer + n));
+		}
+		bool operator!=(const Iterator& rhs)
+		{
+			return (Pointer != rhs.Pointer);
 		}
 		bool operator>(Iterator& rhs)
-		{
+		{	
 			return (*this - rhs > 0);
 		}
 		bool operator<(Iterator& rhs)
@@ -65,15 +72,19 @@ class Iterator
 		}
 		bool operator<=(Iterator& rhs)
 		{
-			return (*this - rhs => 0);
+			return (*this - rhs >= 0);
 		}
 		bool operator>=(Iterator& rhs)
 		{
-			return (*this - rhs =< 0);
+			return (*this - rhs <= 0);
 		}
 		value_type operator*()
 		{
-
+			return *(Pointer);
+		}
+		pointer get_pointer() const
+		{
+			return Pointer;
 		}
 
 
@@ -84,10 +95,14 @@ class Iterator
 		Iterator &		operator=( Iterator const & rhs );
 
 	private:
-		pointer	*Pointer;
+		pointer	Pointer;
 
 };
 
-//std::ostream &			operator<<( std::ostream & o, Iterator const & i );
+// template <class T>
+// std::ostream &			operator<<( std::ostream & o, Iterator<T> const & i )
+// {
+	// o<<(i.get_pointer());
+// }
 
 #endif /* ******************************************************** ITERATOR_H */

@@ -29,10 +29,10 @@ class Vector
 		//typedef implementation defined
 		typedef T										value_type;
 		
-		typedef Iterator<pointer>						_Iterator;
+		typedef typename Allocator::pointer				pointer;
+		typedef Iterator<T>						iterator;
 		// 23.2.4.2 capacity:
 		typedef Allocator								allocator_type;
-		typedef typename Allocator::pointer				pointer;
 		typedef typename Allocator::const_pointer		const_pointer;
 		typedef typename std::size_t 						size_type;
 
@@ -46,6 +46,29 @@ class Vector
 			return x.max_size();
 		}
 	//	void resize(size_type sz, T c = T());
+		void push_back (const value_type& val)
+		{
+			if (_size< _capacity)
+			{
+				x.construct(arr + _size, val);		
+				_size++;
+			}
+			else
+			{
+				pointer op;
+				op = x.allocate(_capacity * 2);
+				for (int i = 0; i < _size; i++)
+				{
+					x.construct(op + i, arr[i]);
+					x.destroy(arr + i);
+				}
+				x.construct(op + _size, val);
+				x.deallocate(arr, _size);
+				_size++;
+				_capacity = _capacity * 2;
+				arr = op;
+			}
+		}
 		void reserve (size_type n)
 		{
 			if (n > _capacity)
@@ -62,9 +85,14 @@ class Vector
 				arr = op;
 			}
 		}
-		iterator begin () const {
+		iterator begin ()  {
 			////
-			return iter;
+			iterator op(arr);
+			return op;
+		}
+		iterator end()	{
+			iterator op(arr + _size);
+			return op;
 		}
 		
 		size_type capacity() const{
@@ -114,14 +142,30 @@ class Vector
 				}
 			}
 		}
+		//Iterator
 
 		void pop_back()
 		{
 			x.destroy(arr + (_size - 1));
-			//if (size)
 			_size = _size - 1;
 		}
-		
+		iterator erase (iterator position)
+		{
+			  if (position + 1 != end())
+			  {
+				for (iterator it = begin(); it != end(); it+= 1)
+				{
+					if (it == position)
+					{
+						//x.destroy(arr + i);
+						
+
+					}
+					i++;
+				}
+			  }
+		}
+		iterator erase (iterator first, iterator last);
 		explicit Vector (const allocator_type& alloc = allocator_type())
 		{
 			arr = nullptr;
@@ -134,24 +178,39 @@ class Vector
 		{
 			arr = x.allocate(n);
 			_size = n;
+			_capacity = n;
 			for (size_type i = 0; i < n; i++)
 			{
 				x.construct(this->arr + i, val);
 			}
-		//	std::cout << "DOOOONE_00" << std::endl;
-		//	for (size_type i = 0; i < n; i++)
-		//	{
-		//		std::cout << arr[i] << std::endl;
-		//	}
-		//	std::cout << "DOOOONE_01" << std::endl;
+
 			x = alloc;
 		}
 		Vector(const Vector<T,Allocator>& x);
 		~Vector() {}
 		
-		//typedef std::reverse_iterator<iterator>			reverse_iterator;
+		//typedef std::reverƒstse_iterator<iterator>			reverse_iterator;
 		//typedef std::reverse_iterator<const_iterator> 	const_reverse_iterator;
+		reference front()
+		{
+			return (*(arr));
+		}
+		reference back()
+		{
+			return(*(arr + (_size - 1)));
+		}
 
+		reference at (size_type n)
+		{
+			return(*(arr + n));
+			//throwing an out_of_range exception if it is not (i.e., if n is greater than, or equal to, its size).
+			//This is in contrast with member operator[], that does not check against bounds.
+
+		}
+		reference operator[] (size_type n)
+		{
+			return(*(arr + n));
+		}
 		Vector &		operator=( Vector const & rhs );
 
 		private:
