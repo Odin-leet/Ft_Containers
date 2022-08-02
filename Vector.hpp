@@ -151,19 +151,31 @@ class Vector
 		}
 		iterator erase (iterator position)
 		{
-			  if (position + 1 != end())
-			  {
-				for (iterator it = begin(); it != end(); it+= 1)
+				iterator pos1 = position;
+				pos1 += 1;
+				//ite
+				if (pos1  == end())
 				{
-					if (it == position)
-					{
-						//x.destroy(arr + i);
-						
-
-					}
-					i++;
+					x.destroy(position.get_pointer());
+					_size--;
 				}
+			  else
+			  {
+				for (iterator it = position; it != end() - 1; it += 1)
+				{
+					iterator op = it;
+					op += 1;
+					*it = *op;
+					if (op == end() - 1)
+					{
+						x.destroy(op.get_pointer());
+					}
+					
+				}
+				_size--;
 			  }
+			 // position += 1;
+			  return position;
 		}
 		iterator erase (iterator first, iterator last);
 		explicit Vector (const allocator_type& alloc = allocator_type())

@@ -33,7 +33,7 @@ class Iterator
 				Pointer += n;
 				return *this;
 		}
-		Iterator operator+(difference_type n)
+		Iterator& operator+(difference_type n)
 		{
 			Iterator  temp = *this;
 			temp += n;
@@ -46,15 +46,15 @@ class Iterator
 		}
 		Iterator operator-(difference_type n)
 		{
-			Iterator  temp = *this;
-			temp -= n;
-			return (temp);
+			Iterator  temp1 = *this;
+			temp1 -= n;
+			return (temp1);
 		}
-		difference_type operator-(Iterator& rhs)
+		difference_type &operator-(Iterator& rhs)
 		{
 			return (*this->Pointer - rhs.Pointer);
 		}
-		value_type operator[](difference_type n)
+		value_type &operator[](difference_type n)
 		{
 			return (*(Pointer + n));
 		}
@@ -78,7 +78,7 @@ class Iterator
 		{
 			return (*this - rhs <= 0);
 		}
-		value_type operator*()
+		value_type &operator*()
 		{
 			return *(Pointer);
 		}
@@ -88,11 +88,22 @@ class Iterator
 		}
 
 
+
+		bool			operator==(Iterator const &rhs)
+		{
+			if (Pointer == rhs.Pointer)
+			return true;
+			else
+			return false;
+		}
+		
 		
 
-
-		
-		Iterator &		operator=( Iterator const & rhs );
+		Iterator 		&operator=( Iterator const & rhs )
+		{
+			Pointer = rhs.Pointer;
+			return *this;
+		}
 
 	private:
 		pointer	Pointer;
