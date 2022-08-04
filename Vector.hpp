@@ -85,6 +85,11 @@ class Vector
 				arr = op;
 			}
 		}
+		//iterator begin ()  {
+		//	////
+		//	iterator op(arr);
+		//	return op;
+		//}
 		iterator begin ()  {
 			////
 			iterator op(arr);
@@ -149,10 +154,30 @@ class Vector
 			x.destroy(arr + (_size - 1));
 			_size = _size - 1;
 		}
+		iterator erase (iterator first, iterator last)
+		{
+			int i = 0;
+			iterator firs1;
+			iterator first2;
+			for (iterator first1 = first; first1 != last; first1++)
+			{
+				i++;
+			}
+			iterator reminder = first;
+
+			for (iterator op = first; i > 0; i--)
+			{
+				erase(op);
+			}
+			return(reminder);
+			
+		}
 		iterator erase (iterator position)
 		{
 				iterator pos1 = position;
-				pos1 += 1;
+				pos1++;
+				iterator pos2 = position;
+				pos2++;
 				//ite
 				if (pos1  == end())
 				{
@@ -163,21 +188,27 @@ class Vector
 			  {
 				for (iterator it = position; it != end() - 1; it += 1)
 				{
+					
+
 					iterator op = it;
-					op += 1;
+					op++;
+					if (op == end())
+					{
+						break;
+					}
+					else
 					*it = *op;
 					if (op == end() - 1)
 					{
 						x.destroy(op.get_pointer());
 					}
-					
 				}
 				_size--;
 			  }
 			 // position += 1;
 			  return position;
 		}
-		iterator erase (iterator first, iterator last);
+		//iterator erase (iterator first, iterator last);
 		explicit Vector (const allocator_type& alloc = allocator_type())
 		{
 			arr = nullptr;

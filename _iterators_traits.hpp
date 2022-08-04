@@ -15,7 +15,7 @@ class _iterators_traits
 		~_iterators_traits();
 
 		_iterators_traits &		operator=( _iterators_traits const & rhs );
-		typedef ptrdiff_t difference_type;
+		typedef ptrdiff_t diference_type;
    		typedef T value_type;
     	typedef T* pointer;
     	typedef T& reference;
