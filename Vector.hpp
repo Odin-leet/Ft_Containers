@@ -1,8 +1,9 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
-
+# include "utilities.hpp"
 # include <iostream>
 # include <string>
+# include "reverse_iterator.hpp"
 # include "Iterator.hpp"
 template <class X>
 class my_allocator
@@ -24,13 +25,16 @@ class Vector
 		//Vector( Vector const & src );
 		typedef typename Allocator::reference			reference;	
 		typedef typename Allocator::const_reference 	const_reference;
-		//typedef implementation defined
+		//typedef implementation defined				
 		//typedef implementation defined
 		//typedef implementation defined
 		typedef T										value_type;
 		
 		typedef typename Allocator::pointer				pointer;
-		typedef Iterator<T>						iterator;
+		typedef iterator<const T>				const_iterator;
+		typedef iterator<T>						iterator;
+	//	typedef iterator<const T>				const_iterator;
+		typedef reverse_iterator<iterator>				reverse_iterator;
 		// 23.2.4.2 capacity:
 		typedef Allocator								allocator_type;
 		typedef typename Allocator::const_pointer		const_pointer;
@@ -48,6 +52,8 @@ class Vector
 	//	void resize(size_type sz, T c = T());
 		void push_back (const value_type& val)
 		{
+		//	if (_capacity == 0)
+		//		_capacity = 1;
 			if (_size< _capacity)
 			{
 				x.construct(arr + _size, val);		
@@ -56,16 +62,32 @@ class Vector
 			else
 			{
 				pointer op;
+				if (_capacity == 0)
+				{
+					op = x.allocate(1);
+					_capacity = 1;
+					_size = 1;
+					x.construct(op, val);
+				arr = op;
+				}
+				else
+				{
+
+				
 				op = x.allocate(_capacity * 2);
+				
 				for (int i = 0; i < _size; i++)
 				{
 					x.construct(op + i, arr[i]);
+					//if (_size != 0)
 					x.destroy(arr + i);
 				}
 				x.construct(op + _size, val);
+				if (_size != 0)
 				x.deallocate(arr, _size);
 				_size++;
 				_capacity = _capacity * 2;
+				}
 				arr = op;
 			}
 		}
@@ -90,10 +112,148 @@ class Vector
 		//	iterator op(arr);
 		//	return op;
 		//}
+		void insert (iterator position, iterator first,iterator last)
+		{
+			int n = 0;
+			iterator first2 = first;
+			for (iterator pos1 = first; pos1 != last ; pos1 += 1)
+			{
+				n++;
+				//std::cout<<"sadsadasdas"<<std::endl;
+			}
+			//n--;
+			pointer op;
+			iterator pos2;
+			int i = 0;
+			pos2 = begin();
+			if (_capacity <= (_size + n))
+			{
+				op = x.allocate(_size + n);
+				_size += n;
+				_capacity+= n;
+			}
+			else
+			{
+				_size +=n;
+				op = x.allocate(_size);
+			}
+			//op = x.allocate( _size);
+			while (pos2 != position && i < _size)
+			{
+				x.construct(op + i, arr[i]);
+				x.destroy(arr + i);
+				pos2+= 1;
+				i++;
+			}
+			for(int j = 0; j < n;j++)
+			{
+				x.construct(op + i, *first2);
+				first2+= 1;
+				i++;
+			}
+			while (i < _size)
+			{
+				x.construct(op + i,arr[i - n]);
+				x.destroy(arr + (i - n));
+				i++;
+			}
+			x.deallocate(arr, _size - n);
+			arr = op;
+		}
+		void insert (iterator position, size_type n, const value_type& val)
+		{
+			pointer op;
+			iterator pos2;
+			int i = 0;
+			pos2 = begin();
+			if (_capacity <= (_size + n))
+			{
+				op = x.allocate(_size + n);
+				_size += n;
+				_capacity+= n;
+			}
+			else
+			{
+				_size +=n;
+				op = x.allocate(_size);
+			}
+			//op = x.allocate( _size);
+			while (pos2 != position && i < _size)
+			{
+				x.construct(op + i, arr[i]);
+				x.destroy(arr + i);
+				pos2+= 1;
+				i++;
+			}
+			for(int j = 0; j < n;j++)
+			{
+				x.construct(op + i, val);
+				i++;
+			}
+			while (i < _size)
+			{
+				x.construct(op + i,arr[i - n]);
+				x.destroy(arr + (i - n));
+				i++;
+			}
+			x.deallocate(arr, _size - n);
+			arr = op;
+			//return(position);
+		}
+		iterator insert (iterator position, const value_type& val)
+		{
+			pointer op;
+			iterator pos2;
+			int i = 0;
+			pos2 = begin();
+			if (_capacity <= _size)
+			{
+				op = x.allocate(_capacity + 1);
+				_size++;
+				_capacity++;
+			}
+			else
+			{
+				_size++;
+				op = x.allocate(_size);
+			}
+			//op = x.allocate( _size);
+			while (pos2 != position && i < _size)
+			{
+				x.construct(op + i, arr[i]);
+				x.destroy(arr + i);
+				pos2+= 1;
+				i++;
+			}
+			x.construct(op + i, val);
+			i++;
+			while (i < _size)
+			{
+				x.construct(op + i,arr[i - 1]);
+				x.destroy(arr + (i - 1));
+				i++;
+			}
+			x.deallocate(arr, _size - 1);
+			arr = op;
+			return(position);
+
+		}
+		reverse_iterator rbegin()
+		{
+			return reverse_iterator(end());
+		}
+		reverse_iterator rend()
+		{
+			return reverse_iterator(begin());
+		}
 		iterator begin ()  {
 			////
 			iterator op(arr);
-			return op;
+			return (op);
+		}
+		const_iterator begin() const{
+			const_iterator op(arr);
+			return (op);
 		}
 		iterator end()	{
 			iterator op(arr + _size);
@@ -148,7 +308,50 @@ class Vector
 			}
 		}
 		//Iterator
+		void swap (Vector& I)
+		{
+			std::swap (_size ,I._size);
+			std::swap (_capacity ,I._capacity);
+			std::swap (arr, I.arr);
+			const allocator_type& alloc = x;
+			//alloc = T;
+			//alloc = x;
+			x = I.x;
+			I.x = alloc;
+			//std::swap(x, x.x);
 
+
+		}
+		template < class L>
+		void assign (typename enable_if<!is_integral<L>::value, L>::type first , L last)
+		{
+			int i = 0;
+			for (int i = 0; i < _size; i++)
+			{
+				x.destroy(arr + i);
+			}
+			x.deallocate(arr, _size);
+			iterator it = first;
+			while (first != last)
+			{
+				push_back(*first);
+				first+= 1;
+			}
+
+		}
+		void assign (size_type n, const value_type& val)
+		{
+			int i = 0;
+			for (int i = 0; i < _size; i++)
+			{
+				x.destroy(arr + i);
+			}
+			x.deallocate(arr, _size);
+			for (int i = 0; i < n; i++)
+			{
+				push_back(val);
+			}
+		}
 		void pop_back()
 		{
 			x.destroy(arr + (_size - 1));
@@ -159,7 +362,7 @@ class Vector
 			int i = 0;
 			iterator firs1;
 			iterator first2;
-			for (iterator first1 = first; first1 != last; first1++)
+			for (iterator first1 = first; first1 != last; first1+= 1)
 			{
 				i++;
 			}
@@ -175,9 +378,9 @@ class Vector
 		iterator erase (iterator position)
 		{
 				iterator pos1 = position;
-				pos1++;
+				pos1+= 1;
 				iterator pos2 = position;
-				pos2++;
+				pos2+= 1;
 				//ite
 				if (pos1  == end())
 				{
@@ -191,7 +394,7 @@ class Vector
 					
 
 					iterator op = it;
-					op++;
+					op+= 1;
 					if (op == end())
 					{
 						break;
@@ -209,6 +412,14 @@ class Vector
 			  return position;
 		}
 		//iterator erase (iterator first, iterator last);
+		void clear()
+		{
+			for(int i = 0; i < _size; i++)
+			{
+				x.destroy(arr + i);
+			}
+			_size = 0;
+		}
 		explicit Vector (const allocator_type& alloc = allocator_type())
 		{
 			arr = nullptr;
@@ -229,10 +440,22 @@ class Vector
 
 			x = alloc;
 		}
-		Vector(const Vector<T,Allocator>& x);
+		template <class P>
+		Vector (typename enable_if<!is_integral<P>::value, P>::type first, P last, const allocator_type& alloc = allocator_type())
+		{
+			std::cout<<"allo"<<std::endl;
+			while (first != last)
+			{
+				push_back(*first);
+				first+= 1;
+			}
+		}
+	//	Vector(const Vector<T,Allocator>& x);
 		~Vector() {}
-		
-		//typedef std::reverƒstse_iterator<iterator>			reverse_iterator;
+		//template <class InputIterator>
+        // Vector (InputIterator first, InputIterator last,
+        //         const allocator_type& alloc = allocator_type());
+		////typedef std::reverƒstse_iterator<iterator>			reverse_iterator;
 		//typedef std::reverse_iterator<const_iterator> 	const_reverse_iterator;
 		reference front()
 		{
@@ -242,7 +465,10 @@ class Vector
 		{
 			return(*(arr + (_size - 1)));
 		}
-
+		const_reference at (size_type n) const
+		{
+			return(*(arr + n));
+		}
 		reference at (size_type n)
 		{
 			return(*(arr + n));

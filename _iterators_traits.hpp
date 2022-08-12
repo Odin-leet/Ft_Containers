@@ -1,30 +1,35 @@
-#ifndef _ITERATORS_TRAITS_HPP
-# define _ITERATORS_TRAITS_HPP
+#include <iostream>
 
-# include <iostream>
-# include <string>
-template <class T>
-class _iterators_traits
-{
-
-
-	public:
-
-		_iterators_traits();
-		_iterators_traits( _iterators_traits const & src );
-		~_iterators_traits();
-
-		_iterators_traits &		operator=( _iterators_traits const & rhs );
-		typedef ptrdiff_t diference_type;
-   		typedef T value_type;
-    	typedef T* pointer;
-    	typedef T& reference;
-    //	typedef random_access_iterator_tag iterator_category;
-
-	private:
-
+namespace ft{
+    typedef std::random_access_iterator_tag random_access_iterator_tag;
+template<class Iterator> struct iterator_traits     {
+               typedef typename Iterator::difference_type difference_type;
+               typedef typename Iterator::value_type value_type;
+               typedef typename Iterator::pointer pointer;
+               typedef typename Iterator::reference reference;
+               typedef typename Iterator::iterator_category iterator_category;
 };
-
-//std::ostream &			operator<<( std::ostream & o, _iterators_traits const & i );
-
-#endif /* *********************************************** _ITERATORS_TRAITS_H */
+template<class T> struct iterator_traits<T*>        {
+        typedef ptrdiff_t difference_type;
+        typedef T value_type;
+        typedef T* pointer;
+        typedef T& reference;
+        typedef random_access_iterator_tag iterator_category;
+};
+template<class T> struct iterator_traits<const T*>  {
+        typedef ptrdiff_t difference_type;
+        typedef T value_type;
+        typedef const T* pointer;
+        typedef const T& reference;
+        typedef random_access_iterator_tag iterator_category;
+};
+template<class Category, class T, class Distance = ptrdiff_t,
+               class Pointer = T*, class Reference = T&>
+      struct iterator {
+            typedef T         value_type;
+            typedef Distance  difference_type;
+            typedef Pointer   pointer;
+            typedef Reference reference;
+            typedef Category  iterator_category;
+};
+}
