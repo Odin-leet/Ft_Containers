@@ -31,10 +31,12 @@ class Vector
 		typedef T										value_type;
 		
 		typedef typename Allocator::pointer				pointer;
-		typedef iterator<const T>				const_iterator;
-		typedef iterator<T>						iterator;
+		typedef iterator<const T*>				const_iterator;
+		typedef	iterator<T*>						spoody;				
+
+		typedef iterator<T*>						iterator;
 	//	typedef iterator<const T>				const_iterator;
-		typedef reverse_iterator<iterator>				reverse_iterator;
+		typedef reverse_iterator<spoody>				reverse_iterator;
 		// 23.2.4.2 capacity:
 		typedef Allocator								allocator_type;
 		typedef typename Allocator::const_pointer		const_pointer;
@@ -251,12 +253,16 @@ class Vector
 			iterator op(arr);
 			return (op);
 		}
-		const_iterator begin() const{
+		const_iterator cbegin() const{
 			const_iterator op(arr);
 			return (op);
 		}
 		iterator end()	{
 			iterator op(arr + _size);
+			return op;
+		}
+		const_iterator cend() const{
+			const_iterator op(arr + _size);
 			return op;
 		}
 		
@@ -490,8 +496,140 @@ class Vector
 	
 	
 };
-};
+  template <class T, class Allocator>
+        bool operator==(const Vector<T,Allocator>& x,const Vector<T,Allocator>& y)
+		{
+			if (x._size == y._size)
+			{
+				for (int i = 0; i < x._size; i++)
+				{
+					if (x.arr[i] == y.arr[i])
+						continue;
+					else
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+			return true;
+		}; 
+      template <class T, class Allocator>
+        bool operator< (const Vector<T,Allocator>& x, const Vector<T,Allocator>& y)
+		{
+			if (x.empty() == true && y.empty() == true)
+				return false;
+			else if (x.empty() == true && y.empty() != true)
+				return true;
+			else if (x.empty() == false && y.empty() == true)
+				return false;
+			else
+			{
+				for (int i = 0;  ((i < x._size) && (i < y._size));i++ ) 
+				{
+        	//if (*first1 < *first2) return true;
+        			if (y.arr[i] <= x.arr[i]) return false;
+    			}
+				if (x._size < y._size)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+      template <class T, class Allocator>
+        bool operator!=(const Vector<T,Allocator>& x,  const Vector<T,Allocator>& y)
+		{
+			if (x._size == y._size)
+			{
+				for (int i = 0; i < x._size; i++)
+				{
+					if (x.arr[i] == y.arr[i])
+						continue;
+					else
+					return true;
+				}
+			}
+			else
+			{
+				return true;
+			}
+			return false;
+		}
+      template <class T, class Allocator>
+        bool operator> (const Vector<T,Allocator>& x, const Vector<T,Allocator>& y)
+		{
+			if (x.empty() == true && y.empty() == true)
+				return false;
+			else if (x.empty() == true && y.empty() != true)
+				return false;
+			else if (x.empty() == false && y.empty() == true)
+				return true;
+			else
+			{
+				for (int i = 0;  (i < x._size) && (i < y._size);i++ ) 
+				{
+        	//if (*first1 < *first2) return true;
+        			if (y.arr[i] <= x.arr[i]) return true;
+    			}
+				if (x._size >  y._size)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+      template <class T, class Allocator>
+        bool operator>=(const Vector<T,Allocator>& x,  const Vector<T,Allocator>& y)
+		{
+			if (x.empty() == true && y.empty() == true)
+				return false;
+			else if (x.empty() == true && y.empty() != true)
+				return true;
+			else if (x.empty() == false && y.empty() == true)
+				return false;
+			else
+			{
+				for (int i = 0;  (i < x._size) && (i < y._size);i++ ) 
+				{
+        	//if (*first1 < *first2) return true;
+        			if (y.arr[i] < x.arr[i]) return false;
+    			}
+				if (x._size < y._size)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		
+      template <class T, class Allocator>
+        bool operator<=(const Vector<T,Allocator>& x, const Vector<T,Allocator>& y)
+		{
+			if (x.empty() == true && y.empty() == true)
+				return false;
+			else if (x.empty() == true && y.empty() != true)
+				return false;
+			else if (x.empty() == false && y.empty() == true)
+				return true;
+			else
+			{
+				for (int i = 0; (i < x._size) && (i < y._size);i++ ) 
+				{
+        	//if (*first1 < *first2) return true;
+        			if (y.arr[i] < x.arr[i]) return true;
+    			}
+				if (x._size >  y._size)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		};
+
 
 //std::ostream &			operator<<( std::ostream & o, Vector const & i );
 
-#endif /* ********************************************************** VECTOR_H */
+#endif /* ********************************************************** VECTOR_H */ 

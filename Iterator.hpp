@@ -14,14 +14,15 @@ class iterator
 
 		typedef T iterator_type;
 		typedef typename _iterators_traits<iterator_type>::value_type        value_type;
-    	typedef typename _iterators_traits<iterator_type>::diference_type   difference_type;
+    	typedef typename _iterators_traits<iterator_type>::difference_type   difference_type;
     	typedef typename _iterators_traits<iterator_type>::pointer           pointer;
    		typedef typename _iterators_traits<iterator_type>::reference         reference;
-		iterator(pointer lop = nullptr)
+   		typedef typename _iterators_traits<iterator_type>::iterator_category         iterator_category;
+		iterator(pointer lop = NULL)
 		{
-			Pointer = lop;
+			 Pointer  = lop;
 		}
-		
+		//consiterator (con)
 		iterator( iterator const & src ): Pointer (src.Pointer)
 		{
 		}
@@ -132,13 +133,20 @@ class iterator
 		}
 		
 		
-		operator iterator<con
-		
-		
-		+st T>()
+		operator iterator<const T>()  const
 		{
-			return (iterator<const T>(Pointer));
+			return *(Pointer);
 		}
+		
+//
+		//}
+		//operator iterator<con
+		
+		
+		//+st T>()
+		//{
+		//	return (iterator<const T>(Pointer));
+		//}
 		iterator 		&operator=( const iterator  & rhs )
 		{
 			Pointer = rhs.Pointer;

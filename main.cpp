@@ -1,12 +1,15 @@
 #include "Vector.hpp"
 #include <vector>
 //#include "Iterator.hpp"
-#include "reverse_iterator.hpp"
+//#include "reverse_iterator.hpp"
 int main()
 {
-   ft::Vector<int> second (4,50);           
+   ft::Vector<int> second (4,50);     
+   ft::Vector<int>::iterator op = second.begin();
+   //ft::Vector<int>::reverse_iterator it;      
      ft::Vector<int>::const_iterator c_it;
-     c_it = second.begin();
+      ft::Vector<int>::iterator j_it(op);
+    // c_it = second.begin();
      c_it+= 1;
 // ft::Vector<int> third (second.begin(),second.end()); 
 //

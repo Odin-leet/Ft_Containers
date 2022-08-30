@@ -3,7 +3,7 @@
 
 # include <iostream>
 # include <string>
-# include "_iterators_traits.hpp"
+//# include "_iterators_traits.hpp"
 # include "Iterator.hpp"
 namespace ft{
 template <class T>
@@ -14,6 +14,7 @@ class reverse_iterator
 
 		typedef T iterator_type;
 		//typedef  iterator<T>::iterator iterator;
+	//	ty
 		typedef typename _iterators_traits<iterator_type>::value_type        value_type;
     	typedef typename _iterators_traits<iterator_type>::difference_type   difference_type;
     	typedef typename _iterators_traits<iterator_type>::pointer           pointer;
@@ -82,7 +83,7 @@ class reverse_iterator
 		}
 		reverse_iterator operator--(int)
 		{
-			iterator tmp = *this;
+			T tmp = *this;
 			++tmp;
 			return reverse_iterator(tmp);
 		}
@@ -94,7 +95,7 @@ class reverse_iterator
 		}
 		reverse_iterator operator++(int)
 		{
-			iterator tmp = *this;
+			T tmp = *this;
 			--tmp;
 			return reverse_iterator(tmp);
 		}
@@ -132,7 +133,7 @@ class reverse_iterator
 		}
 
 	private:
-		reverse_iterator	_iter;
+		T	_iter;
 
 };
 };
