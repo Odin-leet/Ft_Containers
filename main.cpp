@@ -1,21 +1,77 @@
 #include "Vector.hpp"
 #include <vector>
 //#include "Iterator.hpp"
+ #define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
+
 //#include "reverse_iterator.hpp"
 int main()
 {
-   ft::Vector<int> second (4,50);     
-   ft::Vector<int>::iterator op = second.begin();
-   //ft::Vector<int>::reverse_iterator it;      
-     ft::Vector<int>::const_iterator c_it;
-      ft::Vector<int>::iterator j_it(op);
-    // c_it = second.begin();
-     c_it+= 1;
+    std::string str, ft_str;
+        /*
+         * var to store the size and the capacity
+         */
+        ft::Vector<std::string>::size_type s, ft_s;
+        ft::Vector<std::string>::size_type c, ft_c;
+        ft::Vector<std::string>::iterator ft_it;
+        std::vector<std::string>::iterator it;
+        /*
+         * bool to store the comparison
+         */
+        bool cond;
+        /*------------------------------- test 1: empty vector ----------------------------------------*/
+        // insert at the begin
+        {
+            std::vector<std::string> v;
+            ft::Vector<std::string> ft_v;
+           it = v.insert(v.begin(), "hello");
+            ft_it = ft_v.insert(ft_v.begin(), "hello"); 
+            ft_it->length();
+        }
+
+//   third.push_back(0);
+//     third.push_back(0);
+//   third.push_back(0);
+//   std::vector<std::string> apex;
+//     std::vector<int> sfoc;
+  
+//   apex.push_back("alllloooooooooo  oooo ");
+//     apex.push_back("alllloooooooooo  oooo ");
+//   apex.push_back("alllloooooooooo  oooo ");
+//   apex.push_back("alllloooooooooo  oooo ");
+//   apex.push_back("alllloooooooooo  oooo ");
+//   apex.push_back("alllloooooooooo  oooo ");
+// //  sfoc.insert(sfoc.begin(),apex.begin(), apex.end());
+
+// ft::Vector<std::string> allop(apex.begin(), apex.end());
+//   ft::Vector<int>::iterator op = second.begin();
+//   ft::Vector<int>::reverse_iterator op1(second.end());
+//   //ft::Vector<int>::reverse_iterator it;      
+//     ft::Vector<int>::const_iterator c_it(second.begin());
+//    std::cout<<*c_it<<std::endl;
+//      ft::Vector<int>::iterator j_it(op);
+//      ft::Vector<int> allo;
+//      allo.insert(allo.begin(),third.begin(), third.end());
+//      for (ft::Vector<std::string>::iterator it = allop.begin(); it != allop.end(); it += 1)
+//      {
+//       std::cout<<*it<<std::endl;
+//      }
+//    // c_it = second.begin();
+//     c_it+= 1;
+
+ // std::vector<int> first (4,50);     
+ // std::vector<int>::iterator op = first.begin();
+ // std::vector<int>::reverse_iterator it;      
+ // std::vector<int>::const_iterator c_it(first.cbegin());
+ // std::cout<<*c_it<<std::endl;
+ // std::vector<int>::iterator j_it(op);
+ //  // c_it = second.begin();
+ //   c_it+= 1;
 // ft::Vector<int> third (second.begin(),second.end()); 
 //
 //
 //  ft::Vector<int> alo;
 //  alo.assign(6,60);
+//animal *c = new cat();
 //  alo.swap(second);
 // for (ft::Vector<int>::iterator it = alo.begin() ; it != alo.end(); it += 1)
 // {

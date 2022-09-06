@@ -1,14 +1,14 @@
-#include "_iterators_traits.hpp"
+#include "iterator_traits.hpp"
 
 /*
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
 tenp
-_iterators_traits::_iterators_traits()
+iterator_traits::iterator_traits()
 {
 }
 
-_iterators_traits::_iterators_traits( const _iterators_traits & src )
+iterator_traits::iterator_traits( const iterator_traits & src )
 {
 }
 
@@ -17,7 +17,7 @@ _iterators_traits::_iterators_traits( const _iterators_traits & src )
 ** -------------------------------- DESTRUCTOR --------------------------------
 */
 
-_iterators_traits::~_iterators_traits()
+iterator_traits::~iterator_traits()
 {
 }
 
@@ -26,7 +26,7 @@ _iterators_traits::~_iterators_traits()
 ** --------------------------------- OVERLOAD ---------------------------------
 */
 
-_iterators_traits &				_iterators_traits::operator=( _iterators_traits const & rhs )
+iterator_traits &				iterator_traits::operator=( iterator_traits const & rhs )
 {
 	//if ( this != &rhs )
 	//{
@@ -35,7 +35,7 @@ _iterators_traits &				_iterators_traits::operator=( _iterators_traits const & r
 	return *this;
 }
 
-std::ostream &			operator<<( std::ostream & o, _iterators_traits const & i )
+std::ostream &			operator<<( std::ostream & o, iterator_traits const & i )
 {
 	//o << "Value = " << i.getValue();
 	return o;

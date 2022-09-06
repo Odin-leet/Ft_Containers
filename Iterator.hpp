@@ -3,29 +3,43 @@
 
 # include <iostream>
 # include <string>
-# include "_iterators_traits.hpp"
+# include "iterator_traits.hpp"
 
 namespace ft{
 template <class T>
 class iterator
 {
-
+	
 	public:
 
 		typedef T iterator_type;
-		typedef typename _iterators_traits<iterator_type>::value_type        value_type;
-    	typedef typename _iterators_traits<iterator_type>::difference_type   difference_type;
-    	typedef typename _iterators_traits<iterator_type>::pointer           pointer;
-   		typedef typename _iterators_traits<iterator_type>::reference         reference;
-   		typedef typename _iterators_traits<iterator_type>::iterator_category         iterator_category;
+		//typedef Iterator<T> iterator;
+		typedef typename iterator_traits<iterator_type>::value_type        value_type;
+    	typedef typename iterator_traits<iterator_type>::difference_type   difference_type;
+    	typedef typename iterator_traits<iterator_type>::pointer           pointer;
+   		typedef typename iterator_traits<iterator_type>::reference         reference;
+   		typedef typename iterator_traits<iterator_type>::iterator_category         iterator_category;
+	protected:
+		pointer	Pointer;
+		T allo;
+	public : 
+	//template<class InputIterator>
+// 	typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last)
+//	{
+//		
+//	}
 		iterator(pointer lop = NULL)
 		{
 			 Pointer  = lop;
 		}
-		//consiterator (con)
 		iterator( iterator const & src ): Pointer (src.Pointer)
 		{
 		}
+		const T& base() const { return Pointer; }
+
+		template<typename _Iter>
+		iterator(const iterator<_Iter>& __i) : Pointer(__i.base()) { };
+		
 		~iterator()
 		{
 
@@ -35,11 +49,9 @@ class iterator
 				Pointer += n;
 				return *this;
 		}
-		iterator& operator+(difference_type n)
+		iterator operator+(difference_type n)
 		{
-			iterator  temp = *this;
-			temp += n;
-			return (temp);
+			return (iterator(Pointer + n));
 		}
 		iterator& operator-=(difference_type n)
 		{
@@ -54,60 +66,35 @@ class iterator
 		}
 		iterator operator-(difference_type n)
 		{
-			iterator  temp1 = *this;
-			temp1 -= n;
-			return (temp1);
+			return (iterator (Pointer - n));
 		}
 		
-		value_type &operator[](difference_type n)
+		reference operator[](difference_type n)
 		{
 			return (*(Pointer + n));
 		}
-		bool operator!=(const iterator& rhs)
-		{
-			return (Pointer != rhs.Pointer);
-		}
-		bool operator>(iterator& rhs)
-		{	
-			return (*this - rhs > 0);
-		}
-		bool operator<(iterator& rhs)
-		{
-			return (*this - rhs < 0);
-		}
-		bool operator<=(iterator& rhs)
-		{
-			return (*this - rhs >= 0);
-		}
-		bool operator>=(iterator& rhs)
-		{
-			return (*this - rhs <= 0);
-		}
+
 		iterator operator--(int)
 		{
-			iterator tmp = *this;
-			tmp.Pointer--;
-			return tmp;
+			return(iterator(Pointer--));
 		}
 		
-		iterator operator--()
+		iterator &operator--()
 		{
 			--Pointer;
 			return *this;
 		}
 		iterator operator++(int)
 		{
-			iterator tmp = *this;
-			tmp.Pointer++;
-			return tmp;
+			return(iterator(Pointer++));
 		}
 		
-		iterator operator++()
+		iterator &operator++()
 		{
 			Pointer++;
 			return *this;
 		}
-		value_type &operator*()
+		reference operator*()const
 		{
 			return *(Pointer);
 		}
@@ -115,14 +102,14 @@ class iterator
 		{
 			return Pointer;
 		}
-		pointer operator->()
+		pointer operator->() const
 		{
-			return (Pointer);
+			 return this->Pointer;
 		}
-		friend iterator operator + (difference_type n, const iterator  &src )
-		{
-			return(iterator (src.get_pointer() + n));
-		}
+		//friend iterator operator + (difference_type n, const iterator  &src )
+		//{
+		//	return(iterator (src.get_pointer() + n));
+		//}
 
 		bool			operator==(const iterator  &rhs)
 		{
@@ -133,12 +120,7 @@ class iterator
 		}
 		
 		
-		operator iterator<const T>()  const
-		{
-			return *(Pointer);
-		}
-		
-//
+
 		//}
 		//operator iterator<con
 		
@@ -152,11 +134,46 @@ class iterator
 			Pointer = rhs.Pointer;
 			return *this;
 		}
-
-	private:
-		pointer	Pointer;
+	
 
 };
+
+template <class Iterator>
+  bool operator==(const iterator<Iterator>& x, const iterator<Iterator>& y)
+  {
+	return (x.base() == y.base());
+  }
+template <class Iterator>
+  bool operator<(const iterator<Iterator>& x, const iterator<Iterator>& y)
+  {
+	return (x.base() < y.base());
+  }
+template <class Iterator>
+  bool operator!=(const iterator<Iterator>& x, const iterator<Iterator>& y)
+  {
+	return (x.base() != y.base());
+  }
+template <class Iterator>
+  bool operator>(const iterator<Iterator>& x, const iterator<Iterator>& y)
+  {
+	return (x.base() > y.base());
+  }
+	template <class Iterator>
+  bool operator>=(const iterator<Iterator>& x, const iterator<Iterator>& y)
+  {
+	return !(x.base() < y.base());
+  }
+template <class Iterator>
+  bool operator<=(const iterator<Iterator>& x, const iterator<Iterator>& y)
+  {
+	return !(x.base() > y.base());
+  }
+
+template <class Iterator>
+  iterator<Iterator> operator+( typename iterator<Iterator>::difference_type n, const iterator<Iterator>& x)
+  {
+	return(iterator<Iterator>(x.base() + n));
+  }
 };
 
 // template <class T>
@@ -166,3 +183,6 @@ class iterator
 // }
 
 #endif /* ******************************************************** ITERATOR_H */
+
+//template <t1,t2>
+//operator > ( t1 , t2)

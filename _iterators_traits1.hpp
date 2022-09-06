@@ -1,20 +1,20 @@
-#ifndef _ITERATORS_TRAITS_HPP
-# define _ITERATORS_TRAITS_HPP
+#ifndef iterator_traits_HPP
+# define iterator_traits_HPP
 
 # include <iostream>
 # include <string>
 template <class T>
-class _iterators_traits
+class iterator_traits
 {
 
 
 	public:
 
-		_iterators_traits();
-		_iterators_traits( _iterators_traits const & src );
-		~_iterators_traits();
+		iterator_traits();
+		iterator_traits( iterator_traits const & src );
+		~iterator_traits();
 
-		_iterators_traits &		operator=( _iterators_traits const & rhs );
+		iterator_traits &		operator=( iterator_traits const & rhs );
 		typedef ptrdiff_t diference_type;
    		typedef T value_type;
     	typedef T* pointer;
@@ -25,6 +25,6 @@ class _iterators_traits
 
 };
 
-//std::ostream &			operator<<( std::ostream & o, _iterators_traits const & i );
+//std::ostream &			operator<<( std::ostream & o, iterator_traits const & i );
 
-#endif /* *********************************************** _ITERATORS_TRAITS_H */
+#endif /* *********************************************** iterator_traits_H */

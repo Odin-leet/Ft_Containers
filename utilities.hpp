@@ -1,5 +1,10 @@
 #include <iostream>
-
+//#include "iterator_traits.hpp"
+//template<class Inputiterator >
+//struct is_random_Access{
+//  typedef typename iterator_traits<Inputiterator>:: iterator_category iter;
+//
+//};0
 template <class T, T v>
 struct integral_constant {
   static const T value = v;
