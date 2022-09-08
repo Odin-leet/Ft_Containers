@@ -112,41 +112,94 @@ class Vector
 		{
 			pointer op;
 			iterator pos2;
-			int i = 0;
 			pos2 = begin();
-			if (_capacity <= (_size + n))
+			int position_intial = std::distance(begin(), position);
+			int new_size = _size + n;
+			int i = 0;
+			int reminder = 0;
+			int old_size = 0;
+
+			if (new_size <= _capacity)
 			{
-				op = x.allocate(_size + n);
-				_size += n;
-				_capacity+= n;
+				if(position == end())
+				{
+					for (int i = _size ; i < new_size ; i++)
+					{
+						x.construct(arr + i, val);
+					}
+					_size = new_size;
+				}
+				else
+				{
+					int att;// = end() - position;
+					att = position_intial + n;
+					int i = 0;
+					for (int c = position_intial; c < _size;c++)
+					{
+							x.construct(arr +att , *(arr + position_intial + i ));
+							i++;
+							att++;
+					}
+					for (int i = 0; i < n; i++)
+					{
+						x.construct(arr + position_intial + i, val);
+						_size++;
+					}
+				}
 			}
 			else
 			{
-				_size +=n;
 				op = x.allocate(_size);
+				for (int i = 0;i < _size; i++)
+				{
+					x.construct(op + i, *(arr + i));
+					x.destroy(arr + i);
+				}
+			if (_capacity < _size + n && n <= _size)
+				_capacity = _capacity * 2;
+			else if (_capacity  < _size + n && n > _size)
+				_capacity = _capacity + n;
+				x.deallocate(arr, _size);
+				arr = x.allocate(_capacity );
+				if (position == end())
+				{
+					for(int i = 0; i < _size; i++)
+					{
+						x.construct(arr + i, *(op + i));
+						x.destroy(op + i);
+					}
+					for(int i = _size; i < _size + n; i++)
+					{
+						x.construct(arr + i, val);
+						_size++;
+					}
+				}
+				else
+				{
+					for (int i = 0; i < position_intial; i++)
+					{
+						x.construct(arr + i, *(op + i));
+						x.destroy(op + i);
+					}
+					int att;// = end() - position;
+					att = position_intial + n;
+					int i = 0;
+					for (int i = 0; i < n; i++)
+					{
+						x.construct(arr + position_intial + i, val);
+					}
+					int j = position_intial;
+					for (int i = position_intial + n; i < _size + n; i++)
+					{
+						x.construct(arr + i, *(op + j));
+						x.destroy(op + j);
+						j++;
+					}
+					x.deallocate(op,_size);
+					_size += n;
+
+				}
 			}
-			//op = x.allocate( _size);
-			while (pos2 != position && i < _size)
-			{
-				x.construct(op + i, arr[i]);
-				x.destroy(arr + i);
-				pos2+= 1;
-				i++;
-			}
-			for(int j = 0; j < n;j++)
-			{
-				x.construct(op + i, val);
-				i++;
-			}
-			while (i < _size)
-			{
-				x.construct(op + i,arr[i - n]);
-				x.destroy(arr + (i - n));
-				i++;
-			}
-			x.deallocate(arr, _size - n);
-			arr = op;
-			//return(position);
 		}
 		template <class InputIterator>
    		 void insert (iterator position, InputIterator first, InputIterator last)
@@ -200,44 +253,50 @@ class Vector
 
 		iterator insert (iterator position, const value_type& val)
 		{
-			pointer op;
-			iterator pos2;
-			int i = 0;
-			int j = 0;
-			pos2 = begin();
-			if (_capacity <= _size)
-			{
-				op = x.allocate(_capacity + 1);
-				_size++;
-				_capacity++;
-			}
-			else
-			{
-				_size++;
-				op = x.allocate(_size);
-			}
-			//op = x.allocate( _size);
-			while (pos2 != position && i < _size)
-			{
-				x.construct(op + i, arr[i]);
-				x.destroy(arr + i);
-				pos2+= 1;
-				i++;
-			}
-			j = i;
-			x.construct(op + i, val);
-			std::cout<<"I =============="<<i<<std::endl;
-			i++;
-			j = i;
-			while (i < _size)
-			{
-				x.construct(op + i,arr[i - 1]);
-				x.destroy(arr + (i - 1));
-				i++;
-			}
-			x.deallocate(arr, _size - 1);
-			arr = op;
-			return iterator(arr + j);
+			int n = position - begin();
+			insert ( position,  1,   val);
+			return (begin() + n);
+			//pointer op;
+			//iterator pos2;
+			//size_type n;
+			//n = position - begin();
+			//int i = 0;
+			//int j = 0;
+			//pos2 = begin();
+			//if (_capacity <= _size)
+			//{
+			//	op = x.allocate(_capacity + 1);
+			//	_size++;
+			//	_capacity++;
+			//}
+			//else
+			//{
+			//	_size++;
+			//	op = x.allocate(_size);
+			//}
+			//iterator copy = position;
+			////op = x.allocate( _size);
+			//while (pos2 != position && i < _size)
+			//{
+			//	x.construct(op + i, arr[i]);
+			//	x.destroy(arr + i);
+			//	pos2+= 1;
+			//	i++;
+			//}
+			//j = i;
+			//x.construct(op + i, val);
+			////std::cout<<"I =============="<<i<<std::endl;
+			//i++;
+			//j = i;
+			//while (i < _size)
+			//{
+			//	x.construct(op + i,arr[i - 1]);
+			//	x.destroy(arr + (i - 1));
+			//	i++;
+			//}
+			//x.deallocate(arr, _size - 1);
+			//arr = op;
+			//return iterator(begin() + n);
 
 		}
 		reverse_iterator rbegin()
