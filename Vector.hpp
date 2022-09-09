@@ -49,7 +49,7 @@ class Vector
 		void push_back (const value_type& val)
 		{
 		//	if (_capacity == 0)
-		//		_capacity = 1;
+		//		_capacity = 1;ƒ
 			if (_size< _capacity)
 			{
 				x.construct(arr + _size, val);		
@@ -108,6 +108,7 @@ class Vector
 		//	iterator op(arr);
 		//	return op;
 		//}
+
 		void insert (iterator position, size_type n, const value_type& val)
 		{
 			pointer op;
@@ -204,77 +205,124 @@ class Vector
 		template <class InputIterator>
    		 void insert (iterator position, InputIterator first, InputIterator last)
 		{
-			int n = 0;
-			InputIterator first2 = first;
-			for (InputIterator pos1 = first; pos1 != last ; pos1 += 1)
-			{
-				n++;
-				//std::cout<<"sadsadasdas"<<std::endl;
-			}
-			//n--;
 			pointer op;
 			iterator pos2;
-			int i = 0;
 			pos2 = begin();
-			if (_capacity <= (_size + n))
+			int position_intial = std::distance(begin(), position);
+			int n = std::distance(first, last);
+			int new_size = _size + std::distance(first, last);
+			int i = 0;
+			int reminder = 0;
+			int old_size = 0;
+
+			if (new_size <= _capacity)
 			{
-				op = x.allocate(_size + n);
-				_size += n;
-				_capacity+= n;
+				if(position == end())
+				{
+					for (int i = _size ; i < new_size ; i++)
+					{
+						x.construct(arr + i, *first);
+						first++;
+					}
+					_size = new_size;
+				}
+				else
+				{
+					int att;// = end() - position;
+					att = position_intial + n;
+					int i = 0;
+					for (int c = position_intial; c < _size;c++)
+					{
+							x.construct(arr +att , *(arr + position_intial + i ));
+							i++;
+							att++;
+					}
+					for (int i = 0; i < n; i++)
+					{
+						x.construct(arr + position_intial + i, *first);
+						first++;
+						_size++;
+					}
+				}
 			}
 			else
 			{
-				_size +=n;
 				op = x.allocate(_size);
-			}
-			//op = x.allocate( _size);
-			while (pos2 != position && i < _size)
-			{
-				x.construct(op + i, arr[i]);
-				x.destroy(arr + i);
-				pos2+= 1;
-				i++;
-			}
-			for(int j = 0; j < n;j++)
-			{
-				x.construct(op + i, *first2);
-				first2+= 1;
-				i++;
-			}
-			while (i < _size)
-			{
-				x.construct(op + i,arr[i - n]);
-				x.destroy(arr + (i - n));
-				i++;
-			}
-			x.deallocate(arr, _size - n);
-			arr = op;
-		}
+				for (int i = 0;i < _size; i++)
+				{
+					x.construct(op + i, *(arr + i));
+					x.destroy(arr + i);
+				}
+			if (_capacity < _size + n && n <= _size)
+				_capacity = _capacity * 2;
+			else if (_capacity  < _size + n && n > _size)
+				_capacity = _capacity + n;
+				x.deallocate(arr, _size);
+				arr = x.allocate(_capacity );
+				if (position == end())
+				{
+					for(int i = 0; i < _size; i++)
+					{
+						x.construct(arr + i, *(op + i));
+						x.destroy(op + i);
+					}
+					for(int i = _size; i < _size + n; i++)
+					{
+						x.construct(arr + i, *first);
+						first++;
+						_size++;
+					}
+				}
+				else
+				{
+					for (int i = 0; i < position_intial; i++)
+					{
+						x.construct(arr + i, *(op + i));
+						x.destroy(op + i);
+					}
+					int att;// = end() - position;
+					att = position_intial + n;
+					int i = 0;
+					for (int i = 0; i < n; i++)
+					{
+						x.construct(arr + position_intial + i, *first);
+						first++;
+					}
+					int j = position_intial;
+					for (int i = position_intial + n; i < _size + n; i++)
+					{
+						x.construct(arr + i, *(op + j));
+						x.destroy(op + j);
+						j++;
+					}
+					x.deallocate(op,_size);
+					_size += n;
 
-		iterator insert (iterator position, const value_type& val)
-		{
-			int n = position - begin();
-			insert ( position,  1,   val);
-			return (begin() + n);
+				}
+			}
+			//int n = 0;
+			//InputIterator first2 = first;
+			//for (InputIterator pos1 = first; pos1 != last ; pos1 += 1)
+			//{
+			//	n++;
+			//	//std::cout<<"sadsadasdas"<<std::endl;
+			//}
+			////n--;
 			//pointer op;
 			//iterator pos2;
-			//size_type n;
-			//n = position - begin();
 			//int i = 0;
-			//int j = 0;
 			//pos2 = begin();
-			//if (_capacity <= _size)
+			//if (_capacity <= (_size + n))
 			//{
-			//	op = x.allocate(_capacity + 1);
-			//	_size++;
-			//	_capacity++;
+			//	op = x.allocate(_size + n);
+			//	_size += n;
+			//	_capacity+= n;
 			//}
 			//else
 			//{
-			//	_size++;
+			//	_size +=n;
 			//	op = x.allocate(_size);
 			//}
-			//iterator copy = position;
 			////op = x.allocate( _size);
 			//while (pos2 != position && i < _size)
 			//{
@@ -283,21 +331,27 @@ class Vector
 			//	pos2+= 1;
 			//	i++;
 			//}
-			//j = i;
-			//x.construct(op + i, val);
-			////std::cout<<"I =============="<<i<<std::endl;
-			//i++;
-			//j = i;
-			//while (i < _size)
+			//for(int j = 0; j < n;j++)
 			//{
-			//	x.construct(op + i,arr[i - 1]);
-			//	x.destroy(arr + (i - 1));
+			//	x.construct(op + i, *first2);
+			//	first2+= 1;
 			//	i++;
 			//}
-			//x.deallocate(arr, _size - 1);
+			//while (i < _size)
+			//{
+			//	x.construct(op + i,arr[i - n]);
+			//	x.destroy(arr + (i - n));
+			//	i++;
+			//}
+			//x.deallocate(arr, _size - n);
 			//arr = op;
-			//return iterator(begin() + n);
+		}
 
+		iterator insert (iterator position, const value_type& val)
+		{
+			int n = position - begin();
+			insert ( position,  1,   val);
+			return (begin() + n);
 		}
 		reverse_iterator rbegin()
 		{
@@ -392,12 +446,6 @@ class Vector
 			std::swap (_size ,I._size);
 			std::swap (_capacity ,I._capacity);
 			std::swap (arr, I.arr);
-			const allocator_type& alloc = x;
-			//alloc = T;
-			//alloc = x;
-			x = I.x;
-			I.x = alloc;
-			//std::swap(x, x.x);
 
 
 		}
@@ -520,6 +568,10 @@ class Vector
 			  }
 			 // position += 1;
 			  return position;
+		}
+		allocator_type get_allocator() const
+		{
+			return x;
 		}
 		//iterator erase (iterator first, iterator last);
 		void clear()
@@ -675,11 +727,11 @@ class Vector
   template <class T, class Allocator>
         bool operator==(const Vector<T,Allocator>& x,const Vector<T,Allocator>& y)
 		{
-			if (x._size == y._size)
+			if (x.size() == y.size())
 			{
-				for (int i = 0; i < x._size; i++)
+				for (int i = 0; i < x.size(); i++)
 				{
-					if (x.arr[i] == y.arr[i])
+					if (x[i] == y[i])
 						continue;
 					else
 					return false;
@@ -702,26 +754,19 @@ class Vector
 				return false;
 			else
 			{
-				for (int i = 0;  ((i < x._size) && (i < y._size));i++ ) 
-				{
-        	//if (*first1 < *first2) return true;
-        			if (y.arr[i] <= x.arr[i]) return false;
-    			}
-				if (x._size < y._size)
-				{
+				if(ft::lexicographical_compare(x.begin(),x.end(), y.begin(), y.end()) == true)
 					return true;
-				}
 			}
 			return false;
 		}
       template <class T, class Allocator>
         bool operator!=(const Vector<T,Allocator>& x,  const Vector<T,Allocator>& y)
 		{
-			if (x._size == y._size)
+			if (x.size() == y.size())
 			{
-				for (int i = 0; i < x._size; i++)
+				for (int i = 0; i < x.size(); i++)
 				{
-					if (x.arr[i] == y.arr[i])
+					if (x[i] == y[i])
 						continue;
 					else
 					return true;
@@ -744,15 +789,8 @@ class Vector
 				return true;
 			else
 			{
-				for (int i = 0;  (i < x._size) && (i < y._size);i++ ) 
-				{
-        	//if (*first1 < *first2) return true;
-        			if (y.arr[i] <= x.arr[i]) return true;
-    			}
-				if (x._size >  y._size)
-				{
+				if(ft::lexicographical_compare(y.begin(),y.end(), x.begin(), x.end()) == true)
 					return true;
-				}
 			}
 			return false;
 		}
@@ -767,15 +805,8 @@ class Vector
 				return false;
 			else
 			{
-				for (int i = 0;  (i < x._size) && (i < y._size);i++ ) 
-				{
-        	//if (*first1 < *first2) return true;
-        			if (y.arr[i] < x.arr[i]) return false;
-    			}
-				if (x._size < y._size)
-				{
+			if(ft::lexicographical_compare2(y.begin(),y.end(), x.begin(), x.end()) == true)
 					return true;
-				}
 			}
 			return false;
 		}
@@ -791,18 +822,17 @@ class Vector
 				return true;
 			else
 			{
-				for (int i = 0; (i < x._size) && (i < y._size);i++ ) 
-				{
-        	//if (*first1 < *first2) return true;
-        			if (y.arr[i] < x.arr[i]) return true;
-    			}
-				if (x._size >  y._size)
-				{
+			if(ft::lexicographical_compare2(x.begin(),x.end(), y.begin(), y.end()) == true)
 					return true;
-				}
 			}
 			return false;
 		}
+		template <class T, class Allocator>
+             void swap(Vector<T,Allocator>& x, Vector<T,Allocator>& y)
+			 {			
+
+				x.swap(y);
+				}
 		};
 
 
