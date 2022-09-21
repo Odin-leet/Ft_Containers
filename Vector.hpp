@@ -28,8 +28,8 @@ class Vector
 		typedef typename Allocator::const_reference 	const_reference;
 		typedef T										value_type;
 		typedef typename Allocator::pointer				pointer;
-		typedef iterator<const T*>				const_iterator;
-		typedef iterator<T*>						iterator;
+		typedef iterator<const T>				const_iterator;
+		typedef iterator<T>						iterator;
  		typedef reverse_iterator<const_iterator>        const_reverse_iterator;		// 23.2.4.2 capacity:
 		typedef reverse_iterator<iterator>				reverse_iterator;
 		typedef Allocator								allocator_type;
@@ -300,51 +300,7 @@ class Vector
 
 				}
 			}
-			//int n = 0;
-			//InputIterator first2 = first;
-			//for (InputIterator pos1 = first; pos1 != last ; pos1 += 1)
-			//{
-			//	n++;
-			//	//std::cout<<"sadsadasdas"<<std::endl;
-			//}
-			////n--;
-			//pointer op;
-			//iterator pos2;
-			//int i = 0;
-			//pos2 = begin();
-			//if (_capacity <= (_size + n))
-			//{
-			//	op = x.allocate(_size + n);
-			//	_size += n;
-			//	_capacity+= n;
-			//}
-			//else
-			//{
-			//	_size +=n;
-			//	op = x.allocate(_size);
-			//}
-			////op = x.allocate( _size);
-			//while (pos2 != position && i < _size)
-			//{
-			//	x.construct(op + i, arr[i]);
-			//	x.destroy(arr + i);
-			//	pos2+= 1;
-			//	i++;
-			//}
-			//for(int j = 0; j < n;j++)
-			//{
-			//	x.construct(op + i, *first2);
-			//	first2+= 1;
-			//	i++;
-			//}
-			//while (i < _size)
-			//{
-			//	x.construct(op + i,arr[i - n]);
-			//	x.destroy(arr + (i - n));
-			//	i++;
-			//}
-			//x.deallocate(arr, _size - n);
-			//arr = op;
+			
 		}
 
 		iterator insert (iterator position, const value_type& val)
@@ -828,11 +784,10 @@ class Vector
 			return false;
 		}
 		template <class T, class Allocator>
-             void swap(Vector<T,Allocator>& x, Vector<T,Allocator>& y)
-			 {			
-
+            void swap(Vector<T,Allocator>& x, Vector<T,Allocator>& y)
+			{			
 				x.swap(y);
-				}
+			}
 		};
 
 

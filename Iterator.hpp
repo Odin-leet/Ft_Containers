@@ -4,24 +4,25 @@
 # include <iostream>
 # include <string>
 # include "iterator_traits.hpp"
+# include "iterator_base.hpp"
 
 namespace ft{
 template <class T>
-class iterator
+class iterator : public ft::iterator_traits<ft::iterator_base<std::random_access_iterator_tag, T> >
 {
 	
 	public:
 
 		typedef T iterator_type;
 		//typedef Iterator<T> iterator;
-		typedef typename iterator_traits<iterator_type>::value_type        value_type;
-    	typedef typename iterator_traits<iterator_type>::difference_type   difference_type;
-    	typedef typename iterator_traits<iterator_type>::pointer           pointer;
-   		typedef typename iterator_traits<iterator_type>::reference         reference;
-   		typedef typename iterator_traits<iterator_type>::iterator_category         iterator_category;
+		typedef typename ft::iterator_traits<ft::iterator_base<std::random_access_iterator_tag, T> >::value_type        value_type;
+    	typedef typename ft::iterator_traits<ft::iterator_base<std::random_access_iterator_tag, T> >::difference_type   difference_type;
+    	typedef typename ft::iterator_traits<ft::iterator_base<std::random_access_iterator_tag, T> >::pointer           pointer;
+   		typedef typename ft::iterator_traits<ft::iterator_base<std::random_access_iterator_tag, T> >::reference         reference;
+   		typedef typename ft::iterator_traits<ft::iterator_base<std::random_access_iterator_tag, T> >::iterator_category         iterator_category;
 	protected:
 		pointer	Pointer;
-		T allo;
+		//T allo;
 	public : 
 	//template<class InputIterator>
 // 	typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last)
@@ -32,10 +33,10 @@ class iterator
 		{
 			 Pointer  = lop;
 		}
-		iterator( iterator const & src ): Pointer (src.Pointer)
-		{
-		}
-		const T& base() const { return Pointer; }
+		//iterator( iterator const & src ): Pointer (src.Pointer)
+		//{
+		//}
+		pointer base() const { return Pointer; }
 
 		template<typename _Iter>
 		iterator(const iterator<_Iter>& __i) : Pointer(__i.base()) { };
