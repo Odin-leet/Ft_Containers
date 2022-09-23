@@ -20,28 +20,41 @@ int main()
             ft::pair<int,int> allo9 = ft::make_pair(10,222222);
             ft::pair<int,int> allo10 = ft::make_pair(22,222222);
         //    ft::pair<int,int> allo = ft::make_pair(23,222222);
-            ft::AVL_TREE<int, int>  allo1;
             ft::bintree_node<int, int> *root = NULL;
+            ft::AVL_TREE<int, int>  allo1(root);
             ft::bintree_node<int, int> *root1 = NULL;
             ft::bintree_node<int, int> *root2 = NULL;
-           root =  allo1.insert_elements(root,NULL, allo);
-           root =  allo1.insert_elements(root,NULL, allo2);
-           root =  allo1.insert_elements(root,NULL, allo3);
-           root =  allo1.insert_elements(root,NULL, allo4);
-           root =  allo1.insert_elements(root,NULL, allo5);
-           root =  allo1.insert_elements(root,NULL, allo6);
-           root =  allo1.insert_elements(root,NULL, allo7);
-           root =  allo1.insert_elements(root,NULL, allo8);
-           root =  allo1.insert_elements(root,NULL, allo9);
-           root =  allo1.insert_elements(root,NULL, allo10);
-            root = allo1.deleteNode(root,allo7);
 
-            allo1.printTree(root, "",true);
-           root1 =  allo1.get_myPredecessor(root);
-           root2 =  allo1.get_mySuccessor(root);
-                       allo1.printTree(root1, "",true);
-            allo1.printTree(root2, "",true);
+            allo1.insert(allo);
+            allo1.insert(allo2);
+            allo1.insert(allo3);
+            allo1.insert(allo4);
+            allo1.insert(allo5);
+            allo1.insert(allo6);
+            allo1.insert(allo7);
+            allo1.insert(allo8);
+            allo1.insert(allo9);
+            allo1.print();
+           // ft::AVL_Tallo1.insert(allo);REE<int, int>::iterator it(root);
+           // it.printmyend(root);
+          //root =  allo1.insert_elements(root,NULL, allo2);
+          //root =  allo1.insert_elements(root,NULL, allo3);
+          //root =  allo1.insert_elements(root,NULL, allo4);
+          //root =  allo1.insert_elements(root,NULL, allo5);
+          //root =  allo1.insert_elements(root,NULL, allo6);
+          //root =  allo1.insert_elements(root,NULL, allo7);
+          //root =  allo1.insert_elements(root,NULL, allo8);
+          //root =  allo1.insert_elements(root,NULL, allo9);
+          //root =  allo1.insert_elements(root,NULL, allo10);
+          // root = allo1.deleteNode(root,allo7);
 
+        //  allo1.printTree(root, "",true);
+        // root1 =  allo1.get_myPredecessor(root);
+        // root2 =  allo1.get_mySuccessor(root);
+        //             allo1.printTree(root1, "",true);
+        //  allo1.printTree(root2, "",true);
+        //  ft::AVL_TREE<int, int>::iterator t(root1);
+        //  std::cout << (*t).first << std::endl;
 //       std::string str, ft_str;
 //       /*
 //        * var to store the size and the capacity

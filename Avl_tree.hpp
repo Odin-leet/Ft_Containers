@@ -4,6 +4,7 @@
 # include <iostream>
 # include <string>
 #include "Pair.hpp"
+#include "Bidirectional_iterator.hpp"
 template <class Type> struct rebind {
 	typedef std::allocator<Type> other;
 };
@@ -26,24 +27,38 @@ namespace ft{
 		{
 			private:
 				bintree_node<key, T2> *Root;
+				bintree_node<key, T2> *imtheEnd;
 				int imroot;
 				Compare cmp;
 			public:
 				typedef typename Allocator::template rebind< bintree_node<key, T2> >::other alloccc;
 				typedef  bintree_node<key, T2>          bintree_node;
+				// typedef	AVL_TREE<key, T2> 				tree;
 				typedef typename Allocator::reference			reference;	
 				typedef typename Allocator::const_reference 	const_reference;
 				typedef T2										value_type;
+				typedef pair<key,T2>							value;
 				typedef typename Allocator::pointer				pointer;
 				typedef Allocator								allocator_type;
 			//	typedef typename Allocator::const_pointer		const_pointer;
 				typedef typename Allocator::const_pointer		const_pointer;
-    			//typedef ft::Bidirectional_iterator<const value_type> const_iterator;
+    			typedef ft::Bidirectional_iterator<value, bintree_node> 	iterator;
 				allocator_type x;
 
-				AVL_TREE()
+				AVL_TREE(bintree_node *node = NULL)
 				{
-					Root = nullptr;
+					Root = node;
+				alloccc c;
+					imtheEnd = c.allocate(1);
+					imtheEnd->parent = NULL;
+					Root = c.allocate(1);
+					Root->parent = imtheEnd;
+					imtheEnd->left = imtheEnd;
+					imtheEnd->right = Root;
+					std::cout<<"| 1.the end | "<<&imtheEnd<<"|"<<std::endl;
+					std::cout<<"| 1.Root    | "<<&Root<<"|"<<std::endl;
+
+					//Root = imtheEndptr;
 					imroot = 0;
 
 				}
@@ -57,8 +72,8 @@ namespace ft{
 					x = alloc;
 					alloccc c;
 					bintree_node *newno = c.allocate(1) ;
-					newno->left = NULL;
-					newno->right = NULL;
+					newno->left = imtheEnd;
+					newno->right = imtheEnd;
 					newno->parent= parent;
 					newno->data = p;
 					newno->height = 1;
@@ -67,32 +82,44 @@ namespace ft{
 				//the node lies behind of given node
 				bintree_node  *get_myPredecessor(bintree_node *node)
 				{
-						if (node->left != NULL)
+					bintree_node * replace;
+						if (node->left != imtheEnd)
 						{
-							bintree_node * replace;
+							//bintree_node * replace;
 							replace = node->left;
-							while (replace->right != NULL)
+							while (replace->right != imtheEnd  && replace->right != NULL)
 							{
 								replace = replace->right;
 							}
 							return (replace);
 						}
-						return NULL;
+						else
+						{
+							replace = node->parent;
+							while (replace->parent != imtheEnd)
+							{
+								if (cmp(get_myPredecessor(replace->parent)->data.first, node->data.first))
+								return get_myPredecessor(replace->parent);
+							}
+							//else 
+								return NULL;
+						}
+						return imtheEnd;
 				}
 				//the node lies ahead of given node
 					bintree_node  *get_mySuccessor(bintree_node *node)
 				{
-						if (node->right != NULL)
+						if (node->right != imtheEnd)
 						{
 							bintree_node * replace;
 							replace = node->right;
-							while (replace->left != NULL)
+							while (replace->left != imtheEnd)
 							{
 								replace = replace->left;
 							}
 							return (replace);
 						}
-						return NULL;
+						return imtheEnd;
 				}
 				// Rotate right
 				bintree_node  *rightRotate(bintree_node *y) {
@@ -124,12 +151,12 @@ namespace ft{
 					return y;
 				}
 				int height(bintree_node *N) {
-					if (N == NULL)
+					if (N == NULL || N == imtheEnd)
 						return 0;
 					return N->height;
 				}
 				int getBalanceFactor(bintree_node *N) {
-					if (N == NULL)
+					if (N == imtheEnd)
 						return 0;
 					return height(N->left) -
 						height(N->right);
@@ -141,20 +168,64 @@ namespace ft{
 				}
 				bintree_node *nodeWithMimumValue(bintree_node *node) {
 					bintree_node *current = node;
-					while (current->left != NULL)
+					while (current->left != imtheEnd)
 						current = current->left;
 					return current;
 				}
+
+				// pair *getnextnode(pair)
+				void			insert(ft::pair <key, T2> &p)
+				{
+					//std::cout<<"im the root in this place : "<<Root<<std::endl;
+
+					Root = insert_elements(Root, imtheEnd,p);
+					//	std::cout<<"im the root in after that place : "<<Root<<std::endl;
+
+					iterator it(Root);
+				//	std::cout<<"im the root in after that other place : "<<Root<<std::endl;
+					it.printmyend(Root);
+				//	std::cout<<"im the root in after that place : "<<Root<<std::endl;
+				}
+
 				bintree_node * insert_elements( bintree_node *node,bintree_node *parent,ft::pair <key, T2> &p)
 				{
-					if (node != NULL)
+					if ((node == NULL || node == imtheEnd) && imroot == 1)
+					{
+						return newnode(p, parent);
+					}
+						if (node   == imtheEnd || imroot == 0)
+					{
+						if (imroot ==  0)
+						{
+							imroot = 1;
+							node->data = p;
+							return node;
+						}
+						else
+						return  newnode(p, parent);
+					}
+					if (node != imtheEnd)
+
+					{
+						std::cout<<"||||"<<node->data.first<<std::endl;
+						std::cout<<p.first<<std::endl;
+
 						if (node->data.first == p.first)
 						{
 							return node;
 						}
 
-					if (node   == NULL )
+					}
+
+					if (node   == imtheEnd || imroot == 0)
 					{
+						if (imroot ==  0)
+						{
+							imroot = 1;
+							node->data = p;
+							return node;
+						}
+						else
 						return  newnode(p, parent);
 					}
 					if (cmp(p.first , node->data.first))
@@ -187,8 +258,13 @@ namespace ft{
 					return (node);
 
 				}
-				void printTree(bintree_node *node, std::string indent, bool last) {
-					if (node != nullptr) {
+				void print()
+				{
+					printTree(Root, "",true);
+				}
+				void printTree( bintree_node *node, std::string indent, bool last) {
+				//	bintree_node *node ;
+					if (node != imtheEnd) {
 						std::cout << indent;
 						if (last) {
 							std::cout << "R----";
@@ -206,19 +282,19 @@ namespace ft{
 				//delete node 
 				bintree_node *deleteNode(bintree_node *node, ft::pair <key, T2> &p) {
 					// Find the node and delete it
-					if (node == NULL)
+					if (node == imtheEnd)
 						return node;
 					if (cmp (p.first , node->data.first))
 						node->left = deleteNode(node->left, p);
 					else if (cmp (p.first , node->data.first))
 						node->right = deleteNode(node->right, p);
 					else {
-						if ((node->left == NULL) ||
-								(node->right == NULL)) {
+						if ((node->left == imtheEnd) ||
+								(node->right == imtheEnd)) {
 							bintree_node *temp = node->left ? node->left : node->right;
-							if (temp == NULL) {
+							if (temp == imtheEnd) {
 								temp = node;
-								node = NULL;
+								node = imtheEnd;
 							} else
 								*node = *temp;
 							free(temp);
@@ -230,7 +306,7 @@ namespace ft{
 						}
 					}
 
-					if (node == NULL)
+					if (node == imtheEnd)
 						return node;
 
 					// Update the balance factor of each node and

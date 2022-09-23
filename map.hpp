@@ -19,12 +19,14 @@ class map
     typedef ft::pair<const Key, T>					value_type;
     typedef Compare									key_compare;
     typedef Allocator								allocator_type;
+    typedef	AVL_TREE<Key, T> 				tree;
+    typedef bintree_node<Key,T>     bintre;
     typedef typename Allocator::reference			reference;
     typedef typename Allocator::const_reference		const_reference;
 	  typedef typename Allocator::pointer				pointer;
 	  typedef typename Allocator::const_pointer		const_pointer;
-    typedef Bidirectional_iterator<const value_type> const_iterator;
-    typedef Bidirectional_iterator<value_type> iterator;
+    typedef typename tree::iterator iterator;
+    //  typedef Bidirectional_iterator<value_type> iterator;
     //typedef 
 	class value_compare
           : public std::binary_function<value_type,value_type,bool> {
@@ -38,7 +40,10 @@ class map
 }
 };
 explicit map (const key_compare& comp = key_compare(),  const allocator_type& alloc = allocator_type())
-{ 
+{
+  bintre *Root; 
+  tree mytree(Root);
+  
 }
 
 };
