@@ -1,5 +1,4 @@
 //#include "Vector.hpp"
-#include <vector>
 #include "Avl_tree.hpp"
 #include "map.hpp"
 
@@ -24,7 +23,10 @@ int main()
             ft::AVL_TREE<int, int>  allo1(root);
             ft::bintree_node<int, int> *root1 = NULL;
             ft::bintree_node<int, int> *root2 = NULL;
+            ft::AVL_TREE<int,int>::iterator it;
+            ft::AVL_TREE<int,int>::iterator itb;
 
+            it = allo1.end();
             allo1.insert(allo);
             allo1.insert(allo2);
             allo1.insert(allo3);
@@ -34,7 +36,20 @@ int main()
             allo1.insert(allo7);
             allo1.insert(allo8);
             allo1.insert(allo9);
-            allo1.print();
+                    allo1.print();
+            it = allo1.end();
+            it--;
+                    std::cout<<it->first<<std::endl;
+
+            it--;
+            it--;
+            it--;
+                     std::cout<<it->first<<std::endl;
+       //  std::cout<<itb->first<<std::endl;
+       //    itb = allo1.begin();
+         //  allo1.print();
+       //   std::cout<<it->first<<std::endl;
+       //   std::cout<<itb->first<<std::endl;
            // ft::AVL_Tallo1.insert(allo);REE<int, int>::iterator it(root);
            // it.printmyend(root);
           //root =  allo1.insert_elements(root,NULL, allo2);

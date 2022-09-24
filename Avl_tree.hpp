@@ -42,7 +42,7 @@ namespace ft{
 				typedef Allocator								allocator_type;
 			//	typedef typename Allocator::const_pointer		const_pointer;
 				typedef typename Allocator::const_pointer		const_pointer;
-    			typedef ft::Bidirectional_iterator<value, bintree_node> 	iterator;
+    			typedef ft::Bidirectional_iterator<value, bintree_node, Compare> 	iterator;
 				allocator_type x;
 
 				AVL_TREE(bintree_node *node = NULL)
@@ -51,9 +51,13 @@ namespace ft{
 				alloccc c;
 					imtheEnd = c.allocate(1);
 					imtheEnd->parent = NULL;
+					imtheEnd->left = NULL;
+
 					Root = c.allocate(1);
 					Root->parent = imtheEnd;
-					imtheEnd->left = imtheEnd;
+					Root->left = imtheEnd;
+					Root->right = imtheEnd;
+					imtheEnd->left = NULL;
 					imtheEnd->right = Root;
 					std::cout<<"| 1.the end | "<<&imtheEnd<<"|"<<std::endl;
 					std::cout<<"| 1.Root    | "<<&Root<<"|"<<std::endl;
@@ -67,10 +71,17 @@ namespace ft{
 
 				}
 
-				bintree_node *newnode(ft::pair <key, T2> &p,bintree_node * parent, const allocator_type& alloc = allocator_type())
+				bintree_node *newnode(ft::pair <key, T2> &p,bintree_node * parent, bintree_node *node, const allocator_type& alloc = allocator_type())
 				{
 					x = alloc;
 					alloccc c;
+					if (imroot == 0)
+					{
+						node->data = p;
+						node->height = 1;
+						imroot = 1;
+						return node;
+					}
 					bintree_node *newno = c.allocate(1) ;
 					newno->left = imtheEnd;
 					newno->right = imtheEnd;
@@ -78,6 +89,22 @@ namespace ft{
 					newno->data = p;
 					newno->height = 1;
 					return newno;
+				}
+				bintree_node *lowkeyofroot(bintree_node *root1)
+				{
+					bintree_node* replace = root1;
+					//replace = root;
+					if (replace->left != imtheEnd)
+						if (!(cmp(replace->data.first, replace->left->data.first)))
+						{
+							replace = lowkeyofroot(replace->left);
+						};
+					if (replace->right != imtheEnd)
+						if (!(cmp(replace->data.first, replace->right->data.first)))
+						{
+							replace = lowkeyofroot(replace->right);
+						};
+					return replace;
 				}
 				//the node lies behind of given node
 				bintree_node  *get_myPredecessor(bintree_node *node)
@@ -125,6 +152,10 @@ namespace ft{
 				bintree_node  *rightRotate(bintree_node *y) {
 					bintree_node *x = y->left;
 					bintree_node *T3 = x->right;
+					bintree_node *parentrep = y->parent;
+
+					y->parent = x;
+					x->parent = parentrep;
 					x->right = y;
 					y->left = T3;
 					y->height = max(height(y->left),
@@ -140,6 +171,9 @@ namespace ft{
 				bintree_node *leftRotate(bintree_node *x) {
 					bintree_node *y = x->right;
 					bintree_node *T3 = y->left;
+					bintree_node *parentrep = x->parent;
+					y->parent = parentrep;
+					x->parent = y;
 					y->left = x;
 					x->right = T3;
 					x->height = max(height(x->left),
@@ -172,7 +206,14 @@ namespace ft{
 						current = current->left;
 					return current;
 				}
-
+				iterator end()
+				{
+					return iterator(imtheEnd);
+				}
+				iterator begin()
+				{
+					return iterator(lowkeyofroot(Root));
+				}
 				// pair *getnextnode(pair)
 				void			insert(ft::pair <key, T2> &p)
 				{
@@ -180,34 +221,23 @@ namespace ft{
 
 					Root = insert_elements(Root, imtheEnd,p);
 					//	std::cout<<"im the root in after that place : "<<Root<<std::endl;
-
+					imtheEnd->right = Root;
 					iterator it(Root);
 				//	std::cout<<"im the root in after that other place : "<<Root<<std::endl;
 					it.printmyend(Root);
 				//	std::cout<<"im the root in after that place : "<<Root<<std::endl;
 				}
-
+//something not working here x
 				bintree_node * insert_elements( bintree_node *node,bintree_node *parent,ft::pair <key, T2> &p)
 				{
-					if ((node == NULL || node == imtheEnd) && imroot == 1)
+					if ((node == NULL || node == imtheEnd) || imroot == 0 )
 					{
-						return newnode(p, parent);
+						return newnode(p, parent, node);
 					}
-						if (node   == imtheEnd || imroot == 0)
-					{
-						if (imroot ==  0)
-						{
-							imroot = 1;
-							node->data = p;
-							return node;
-						}
-						else
-						return  newnode(p, parent);
-					}
-					if (node != imtheEnd)
+					else if (node != imtheEnd && node != NULL)
 
 					{
-						std::cout<<"||||"<<node->data.first<<std::endl;
+					//	//std::cout<<"||||"<<node->data.first<<std::endl;
 						std::cout<<p.first<<std::endl;
 
 						if (node->data.first == p.first)
@@ -217,24 +247,14 @@ namespace ft{
 
 					}
 
-					if (node   == imtheEnd || imroot == 0)
-					{
-						if (imroot ==  0)
-						{
-							imroot = 1;
-							node->data = p;
-							return node;
-						}
-						else
-						return  newnode(p, parent);
-					}
+				
 					if (cmp(p.first , node->data.first))
 					{
-						node->left = insert_elements(node->left, parent, p );
+						node->left = insert_elements(node->left, node, p );
 					}
 					else
 					{
-						node->right = insert_elements(node->right, parent, p);
+						node->right = insert_elements(node->right, node, p);
 					}
 					node->height = 1 + max(height(node->left),
 							height(node->right));
@@ -274,6 +294,7 @@ namespace ft{
 							indent += "|  ";
 						}
 						std::cout << node->data.first << std::endl;
+						std::cout << "parent : "<<node->parent->data.first << std::endl;
 						printTree(node->left, indent, false);
 						printTree(node->right, indent, true);
 					}

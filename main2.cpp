@@ -24,6 +24,7 @@ int main()
     std::map<int, std::string>::iterator it = mymap.end();
     it--;
     std::cout<<mymap[10]<<std::endl;
+    std::cout<<it->first<<std::endl;
    // it++;
    //ft::pair<int,int> allo;
    //ft::bintree_node<int, int> *node;
