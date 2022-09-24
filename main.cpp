@@ -42,8 +42,18 @@ int main()
                     std::cout<<it->first<<std::endl;
 
             it--;
+                                std::cout<<it->first<<std::endl;
+
             it--;
+                                std::cout<<it->first<<std::endl;
+
             it--;
+                                std::cout<<it->first<<std::endl;
+
+            it++;
+                     std::cout<<it->first<<std::endl;
+
+                       it++;
                      std::cout<<it->first<<std::endl;
        //  std::cout<<itb->first<<std::endl;
        //    itb = allo1.begin();

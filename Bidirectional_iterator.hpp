@@ -138,8 +138,8 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 				{
 					//print();
 					printmyend(root);
-					std::cout<<"|Root4 LEFT:|"<<root->left<<std::endl;
-				std::cout<<"|end 4:|"<<end<<std::endl;
+			//		std::cout<<"|Root4 LEFT:|"<<root->left<<std::endl;
+			//	std::cout<<"|end 4:|"<<end<<std::endl;
 
 					data * myreplace;
 					data *replace2;
@@ -178,7 +178,7 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 						}
 			//	}
 				//the node lies ahead of given node
-					data  *get_mySuccessor(data *node)
+						data  *get_simplemySuccessor(data *node)
 				{
 						data *myreplace;
 
@@ -192,17 +192,42 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 							}
 							return (myreplace);
 						}
+						return node;
+				}
+					data  *get_mySuccessor(data *node)
+				{
+						data *myreplace;
+						data *replace2;
+						if (node->right != end && node->right != end)
+						{
+						//	data * myreplace;
+							myreplace = node->right;
+							while (myreplace->left != end && myreplace->left != NULL)
+							{
+								myreplace = myreplace->left;
+							}
+							return (myreplace);
+						}
 						else
 						{
-							myreplace = node->parent;
+							myreplace = node;
+							if( myreplace->parent != end)
+						{
+						 if(!(cmp((get_mySuccessor(myreplace->parent))->data.first, node->data.first)))
+									return myreplace->parent;
+						else
+						{
 							while (myreplace->parent != end)
 							{
-								if (!(cmp(get_mySuccessor(myreplace->parent)->data.first, node->data.first)))
-								return get_mySuccessor(myreplace->parent);
+									replace2 = get_simplemySuccessor(myreplace->parent);
+									if (cmp(replace2->data.first, node->data.first))
+										return replace2;
+									myreplace = myreplace->parent;
 							}
-							//else 
-								return NULL;
 						}
+								// myreplace = myreplace->parent;
+							}
+							}//else }
 						return end;
 				}
 	public : 
@@ -277,6 +302,19 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 			}
 			else
 				 node = get_myPredecessor(node);
+			pair = &node->data;
+			return pair;
+		 }
+		 	 pointer operator++(int)
+		 {
+			data *myreplace;
+			if (node == end)
+			{
+			
+				 return &node->data;
+			}
+			else
+				 node = get_mySuccessor(node);
 			pair = &node->data;
 			return pair;
 		 }
