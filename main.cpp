@@ -36,6 +36,7 @@ int main()
             allo1.insert(allo7);
             allo1.insert(allo8);
             allo1.insert(allo9);
+          //   allo1[100]= 700;
                     allo1.print();
             it = allo1.end();
             it--;
@@ -55,6 +56,7 @@ int main()
 
                        it++;
                      std::cout<<it->first<<std::endl;
+                     std::cout<<"|"<<allo1.size()<<std::endl;
        //  std::cout<<itb->first<<std::endl;
        //    itb = allo1.begin();
          //  allo1.print();

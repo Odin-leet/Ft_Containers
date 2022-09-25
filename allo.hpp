@@ -30,6 +30,7 @@ namespace ft{
 				bintree_node<key, T2> *imtheEnd;
 				int imroot;
 				Compare cmp;
+				//size_type _size;
 			public:
 				typedef typename Allocator::template rebind< bintree_node<key, T2> >::other alloccc;
 				typedef  bintree_node<key, T2>          bintree_node;
@@ -37,27 +38,23 @@ namespace ft{
 				typedef typename Allocator::reference			reference;	
 				typedef typename Allocator::const_reference 	const_reference;
 				typedef T2										value_type;
-				typedef key										key_type;
 				typedef pair<key,T2>							value;
 				typedef typename Allocator::pointer				pointer;
 				typedef Allocator								allocator_type;
-			//	typedef typename Allocator::const_pointer		const_pointer;
-							typedef typename std::size_t 						size_type;
-
+				typedef typename std::size_t 						size_type;
 				typedef typename Allocator::const_pointer		const_pointer;
     			typedef ft::Bidirectional_iterator<value, bintree_node, Compare> 	iterator;
 				typedef ft::Bidirectional_iterator<const value, bintree_node, Compare> 	const_iterator;
-
 				allocator_type x;
 			private:
 				size_type _size;
 				alloccc c;
-			public :
+			public :				
+
 				AVL_TREE(bintree_node *node = NULL)
 				{
 					Root = node;
-			//	alloccc c;
-					_size = 0;
+				//alloccc c;
 					imtheEnd = c.allocate(1);
 					imtheEnd->parent = NULL;
 					imtheEnd->left = NULL;
@@ -70,7 +67,7 @@ namespace ft{
 					imtheEnd->right = Root;
 					std::cout<<"| 1.the end | "<<&imtheEnd<<"|"<<std::endl;
 					std::cout<<"| 1.Root    | "<<&Root<<"|"<<std::endl;
-
+					_size = 0;
 					//Root = imtheEndptr;
 					imroot = 0;
 
@@ -79,7 +76,16 @@ namespace ft{
 				{
 
 				}
-
+				// capacity:
+				bool empty() const;
+				size_type size() const
+				{
+					return _size;
+				}
+				size_type max_size() const
+				{
+					return c.max_size();
+				}
 				bintree_node *newnode(ft::pair <key, T2> &p,bintree_node * parent, bintree_node *node, const allocator_type& alloc = allocator_type())
 				{
 					x = alloc;
@@ -99,25 +105,6 @@ namespace ft{
 					newno->height = 1;
 					return newno;
 				}
-				bintree_node *searchforkey(const key_type &x, bintree_node *node)
-				{
-					bintree_node *replace;
-					replace = node;
-						if(node->data.first == x)
-							return node;
-						if (replace->left != imtheEnd)
-						if (!(cmp(replace->data.first, replace->left->data.first)))
-						{
-							replace = lowkeyofroot(replace->left);
-						};
-					if (replace->right != imtheEnd)
-						if (!(cmp(replace->data.first, replace->right->data.first)))
-						{
-							replace = lowkeyofroot(replace->right);
-						};
-					return NULL;
-				}
-
 				bintree_node *lowkeyofroot(bintree_node *root1)
 				{
 					bintree_node* replace = root1;
@@ -234,34 +221,6 @@ namespace ft{
 						current = current->left;
 					return current;
 				}
-				// { CAPACITY }
-				bool empty() const
-				{
-					if (_size == 0)
-						return true;
-					return false;
-				}
-				
-				size_type size() const
-				{
-					return _size;
-				}
-				size_type max_size() const
-				{
-					return c.max_size();
-				}
-				// 23.3.1.2 element access:
-				T2& operator[](const key_type& x)
-				{
-					bintree_node *thenode;
-					ft::pair<key,T2> p;
-					thenode = searchforkey(x, Root);
-					if (thenode == NULL)
-						Root = insert_elements(Root,imtheEnd, p);
-					else
-						return thenode->data.second;
-					return searchforkey(x,Root)->data.second;
-				}
 				iterator end()
 				{
 					return iterator(imtheEnd);
@@ -288,8 +247,8 @@ namespace ft{
 				{
 					if ((node == NULL || node == imtheEnd) || imroot == 0 )
 					{
-						_size++;
 						return newnode(p, parent, node);
+						_size++;
 					}
 					else if (node != imtheEnd && node != NULL)
 

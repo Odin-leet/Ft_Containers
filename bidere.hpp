@@ -292,7 +292,7 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 			end = rhs.end;
 			return *this;
 		 }
-		 		Bidirectional_iterator &operator--()
+		Bidirectional_iterator &operator--()
 		 {
 			
 			if (node == end)
@@ -306,7 +306,7 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 				 node = get_myPredecessor(node);
 
 			}
-			return *this;
+			return Bidirectional_iterator(node);
 		 }
 		 	Bidirectional_iterator &operator++()
 		 {
@@ -322,33 +322,33 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 				pair = &node->data;
 
 			}
-			return *this;
+			return Bidirectional_iterator(node);
 		 }
-		 pointer operator--(int)
+		 Bidirectional_iterator operator--(int)
 		 {
-			data *myreplace;
-			if (node == end)
+			data *myreplace = node;
+			if (myreplace == end)
 			{
 			
-				 node = highkeyofroot(root);
+				 myreplace = highkeyofroot(root);
 			}
 			else
-				 node = get_myPredecessor(node);
-			pair = &node->data;
-			return pair;
+				 myreplace = get_myPredecessor(myreplace);
+			//pair = &node->data;
+			return Bidirectional_iterator(myreplace);
 		 }
-		 	 pointer operator++(int)
+		 	Bidirectional_iterator operator++(int)
 		 {
-			data *myreplace;
-			if (node == end)
+			data *myreplace = node;
+			if (myreplace == end)
 			{
 			
-				 return &node->data;
+				 return Bidirectional_iterator(myreplace);
 			}
 			else
-				 node = get_mySuccessor(node);
-			pair = &node->data;
-			return pair;
+				 myreplace = get_mySuccessor(myreplace);
+			//pair = &node->data;
+			return Bidirectional_iterator(myreplace);
 		 }
 		pointer operator->() const
 		{
