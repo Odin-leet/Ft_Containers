@@ -11,7 +11,7 @@ template < class Key,                                     // map::key_type
            class Compare = std::less<Key>,                     // map::key_compare
            class Allocator = std::allocator<pair<const Key, T> > >  // map::allocator_type
            
-class map
+class map 
 {
   public :
 	  typedef Key										key_type;
@@ -39,13 +39,64 @@ class map
             return comp(x.first, y.first);
 }
 };
+  private:
+  tree mytree;
+  public :
 explicit map (const key_compare& comp = key_compare(),  const allocator_type& alloc = allocator_type())
 {
-  bintre *Root; 
-  tree mytree(Root);
+ // bintre *Root; 
   
 }
+iterator begin()
+{
+  return mytree.begin();
+}
+iterator end()
+{
+  return mytree.end();
+}
+map& operator= ( map& x)
+{
+    tree  replacetree;
+    if (mytree.empty() == 0)
+    mytree.free_tree1();
+    iterator it = x.begin();
+    ft::pair<Key ,T> c;
+    while (it != x.end())
+    {
+      c = make_pair(it->first, it->second);
+      replacetree.insert1(c);
+      it++;
+    }
+    mytree = replacetree;
 
+    return *this;
+
+}
+iterator insert(iterator position, const value_type &val)
+		{
+			return mytree.insert(position,val);			
+		}
+ft::pair<iterator, bool> insert(const value_type &val)
+{
+  return mytree.insert(val);
+}
+void insert1(const ft::pair<Key,T> &p)
+{
+  mytree.insert1(p);
+
+};
+void printmymap()
+{
+  //mytree.print();
+  iterator endd = end();
+  iterator it = begin();
+  while (it != endd)
+  {
+    std::cout<<"key : "<<it->first<<std::endl;
+    it++;
+  }
+}
 };
 }
 #endif /* ************************************************************* MAP_H */

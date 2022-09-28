@@ -98,7 +98,7 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 			}
 			end = NULL;
 			int checker = 1;
-			std::cout<<"im the root in after that place  in returning: "<<myreplace<<std::endl;
+		//	std::cout<<"im the root in after that place  in returning: "<<myreplace<<std::endl;
 			// myreplace = node;
 			while (myreplace->parent->parent != NULL)
 			{
@@ -106,9 +106,9 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 				myreplace = myreplace->parent;
 
 			}
-			end = myreplace;
-			root = myreplace->right;
-			std::cout<<"im the root in after that place  in returning: 1  "<<myreplace->right<<std::endl;
+			end = myreplace->parent;
+			root = myreplace->parent->right;
+			//std::cout<<"im the root in after that place  in returning: 1  "<<myreplace->right<<std::endl;
 
 			//return (myreplace->right);
 			//root->parent
@@ -213,14 +213,15 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 							myreplace = node;
 							if( myreplace->parent != end)
 						{
-						 if(!(cmp((get_mySuccessor(myreplace->parent))->data.first, node->data.first)))
+							T op;
+						 if(!(cmp(((op = get_mySuccessor(myreplace->parent)->data)).first, node->data.first)) && op.first != node->data.first)
 									return myreplace->parent;
 						else
 						{
 							while (myreplace->parent != end)
 							{
 									replace2 = get_simplemySuccessor(myreplace->parent);
-									if (cmp(replace2->data.first, node->data.first))
+									if (!cmp(replace2->data.first, node->data.first) && replace2->data.first != node->data.first)
 										return replace2;
 									myreplace = myreplace->parent;
 							}
@@ -246,6 +247,7 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 			else
 			{
 			node = lop;
+			//en
 					//	std::cout<<"im the root in after that place  in returning: 3 "<<node<<std::endl;
 
 			//{
@@ -253,9 +255,9 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 			//if (root != NULL)
 			
 			returningmyroot(node);
-					print();		//		std::cout<<"im the root in after that place  in returning: 4 "<<root<<std::endl;
+					//print();		//		std::cout<<"im the root in after that place  in returning: 4 "<<root<<std::endl;
 
-			if (node != NULL && node != end)
+			//if (node != NULL && node != end)
 			pair = &node->data;
 			}
 			//else
@@ -269,13 +271,13 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 
 		void printmyend(data *node1)
 		{
-			std::cout<<"|Root 3|"<<root<<std::endl;
-			std::cout<<"|end  3|"<<end<<std::endl;
+	//		std::cout<<"|Root 3|"<<root<<std::endl;
+	//		std::cout<<"|end  3|"<<end<<std::endl;
 		}
 		reference operator*() const {
 			return *pair;
 		}
-		pointer * base() const { return pair; }
+		pointer  base() const { return pair; }
 		 template<typename _iterator, typename Data1, typename Compare1>
 		 Bidirectional_iterator(const Bidirectional_iterator <_iterator, Data1, Compare1> & i ) : node(i->data), pair(i->pair){
 			if (node != NULL)

@@ -17,7 +17,9 @@ int main()
             ft::pair<int,int> allo8 = ft::make_pair(90,222222);
             ft::pair<int,int> allo7 = ft::make_pair(11,222222);
             ft::pair<int,int> allo9 = ft::make_pair(10,222222);
-            ft::pair<int,int> allo10 = ft::make_pair(22,222222);
+            ft::pair<const int,int> allo10 = ft::make_pair(900,222222);
+                        ft::pair<const int,int> allo11 = ft::make_pair(900,9966);
+
         //    ft::pair<int,int> allo = ft::make_pair(23,222222);
             ft::bintree_node<int, int> *root = NULL;
             ft::AVL_TREE<int, int>  allo1(root);
@@ -25,39 +27,67 @@ int main()
             ft::bintree_node<int, int> *root2 = NULL;
             ft::AVL_TREE<int,int>::iterator it;
             ft::AVL_TREE<int,int>::iterator itb;
+            ft::map<int, int> op;
+            op.insert1(allo);
+            op.insert1(allo2);
+            op.insert1(allo3);
+            op.insert1(allo4);
+            op.insert1(allo5);
+            op.insert1(allo6);
+            op.insert1(allo7);
+            op.insert1(allo8);
+            op.insert1(allo9);
+            std::cout<<"im heeeere al9laoui "<<std::endl;
+            op.printmymap();
+            ft::map<int,int> op1;
+           op1 = op;
+           op1.printmymap();
+          ft::pair<ft::map<int,int>::iterator, bool> p;
+          p = op1.insert(allo10);
+          ft::map<int,int>::iterator op2;
+          op2 = p.first;
+                     op1.printmymap();
+          op1.insert(op2, allo11);
+          std::cout<<p.second<<std::endl;
 
-            it = allo1.end();
-            allo1.insert(allo);
-            allo1.insert(allo2);
-            allo1.insert(allo3);
-            allo1.insert(allo4);
-            allo1.insert(allo5);
-            allo1.insert(allo6);
-            allo1.insert(allo7);
-            allo1.insert(allo8);
-            allo1.insert(allo9);
-          //   allo1[100]= 700;
-                    allo1.print();
-            it = allo1.end();
-            it--;
-                    std::cout<<it->first<<std::endl;
+          //while (1);
+           // it = allo1.end();
+            // allo1.insert(allo);
+            // allo1.insert(allo2);
+            // allo1.insert(allo3);
+            // allo1.insert(allo4);
+            // allo1.insert(allo5);
+            // allo1.insert(allo6);
+            // allo1.insert(allo7);
+            // allo1.insert(allo8);
+            // allo1.insert(allo9);
+            // allo1[100]= 700;
+            //         allo1.print();
+            //         std::cout<<"µµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµµ*"<<std::endl;
+            //         allo1.free_tree1();
 
-            it--;
-                                std::cout<<it->first<<std::endl;
+            //                             allo1.print();
 
-            it--;
-                                std::cout<<it->first<<std::endl;
+      //       it = allo1.end();
+      //       it--;
+      //               std::cout<<it->second<<std::endl;
 
-            it--;
-                                std::cout<<it->first<<std::endl;
+      //       it--;
+      //                           std::cout<<it->first<<std::endl;
 
-            it++;
-                     std::cout<<it->first<<std::endl;
+      //       it--;
+      //                           std::cout<<it->first<<std::endl;
 
-                       it++;
-                     std::cout<<it->first<<std::endl;
-                     std::cout<<"|"<<allo1.size()<<std::endl;
-       //  std::cout<<itb->first<<std::endl;
+      //       it--;
+      //                           std::cout<<it->first<<std::endl;
+
+      //       it++;
+      //                std::cout<<it->first<<std::endl;
+
+      //                  it++;
+      //                std::cout<<it->first<<std::endl;
+      //                std::cout<<"|"<<allo1.size()<<std::endl;
+      //  //  std::cout<<itb->first<<std::endl;
        //    itb = allo1.begin();
          //  allo1.print();
        //   std::cout<<it->first<<std::endl;
