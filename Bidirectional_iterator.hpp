@@ -155,23 +155,39 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 						}
 						else
 						{
-							myreplace = node;
-							if( myreplace->parent != end)
-						{
-						 if(cmp((get_myPredecessor(myreplace->parent))->data.first, node->data.first))
-									return myreplace->parent;
-						else
-						{
-							while (myreplace->parent != end)
+											myreplace = node;
+
+							// if (replace2->parent == end)
+							// 	return end;
+							replace2 = myreplace->parent;
+
+							while (myreplace == replace2 ->left && replace2 ->parent != NULL)
 							{
-									replace2 = get_simplemyPredecessor(myreplace->parent);
-									if (cmp(replace2->data.first, node->data.first))
-										return replace2;
-									myreplace = myreplace->parent;
+								myreplace = replace2;
+								replace2 = replace2->parent;
 							}
-						}
-								// myreplace = myreplace->parent;
-							}
+							// if (replace2->right != myreplace)
+							// {
+								myreplace = replace2;
+								//return myreplace;
+							// }
+						// 	myreplace = node;
+						// 	if( myreplace->parent != end)
+						// {
+						//  if(cmp((get_myPredecessor(myreplace->parent))->data.first, node->data.first))
+						// 			return myreplace->parent;
+						// else
+						// {
+						// 	while (myreplace->parent != end)
+						// 	{
+						// 			replace2 = get_simplemyPredecessor(myreplace->parent);
+						// 			if (cmp(replace2->data.first, node->data.first))
+						// 				return replace2;
+						// 			myreplace = myreplace->parent;
+						// 	}
+						// }
+						// 		// myreplace = myreplace->parent;
+						// 	}
 							}//else }
 								// return NULL;
 						return node;
@@ -198,6 +214,7 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 				{
 						data *myreplace;
 						data *replace2;
+						data *replace3;
 						if (node->right != end && node->right != end)
 						{
 						//	data * myreplace;
@@ -211,25 +228,42 @@ class Bidirectional_iterator : public ft::iterator_traits<ft::iterator_base<std:
 						else
 						{
 							myreplace = node;
-							if( myreplace->parent != end)
-						{
-							T op;
-						 if(!(cmp(((op = get_mySuccessor(myreplace->parent)->data)).first, node->data.first)) && op.first != node->data.first)
-									return myreplace->parent;
-						else
-						{
-							while (myreplace->parent != end)
+
+							if (replace2->parent == end)
+								return end;
+							replace2 = myreplace->parent;
+
+							while (myreplace == replace2 ->right && replace2 ->parent != NULL)
 							{
-									replace2 = get_simplemySuccessor(myreplace->parent);
-									if (!cmp(replace2->data.first, node->data.first) && replace2->data.first != node->data.first)
-										return replace2;
-									myreplace = myreplace->parent;
+								myreplace = replace2;
+								replace2 = replace2->parent;
 							}
-						}
-								// myreplace = myreplace->parent;
+							if (replace2->right != myreplace)
+							{
+								myreplace = replace2;
+								return myreplace;
 							}
-							}//else }
-						return end;
+						// 	myreplace = node;
+						// 	if( myreplace->parent != end)
+						// {
+						// 	T op;
+						//  if(!(cmp(((op = get_mySuccessor(myreplace->parent)->data)).first, node->data.first)) && op.first != node->data.first)
+						// 			return myreplace->parent;
+						// else
+						// {
+						// 	while (myreplace->parent != end)
+						// 	{
+						// 			replace2 = get_simplemySuccessor(myreplace->parent);
+						// 			if (!cmp(replace2->data.first, node->data.first) && replace2->data.first != node->data.first)
+						// 				return replace2;
+						// 			myreplace = myreplace->parent;
+						// 	}
+						// }
+						// 		// myreplace = myreplace->parent;
+						// 	}
+						// 	}//else }
+						
+						}return end;
 				}
 	public : 
 

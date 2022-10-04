@@ -102,22 +102,21 @@ namespace ft
 			newno->inserted = true;
 			return newno;
 		}
-		void 	free_tree1()
+		void free_tree1()
 		{
 			free_tree(Root);
 			imroot = 0;
 			_size = 0;
 			Root = NULL;
-
 		}
-		void 	free_tree(treenode *node)
+		void free_tree(treenode *node)
 		{
 			treenode *tmp = node;
 			treenode *tmp1;
 			treenode *tmp2;
 			tmp1 = node->right;
 			tmp2 = node->left;
-			free (tmp);
+			free(tmp);
 			if (tmp1 != imtheEnd)
 			{
 				free_tree(tmp1);
@@ -126,8 +125,7 @@ namespace ft
 			{
 				free_tree(tmp2);
 			}
-			return ;
-
+			return;
 		}
 		treenode *searchforkey(const key_type &x, treenode *node)
 		{
@@ -139,21 +137,23 @@ namespace ft
 				return replace;
 			// if (replace->left != imtheEnd && replace-> right != imtheEnd)
 			//{
-				if (replace->left != imtheEnd  && (cmp(x, replace->data.first)))
-				{	a = 1;
-					replace = searchforkey(x, replace->left);
-				}
-				 if(replace->right != imtheEnd) 
-				{	b = 1;
-					//if(replace->right != imtheEnd)
-					replace = searchforkey(x, replace->right);
-				}
+			if (replace->left != imtheEnd && (cmp(x, replace->data.first)))
+			{
+				a = 1;
+				replace = searchforkey(x, replace->left);
+			}
+			if (replace->right != imtheEnd)
+			{
+				b = 1;
+				// if(replace->right != imtheEnd)
+				replace = searchforkey(x, replace->right);
+			}
 			//}
-			//else
+			// else
 			//{
-		//	if (replace != NULL)
-					//replace = NULL;
-			if(a == 0 && b == 0)
+			//	if (replace != NULL)
+			// replace = NULL;
+			if (a == 0 && b == 0)
 				replace == NULL;
 			return replace;
 		}
@@ -308,7 +308,7 @@ namespace ft
 			else
 				return thenode->data.second;
 			thenode = searchforkey(x, Root);
-				return thenode->data.second;
+			return thenode->data.second;
 		}
 		iterator end()
 		{
@@ -328,16 +328,15 @@ namespace ft
 			print();
 			pop = searchforkey(p.first, Root);
 			iterator it(Root);
-			ft::pair<iterator, bool> m ;
+			ft::pair<iterator, bool> m;
 			if (pop->inserted == true)
-			m = ft::make_pair(iterator(pop), true);
+				m = ft::make_pair(iterator(pop), true);
 			else
-			m = ft::make_pair(iterator(pop), false);
+				m = ft::make_pair(iterator(pop), false);
 
-
-			return(m);
+			return (m);
 			//	std::cout<<"im the root in after that other place : "<<Root<<std::endl;
-			//it.printmyend(Root);
+			// it.printmyend(Root);
 			//	std::cout<<"im the root in after that place : "<<Root<<std::endl;
 		}
 		// pair *getnextnode(pair)
@@ -350,26 +349,50 @@ namespace ft
 			imtheEnd->right = Root;
 			iterator it(Root);
 			//	std::cout<<"im the root in after that other place : "<<Root<<std::endl;
-			//it.printmyend(Root);
+			// it.printmyend(Root);
 			//	std::cout<<"im the root in after that place : "<<Root<<std::endl;
 		}
-		template <class InputIterator>  void insert (InputIterator first, InputIterator last)
+		template <class InputIterator>
+		void insert(InputIterator first, InputIterator last)
 		{
 			while (first != last)
 			{
-				wxc*ty;:
-				
+				printTree(Root, "", true);
+				ft::pair<key, T2> P = ft::make_pair(first->first, first->second);
+				Root = insert_elements(Root, imtheEnd, P);
+				first++;
 			}
 		}
 		iterator insert(iterator position, const ft::pair<key, T2> &val)
 		{
 			treenode *pop;
 			Root = insert_elements(Root, imtheEnd, val);
-						pop = searchforkey(val.first, Root);
-			return iterator(pop);			
+			pop = searchforkey(val.first, Root);
+			return iterator(pop);
 		}
+		  //   void erase (iterator position);
+		size_type erase (const key_type& k)
+		{
+			size_type op = _size;
+			ft::pair<key, T2> val;
+			T2 p;
+			val = ft::make_pair(k, p);
+			deleteNode(Root, val);
+			if (_size != op)
+				return (1);
+			return 0;
+
+		}
+	     void erase (iterator position)
+		 {
+			ft::pair<key, T2> val;
+			val = ft::make_pair(position->first, position->second);
+			deleteNode(Root, val);
+		 }
+		
+     void erase (iterator first, iterator last);
 		// something not working here x
-		treenode *insert_elements(treenode *node, treenode *parent,const  ft::pair<key, T2> &p)
+		treenode *insert_elements(treenode *node, treenode *parent, const ft::pair<key, T2> &p)
 		{
 			if ((node == NULL || node == imtheEnd) || imroot == 0)
 			{
@@ -384,7 +407,7 @@ namespace ft
 
 				if (node->data.first == p.first)
 				{
-					std::cout<<"iv been inserted"<<std::endl;
+					std::cout << "iv been inserted" << std::endl;
 					node->inserted = false;
 					return node;
 				}
@@ -398,12 +421,13 @@ namespace ft
 			{
 				node->right = insert_elements(node->right, node, p);
 			}
+			print();
 			node->height = 1 + max(height(node->left),
 								   height(node->right));
 			int balanceFactor = getBalanceFactor(node);
 			if (balanceFactor > 1)
 			{
-				if (getBalanceFactor(node->left) >= 0)
+				if (cmp(p.first,node->left->data.first))
 				{
 					return rightRotate(node);
 				}
@@ -415,7 +439,7 @@ namespace ft
 			}
 			if (balanceFactor < -1)
 			{
-				if (getBalanceFactor(node->right) <= 0)
+				if (!cmp(p.first,node->right->data.first))
 				{
 					return leftRotate(node);
 				}
@@ -434,7 +458,7 @@ namespace ft
 		void printTree(treenode *node, std::string indent, bool last)
 		{
 			//	treenode *node ;
-			if (node != imtheEnd  && node != NULL)
+			if (node != imtheEnd && node != NULL)
 			{
 				std::cout << indent;
 				if (last)
@@ -448,7 +472,7 @@ namespace ft
 					indent += "|  ";
 				}
 				std::cout << node->data.first << std::endl;
-			//	std::cout << "parent : " << node->parent->data.first << std::endl;
+				//	std::cout << "parent : " << node->parent->data.first << std::endl;
 				printTree(node->left, indent, false);
 				printTree(node->right, indent, true);
 			}
@@ -460,36 +484,56 @@ namespace ft
 			// Find the node and delete it
 			if (node == imtheEnd)
 				return node;
-			if (cmp(p.first, node->data.first))
-				node->left = deleteNode(node->left, p);
-			else if (cmp(p.first, node->data.first))
-				node->right = deleteNode(node->right, p);
-			else
+			if (node->data.first == p.first)
 			{
 				if ((node->left == imtheEnd) ||
 					(node->right == imtheEnd))
 				{
-					treenode *temp = node->left ? node->left : node->right;
+					treenode *temp;
+					if (node->left != imtheEnd)
+					{
+						temp = node->left;
+					}
+					else
+						temp = node->right;
+					//treenode *temp = node->left ? node->left : node->right;
 					if (temp == imtheEnd)
 					{
 						temp = node;
+						//temp->parent = node->parent;
 						node = imtheEnd;
 					}
 					else
+					{
+						temp->parent = node->parent;
+						if (cmp(temp->data.first, node->parent->data.first))
+							node->parent->left = temp;
+						else
+							node->parent->right = temp;
 						*node = *temp;
+					}
 					free(temp);
+					_size--;
 				}
 				else
 				{
 					treenode *temp = nodeWithMimumValue(node->right);
 					node->data = temp->data;
+					//node->parent = temp->parent;
 					node->right = deleteNode(node->right,
 											 temp->data);
 				}
 			}
-
+			else
+			{
 			if (node == imtheEnd)
 				return node;
+			if (cmp(p.first, node->data.first))
+				node->left = deleteNode(node->left, p);
+			else 
+				node->right = deleteNode(node->right, p);
+			
+			}
 
 			// Update the balance factor of each node and
 			// balance the tree

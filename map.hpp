@@ -22,6 +22,8 @@ class map
     typedef	AVL_TREE<Key, T> 				tree;
     typedef bintree_node<Key,T>     bintre;
     typedef typename Allocator::reference			reference;
+    		typedef typename std::size_t size_type;
+
     typedef typename Allocator::const_reference		const_reference;
 	  typedef typename Allocator::pointer				pointer;
 	  typedef typename Allocator::const_pointer		const_pointer;
@@ -73,6 +75,12 @@ map& operator= ( map& x)
     return *this;
 
 }
+		template <class InputIterator>  
+void insert (InputIterator first, InputIterator last)
+{
+  mytree.insert(first, last);
+}
+
 iterator insert(iterator position, const value_type &val)
 		{
 			return mytree.insert(position,val);			
@@ -86,16 +94,27 @@ void insert1(const ft::pair<Key,T> &p)
   mytree.insert1(p);
 
 };
+		size_type erase (const key_type& k)
+		{
+			return mytree.erase(k);
+
+		}
+  void erase (iterator position)
+		 {
+			mytree.erase(position);
+		 }
+		
 void printmymap()
 {
+  mytree.print();
   //mytree.print();
-  iterator endd = end();
-  iterator it = begin();
-  while (it != endd)
-  {
-    std::cout<<"key : "<<it->first<<std::endl;
-    it++;
-  }
+  // iterator endd = end();
+  // iterator it = begin();
+  // while (it != endd)
+  // {
+  //   std::cout<<"key : "<<it->first<<std::endl;
+  //   it++;
+  // }
 }
 };
 }
