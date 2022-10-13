@@ -53,19 +53,19 @@ explicit Map (const key_compare& comp = key_compare(),  const allocator_type& al
 template <class InputIterator>
   Map (InputIterator first, InputIterator last,const key_compare& comp = key_compare(),  const allocator_type& alloc = allocator_type())
   {
-    while(first != last)
-    {
+    //while(first != last)
+    //{
         mytree.insert(first, last);
-    }
+    //    first++;
+   // }
   }
   Map (const Map& x)
   {
-    iterator it = x.begin();
-    iterator itfinal = x.end();
-    while(it != itfinal)
-    {
-        mytree.insert(it, itfinal);
-    }
+
+  //  while(it != itfinal)
+  //  {
+        mytree.insert(x.begin(),  x.end());
+   // }
   }
 iterator begin()
 {
@@ -85,19 +85,19 @@ const_iterator end() const
 }
 const_reverse_iterator crbegin() const
 {
-  return const_reverse_iterator(end);
+  return const_reverse_iterator(end());
 }
 reverse_iterator rbegin() const
 {
-  return reverse_iterator(end);
+  return reverse_iterator(end());
 }
 const_reverse_iterator crend() const
 {
-  return const_reverse_iterator(begin);
+  return const_reverse_iterator(begin());
 }
 reverse_iterator crend() 
 {
-  return reverse_iterator(begin);
+  return reverse_iterator(begin());
 }
 Map& operator= ( Map& x)
 {
@@ -106,13 +106,14 @@ Map& operator= ( Map& x)
     mytree.free_tree1();
     iterator it = x.begin();
     ft::pair<Key ,T> c;
+    if(x.size())
     while (it != x.end())
     {
-      c = make_pair(it->first, it->second);
-      replacetree.insert1(c);
+      c = ft::make_pair(it->first, it->second);
+      mytree.insert1(c);
       it++;
     }
-    mytree = replacetree;
+   // mytree = replacetree;
 
     return *this;
 

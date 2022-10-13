@@ -346,7 +346,6 @@ Bidirectional_iterator(data *lop = NULL)
 		}
 		else
 		{
-			pair = node->data;
 			node = get_myPredecessor(node);
 
 		}
@@ -357,7 +356,7 @@ Bidirectional_iterator(data *lop = NULL)
 		data *myreplace = node;
 		if (myreplace == end)
 		{
-			pair = node->data;
+			//pair = node->data;
 			return *this;
 		}
 		else

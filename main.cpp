@@ -11,6 +11,7 @@
 //#include "reverse_iterator.hpp"
 int main()
 {
+
             std::map<int, std::string> m;
             ft::Map<int, std::string> ft_m;
             for (size_t i = 0; i < 25; ++i)
@@ -18,14 +19,16 @@ int main()
                 m.insert(std::make_pair(i, "value"));
                 ft_m.insert(ft::make_pair(i, "value"));
             }
-        //    ft_m.printmymap();
-                ft::Map<int, std::string>::iterator ft_it = --ft_m.end();
-            for (; ft_it != ft_m.begin(); --ft_it)
-                {
-               std::cout<<ft_it->first<<std::endl;
-                   std::cout<<ft_m.begin()->first<<std::endl;
+            ft::Map<int , std::string>::const_reverse_iterator cit = ft_m.rbegin();
+            ft::Map<int , std::string>::const_reverse_iterator op = cit;
+         // //    ft_m.printmymap();
+        //         ft::Map<int, std::string>::iterator ft_it = --ft_m.end();
+        //     for (; ft_it != ft_m.begin(); --ft_it)
+        //         {
+        //        std::cout<<ft_it->first<<std::endl;
+        //            std::cout<<ft_m.begin()->first<<std::endl;
 
-                }
+        //         }
 
 // //              
 //             ft::pair<char,int> ballo = ft::make_pair('c',222222);

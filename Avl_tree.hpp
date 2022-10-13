@@ -113,7 +113,7 @@ namespace ft
 		void free_tree1()
 		{
 			free_tree(Root);
-			imroot = 0;
+			//imroot = 0;
 			_size = 0;
 			Root = NULL;
 		}
@@ -124,7 +124,7 @@ namespace ft
 			treenode *tmp2;
 			tmp1 = node->right;
 			tmp2 = node->left;
-			free(tmp);
+			c.deallocate(tmp, 1);
 			if (tmp1 != imtheEnd)
 			{
 				free_tree(tmp1);
@@ -337,18 +337,26 @@ namespace ft
 		}
 		iterator end()
 		{
+			if(Root == NULL)
+				return(iterator(NULL));
 			return iterator(imtheEnd);
 		}
 		iterator begin()
 		{
+			if(Root == NULL)
+				return(iterator(NULL));
 			return iterator(lowkeyofroot(Root));
 		}
 		const_iterator end() const
 		{
+			if(Root == NULL)
+				return(const_iterator(NULL));
 			return const_iterator(imtheEnd);
 		}
 		const_iterator begin() const
-		{
+		{	
+			if(Root == NULL)
+				return(const_iterator(NULL));
 			return const_iterator(lowkeyofroot(Root));
 		}
 		ft::pair<iterator, bool> insert(const ft::pair<const key, T2> &p)
@@ -380,7 +388,7 @@ namespace ft
 			Root = insert_elements(Root, imtheEnd, p);
 			//	std::cout<<"im the root in after that place : "<<Root<<std::endl;
 			imtheEnd->right = Root;
-			iterator it(Root);
+			//iterator it(Root);
 			//	std::cout<<"im the root in after that other place : "<<Root<<std::endl;
 			// it.printmyend(Root);
 			//	std::cout<<"im the root in after that place : "<<Root<<std::endl;
@@ -390,7 +398,7 @@ namespace ft
 		{
 			while (first != last)
 			{
-				printTree(Root, "", true);
+				//printTree(Root, "", true);
 				ft::pair<key, T2> P = ft::make_pair(first->first, first->second);
 				Root = insert_elements(Root, imtheEnd, P);
 				first++;
@@ -461,6 +469,7 @@ namespace ft
 
 				if (node->data->first == p.first)
 				{
+					node->data->second = p.second;
 					node->inserted = false;
 					return node;
 				}

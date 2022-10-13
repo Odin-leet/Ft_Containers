@@ -4,7 +4,6 @@
 # include <iostream>
 # include <string>
 # include "iterator_traits.hpp"
-# include "Bidirectional_iterator.hpp"
 
 namespace ft{
 template <class T>
@@ -64,9 +63,10 @@ class reverse_iterator
 			T tmp = _iter;
 			return _Self(tmp + n);
 		}
-			reference operator*()const
+		reference operator*()const
 		{
-			T tmp = _iter;
+			//_iter--;
+			T tmp(_iter);
 			return *(--tmp);
 		}
 		pointer operator->()const
@@ -86,7 +86,11 @@ class reverse_iterator
 			++_iter;
 			return tmp;
 		}
-		
+		_Self &operator=(const _Self x)
+		{
+			*this = x;
+			return *this;
+		}
 		_Self &operator--()
 		{
 			++_iter;
