@@ -1,12 +1,32 @@
 //#include "Vector.hpp"
 #include "Avl_tree.hpp"
 #include "map.hpp"
+#include <map>
+#include <utility>
+#include <string>
+#include <ostream>
 
  //#define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
 
 //#include "reverse_iterator.hpp"
 int main()
 {
+            std::map<int, std::string> m;
+            ft::Map<int, std::string> ft_m;
+            for (size_t i = 0; i < 25; ++i)
+            {
+                m.insert(std::make_pair(i, "value"));
+                ft_m.insert(ft::make_pair(i, "value"));
+            }
+        //    ft_m.printmymap();
+                ft::Map<int, std::string>::iterator ft_it = --ft_m.end();
+            for (; ft_it != ft_m.begin(); --ft_it)
+                {
+               std::cout<<ft_it->first<<std::endl;
+                   std::cout<<ft_m.begin()->first<<std::endl;
+
+                }
+
 // //              
 //             ft::pair<char,int> ballo = ft::make_pair('c',222222);
 //             ft::pair<char,int> ballo2 = ft::make_pair('d',222222);
@@ -19,53 +39,77 @@ int main()
 //             ft::pair<char,int> ballo9 = ft::make_pair('w',222222);
 //             ft::pair<const char,int> ballo10 = ft::make_pair('b',222222);
 
-            ft::pair<int,int> ballo = ft::make_pair(1,222222);
-            ft::pair<int,int> ballo4 = ft::make_pair(5,222222);
-            ft::pair<int,int> ballo5 = ft::make_pair(77,222222);
-            ft::pair<int,int> ballo6 = ft::make_pair(88,222222);
-            ft::pair<int,int> ballo8 = ft::make_pair(3,222222);
-            ft::pair<int,int> ballo2 = ft::make_pair(55,222222);
-            ft::pair<int,int> ballo7 = ft::make_pair(11,222222);
-            ft::pair<int,int> ballo9 = ft::make_pair(17,222222);
-            ft::pair<const int,int> ballo10 = ft::make_pair(900,22222);
+        //     ft::pair<int,int> ballo = ft::make_pair(1,222222);
+        //     ft::pair<int,int> ballo4 = ft::make_pair(5,222222);
+        //     ft::pair<int,int> ballo5 = ft::make_pair(77,222222);
+        //     ft::pair<int,int> ballo6 = ft::make_pair(88,222222);
+        //     ft::pair<int,int> ballo8 = ft::make_pair(3,222222);
+        //     ft::pair<int,int> ballo2 = ft::make_pair(55,222222);
+        //     ft::pair<int,int> ballo7 = ft::make_pair(11,222222);
+        //     ft::pair<int,int> ballo9 = ft::make_pair(17,222222);
+        //     ft::pair<const int,int> ballo10 = ft::make_pair(900,22222);
             
-            ft::pair<int,int> allo = ft::make_pair(23,222222);
-            ft::pair<int,int> allo2 = ft::make_pair(55,222222);
-            ft::pair<int,int> allo3 = ft::make_pair(66,222222);
-            ft::pair<int,int> allo4 = ft::make_pair(22,222222);
-            ft::pair<int,int> allo5 = ft::make_pair(77,222222);
-            ft::pair<int,int> allo6 = ft::make_pair(88,222222);
-            ft::pair<int,int> allo8 = ft::make_pair(90,222222);
-            ft::pair<int,int> allo7 = ft::make_pair(11,222222);
-            ft::pair<int,int> allo9 = ft::make_pair(10,222222);
-            ft::pair<const int,int> allo10 = ft::make_pair(900,222222);
-                        ft::pair<const int,int> allo11 = ft::make_pair(900,9966);
+        //     ft::pair<int,int> allo = ft::make_pair(68,222222);
+        //     ft::pair<int,int> allo2 = ft::make_pair(55,222222);
+        //     ft::pair<int,int> allo3 = ft::make_pair(66,222222);
+        //     ft::pair<int,int> allo4 = ft::make_pair(22,222222);
+        //     ft::pair<int,int> allo5 = ft::make_pair(77,222222);
+        //     ft::pair<int,int> allo6 = ft::make_pair(88,222222);
+        //     ft::pair<int,int> allo8 = ft::make_pair(90,222222);
+        //     ft::pair<int,int> allo7 = ft::make_pair(11,222222);
+        //     ft::pair<int,int> allo9 = ft::make_pair(10,222222);
+        //     ft::pair<const int,int> allo10 = ft::make_pair(900,222222);
+        //                 ft::pair<const int,int> allo11 = ft::make_pair(900,9966);
 
-        //    ft::pair<int,int> allo = ft::make_pair(23,222222);
-            ft::bintree_node<int, int> *root = NULL;
-            ft::map<int, int> oc1;
-            oc1.insert1(ballo);
-            oc1.insert1(ballo8);
-          //  oc1.insert1(ballo3);
-            oc1.insert1(ballo4);
-            oc1.insert1(ballo5);
-            oc1.insert1(ballo6);
-            oc1.insert1(ballo7);
-            oc1.insert1(ballo2);
-            oc1.insert1(ballo9);
-            ft::map<int,int>::iterator ocbegin = oc1.begin();
-            ft::map<int,int>::iterator ocend = oc1.end();
-            ft::map<int,int> oj1;
-                          oc1.printmymap();
-            std::cout<<ocbegin->first<<std::endl;
-            ocbegin++;
-            ocbegin++;
-                        std::cout<<ocbegin->first<<std::endl;
+        // //    ft::pair<int,int> allo = ft::make_pair(23,222222);
+        //     ft::bintree_node<int, int> *root = NULL;
+        //     ft::map<int, int> oc1;
+        //                 ft::map<int,int> oj1;
+        //    oj1.insert1(allo);
+        //    oj1.insert1(allo8);
+        //   // oj1.insert1(allo3);
+        //    oj1.insert1(allo4);
+        //    oj1.insert1(allo5);
+        //    oj1.insert1(allo6);
+        //    oj1.insert1(allo7);
+        //    oj1.insert1(allo2);
+        //    oj1.insert1(allo9);
+        //    oj1.insert1(allo);
+        //    oj1.insert1(allo8);
+        //   //  oc1.insert1(ballo3);
+        //     oc1.insert1(ballo4);
+        //     oc1.insert1(ballo5);
+        //     oc1.insert1(ballo6);
+        //     oc1.insert1(ballo7);
+        //     oc1.insert1(ballo2);
+        //     oc1.insert1(ballo9);
 
-          //  oc1.erase(99);
+        //     //ft::map<int,int>::iterator ocbegin = oc1.begin();
+        //     //ft::map<int,int>::iterator ocend = oc1.end();
+
+        //                   oc1.printmymap();
+        //                   std::cout<<"this is my shit "<<std::endl;
+        //                   oc1.swap(oj1);
+        //                   oc1.printmymap();
+        //                //   oc1.clear();
+        //                                             oc1.printmymap();
+        //                                            // oc1.insert(allo9);
+        //       std::cout<<oc1.find(11)->first<<std::endl;
+
+
+            //std::cout<<ocbegin->first<<std::endl;
+             //ocbegin++;
+            //ocbegin++;
+
+                      //  std::cout<<ocbegin->first<<std::endl;
+                        //            oc1.erase(oc1.begin(), ocbegin);
+
+       //       oc1.insert1(allo3);
+         //                   oc1.insert1(allo);
+
              //                       std::cout<<oc1.erase(55)<<std::endl;
 
-            oc1.printmymap();          //  oj1.insert(ocbegin, ocend);
+            //oc1.printmymap();          //  oj1.insert(ocbegin, ocend);
            // oj1.printmymap();
 
           //   ft::AVL_TREE<int, int>  allo1(root);

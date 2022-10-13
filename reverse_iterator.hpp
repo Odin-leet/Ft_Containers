@@ -3,8 +3,9 @@
 
 # include <iostream>
 # include <string>
-//# include "iterator_traits.hpp"
-# include "Iterator.hpp"
+# include "iterator_traits.hpp"
+# include "Bidirectional_iterator.hpp"
+
 namespace ft{
 template <class T>
 class reverse_iterator
@@ -31,9 +32,9 @@ class reverse_iterator
 		reverse_iterator( T src ): _iter (src)
 		{
 		}
+		iterator_type base() const { return _iter; }
 		template <class _Iter>
    		reverse_iterator(const reverse_iterator<_Iter>& __x) : _iter(__x.base()) {}
-		iterator_type base() const { return _iter; }
 		~reverse_iterator()
 		{
 
@@ -62,6 +63,15 @@ class reverse_iterator
 			//temp1 += n;
 			T tmp = _iter;
 			return _Self(tmp + n);
+		}
+			reference operator*()const
+		{
+			T tmp = _iter;
+			return *(--tmp);
+		}
+		pointer operator->()const
+		{
+			 return &(operator*());
 		}
 
 		reference operator[](difference_type n) const
@@ -95,15 +105,6 @@ class reverse_iterator
 			--_iter;
 			return *this;
 		}
-		reference operator*()const
-		{
-			T tmp = _iter;
-			return *--tmp;
-		}
-		pointer operator->()const
-		{
-			 return &(operator*());
-		}
 
 		bool			operator==(reverse_iterator const &rhs)
 		{
@@ -114,12 +115,6 @@ class reverse_iterator
 		}
 		
 		
-
-		reverse_iterator 		&operator=( reverse_iterator const & rhs )
-		{
-			_iter = rhs._iter;
-			return *this;
-		}
 
 
 

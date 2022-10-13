@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include "Pair.hpp"
+#include <vector>
+#include "reverse_iterator.hpp"
 #include "Bidirectional_iterator.hpp"
 template <class Type>
 struct rebind
@@ -19,21 +21,22 @@ namespace ft
 		bintree_node *left;
 		bintree_node *right;
 		bintree_node *parent;
-		pair<key, T2> data;
+		pair<key, T2> *data;
 		bool inserted;
 		int height;
 	};
-	template <class key, class T2, class Compare = std::less<key>, class Allocator = std::allocator<pair<key, T2>>>
+	template <class key, class T2, class Compare = std::less<key>, class Allocator = std::allocator<pair<key, T2> > >
 	class AVL_TREE
 	{
-	private:
-		bintree_node<key, T2> *Root;
+			bintree_node<key, T2> *Root;
 		bintree_node<key, T2> *imtheEnd;
+	private:
+
 		int imroot;
 		Compare cmp;
 
 	public:
-		typedef typename Allocator::template rebind<bintree_node<key, T2>>::other alloccc;
+		typedef typename Allocator::template rebind<bintree_node<key, T2> >::other alloccc;
 		typedef bintree_node<key, T2> treenode;
 		// typedef	AVL_TREE<key, T2> 				tree;
 		typedef typename Allocator::reference reference;
@@ -49,6 +52,8 @@ namespace ft
 		typedef typename Allocator::const_pointer const_pointer;
 		typedef ft::Bidirectional_iterator<value, treenode, Compare> iterator;
 		typedef ft::Bidirectional_iterator<const value, treenode, Compare> const_iterator;
+		typedef ft::reverse_iterator<iterator> reverse_iterator;
+		typedef ft::reverse_iterator<const iterator> const_reverse_iterator;
 
 		allocator_type x;
 
@@ -70,10 +75,11 @@ namespace ft
 			Root->parent = imtheEnd;
 			Root->left = imtheEnd;
 			Root->right = imtheEnd;
+			Root->data = NULL;
 			imtheEnd->left = NULL;
 			imtheEnd->right = Root;
-			std::cout << "| 1.the end | " << &imtheEnd << "|" << std::endl;
-			std::cout << "| 1.Root    | " << &Root << "|" << std::endl;
+			//std::cout << "| 1.the end | " << &imtheEnd << "|" << std::endl;
+			//std::cout << "| 1.Root    | " << &Root << "|" << std::endl;
 
 			// Root = imtheEndptr;
 			imroot = 0;
@@ -88,7 +94,8 @@ namespace ft
 			alloccc c;
 			if (imroot == 0)
 			{
-				node->data = p;
+				node->data  = x.allocate(1);
+				x.construct(node->data, p);
 				node->height = 1;
 				imroot = 1;
 				return node;
@@ -97,7 +104,8 @@ namespace ft
 			newno->left = imtheEnd;
 			newno->right = imtheEnd;
 			newno->parent = parent;
-			newno->data = p;
+			newno->data  = x.allocate(1);
+			x.construct(newno->data, p);
 			newno->height = 1;
 			newno->inserted = true;
 			return newno;
@@ -133,11 +141,12 @@ namespace ft
 			int a = 0;
 			int b = 0;
 			replace = node;
-			if (node->data.first == x)
+			if(node->data != NULL)
+			if (node->data->first == x)
 				return replace;
 			// if (replace->left != imtheEnd && replace-> right != imtheEnd)
 			//{
-			if (replace->left != imtheEnd && (cmp(x, replace->data.first)))
+			if (replace->left != imtheEnd && (cmp(x, replace->data->first)))
 			{
 				a = 1;
 				replace = searchforkey(x, replace->left);
@@ -154,21 +163,21 @@ namespace ft
 			//	if (replace != NULL)
 			// replace = NULL;
 			if (a == 0 && b == 0)
-				replace == NULL;
+				replace = NULL;
 			return replace;
 		}
 
-		treenode *lowkeyofroot(treenode *root1)
+		treenode *lowkeyofroot(treenode *root1) const
 		{
 			treenode *replace = root1;
 			// replace = root;
 			if (replace->left != imtheEnd)
-				if (!(cmp(replace->data.first, replace->left->data.first)))
+				if (!(cmp(replace->data->first, replace->left->data->first)))
 				{
 					replace = lowkeyofroot(replace->left);
 				};
 			if (replace->right != imtheEnd)
-				if (!(cmp(replace->data.first, replace->right->data.first)))
+				if (!(cmp(replace->data->first, replace->right->data->first)))
 				{
 					replace = lowkeyofroot(replace->right);
 				};
@@ -193,7 +202,7 @@ namespace ft
 				replace = node->parent;
 				while (replace->parent != imtheEnd)
 				{
-					if (cmp(get_myPredecessor(replace->parent)->data.first, node->data.first))
+					if (cmp(get_myPredecessor(replace->parent)->data->first, node->data->first))
 						return get_myPredecessor(replace->parent);
 				}
 				// else
@@ -227,6 +236,8 @@ namespace ft
 			x->parent = parentrep;
 			x->right = y;
 			y->left = T3;
+			 if(T3 != imtheEnd && T3 != NULL)
+			 T3->parent = y;
 			y->height = max(height(y->left),
 							height(y->right)) +
 						1;
@@ -246,6 +257,8 @@ namespace ft
 			x->parent = y;
 			y->left = x;
 			x->right = T3;
+			if(T3 != imtheEnd && T3 != imtheEnd)
+			T3->parent = x;
 			x->height = max(height(x->left),
 							height(x->right)) +
 						1;
@@ -279,6 +292,18 @@ namespace ft
 				current = current->left;
 			return current;
 		}
+			
+		  iterator find (const key_type& k)
+		  {
+			//ft::pair<key, T2> p;
+			//T2 c;
+			//p = make_pair(k, c);
+			treenode *node;
+			node =  searchforkey(k, Root);
+			if (node == NULL)
+				return iterator(imtheEnd);
+			return (iterator(node));
+		  }
 		// { CAPACITY }
 		bool empty() const
 		{
@@ -306,9 +331,9 @@ namespace ft
 			if (thenode == NULL)
 				Root = insert_elements(Root, imtheEnd, p);
 			else
-				return thenode->data.second;
+				return thenode->data->second;
 			thenode = searchforkey(x, Root);
-			return thenode->data.second;
+			return thenode->data->second;
 		}
 		iterator end()
 		{
@@ -318,6 +343,14 @@ namespace ft
 		{
 			return iterator(lowkeyofroot(Root));
 		}
+		const_iterator end() const
+		{
+			return const_iterator(imtheEnd);
+		}
+		const_iterator begin() const
+		{
+			return const_iterator(lowkeyofroot(Root));
+		}
 		ft::pair<iterator, bool> insert(const ft::pair<const key, T2> &p)
 		{
 			// std::cout<<"im the root in this place : "<<Root<<std::endl;
@@ -325,7 +358,7 @@ namespace ft
 			Root = insert_elements(Root, imtheEnd, p);
 			//	std::cout<<"im the root in after that place : "<<Root<<std::endl;
 			imtheEnd->right = Root;
-			print();
+			//print();
 			pop = searchforkey(p.first, Root);
 			iterator it(Root);
 			ft::pair<iterator, bool> m;
@@ -387,10 +420,31 @@ namespace ft
 		 {
 			ft::pair<key, T2> val;
 			val = ft::make_pair(position->first, position->second);
-			deleteNode(Root, val);
+			deleteNode(Root, position->first);
 		 }
 		
-     void erase (iterator first, iterator last);
+     void erase (iterator first, iterator last)
+	 {
+		ft::pair<key, T2> val;
+		std::vector<key> myvector;
+		while (first != last)
+		{
+			myvector.push_back(first->first);
+			first++;
+		}
+		typename std::vector<key>::iterator op = myvector.begin();
+		//iterator temp = first;
+		//val = ft::make_pair(position->first, position->second);
+		while(op != myvector.end())
+		{
+			T2 p;
+			val = ft::make_pair(*op, p);
+			Root = deleteNode(Root, val);
+			op++;
+			//std::cout<<"lllllllllllllllllllllllllll"<<std::endl;
+			//first++;
+		}
+	 }
 		// something not working here x
 		treenode *insert_elements(treenode *node, treenode *parent, const ft::pair<key, T2> &p)
 		{
@@ -402,18 +456,17 @@ namespace ft
 			else if (node != imtheEnd && node != NULL)
 
 			{
-				//	//std::cout<<"||||"<<node->data.first<<std::endl;
-				std::cout << p.first << std::endl;
+				//	//std::cout<<"||||"<<node->data->first<<std::endl;
+				//std::cout << p.first << std::endl;
 
-				if (node->data.first == p.first)
+				if (node->data->first == p.first)
 				{
-					std::cout << "iv been inserted" << std::endl;
 					node->inserted = false;
 					return node;
 				}
 			}
 
-			if (cmp(p.first, node->data.first))
+			if (cmp(p.first, node->data->first))
 			{
 				node->left = insert_elements(node->left, node, p);
 			}
@@ -421,13 +474,13 @@ namespace ft
 			{
 				node->right = insert_elements(node->right, node, p);
 			}
-			print();
+			//print();
 			node->height = 1 + max(height(node->left),
 								   height(node->right));
 			int balanceFactor = getBalanceFactor(node);
 			if (balanceFactor > 1)
 			{
-				if (cmp(p.first,node->left->data.first))
+				if (cmp(p.first,node->left->data->first))
 				{
 					return rightRotate(node);
 				}
@@ -439,7 +492,7 @@ namespace ft
 			}
 			if (balanceFactor < -1)
 			{
-				if (!cmp(p.first,node->right->data.first))
+				if (!cmp(p.first,node->right->data->first))
 				{
 					return leftRotate(node);
 				}
@@ -450,6 +503,14 @@ namespace ft
 				}
 			}
 			return (node);
+		}
+		size_type count (const key_type& k) const
+		{
+			treenode *node;
+			node =  searchforkey(k, Root);
+			if (node == NULL)
+				return 0;
+			return 1;
 		}
 		void print()
 		{
@@ -465,26 +526,30 @@ namespace ft
 				{
 					std::cout << "R----";
 					indent += "   ";
+					if(node->parent->data != NULL)
+					std::cout << "parent : " << node->parent->data->first << std::endl;
 				}
 				else
 				{
 					std::cout << "L----";
 					indent += "|  ";
+					if(node->parent->data != NULL)
+					std::cout << "parent : " << node->parent->data->first << std::endl;
 				}
-				std::cout << node->data.first << std::endl;
-				//	std::cout << "parent : " << node->parent->data.first << std::endl;
+				std::cout << node->data->first << std::endl;
+					
 				printTree(node->left, indent, false);
 				printTree(node->right, indent, true);
 			}
 		}
 
 		// delete node
-		treenode *deleteNode(treenode *node, ft::pair<key, T2> &p)
+		treenode *deleteNode(treenode *node, key_type p)
 		{
 			// Find the node and delete it
 			if (node == imtheEnd)
 				return node;
-			if (node->data.first == p.first)
+			if (node->data->first == p)
 			{
 				if ((node->left == imtheEnd) ||
 					(node->right == imtheEnd))
@@ -506,13 +571,14 @@ namespace ft
 					else
 					{
 						temp->parent = node->parent;
-						if (cmp(temp->data.first, node->parent->data.first))
+						if (cmp(temp->data->first, node->parent->data->first))
 							node->parent->left = temp;
 						else
 							node->parent->right = temp;
+						temp->parent = node->parent;
 						*node = *temp;
 					}
-					free(temp);
+					c.deallocate(temp,1);
 					_size--;
 				}
 				else
@@ -521,14 +587,14 @@ namespace ft
 					node->data = temp->data;
 					//node->parent = temp->parent;
 					node->right = deleteNode(node->right,
-											 temp->data);
+											 temp->data->first);
 				}
 			}
 			else
 			{
 			if (node == imtheEnd)
 				return node;
-			if (cmp(p.first, node->data.first))
+			if (cmp(p, node->data->first))
 				node->left = deleteNode(node->left, p);
 			else 
 				node->right = deleteNode(node->right, p);

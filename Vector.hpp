@@ -4,7 +4,6 @@
 # include <iostream>
 # include <string>
 # include "reverse_iterator.hpp"
-# include <iterator>
 # include "Iterator.hpp"
 
 template <class X>
@@ -540,7 +539,7 @@ class Vector
 		}
 		explicit Vector (const allocator_type& alloc = allocator_type())
 		{
-			arr = nullptr;
+			arr = NULL;
 			_size = 0;
 			_capacity = 0;
 			x = alloc;
