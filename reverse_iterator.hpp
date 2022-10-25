@@ -63,13 +63,13 @@ class reverse_iterator
 			T tmp = _iter;
 			return _Self(tmp + n);
 		}
-		reference operator*()const
+		reference operator*() const
 		{
 			//_iter--;
 			T tmp(_iter);
 			return *(--tmp);
-		}
-		pointer operator->()const
+		} 
+		pointer operator->() const
 		{
 			 return &(operator*());
 		}
@@ -85,11 +85,6 @@ class reverse_iterator
 			tmp = *this;
 			++_iter;
 			return tmp;
-		}
-		_Self &operator=(const _Self x)
-		{
-			*this = x;
-			return *this;
 		}
 		_Self &operator--()
 		{
@@ -118,6 +113,13 @@ class reverse_iterator
 			return false;
 		}
 		
+		bool			operator!=(reverse_iterator const &rhs)
+		{
+			if (_iter != rhs._iter)
+			return true;
+			else
+			return false;
+		}
 		
 
 

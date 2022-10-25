@@ -106,7 +106,7 @@ namespace ft{
 
 				}
 				end = myreplace->parent;
-				root = myreplace->parent->right;
+				root = myreplace;
 				//std::cout<<"im the root in after that place  in returning: 1  "<<myreplace->right<<std::endl;
 
 				//return (myreplace->right);
@@ -142,11 +142,11 @@ namespace ft{
 
 				data * myreplace;
 				data *replace2;
-				if (node != end && node->left != end)
+				if (node !=end  && node->left != end)
 				{
 					//node * myreplace;
 					myreplace = node->left;
-					while (myreplace->right != end  && myreplace->right != NULL)
+					while (myreplace->right != NULL && myreplace->right != end   && myreplace->right != NULL)
 					{
 						myreplace = myreplace->right;
 					}
@@ -397,7 +397,7 @@ Bidirectional_iterator(data *lop = NULL)
 	data *get_node() const{
 		return node;
 	}
-	data *get_root()const
+	data *get_root() const
 	{
 		return root;
 	}

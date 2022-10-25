@@ -704,7 +704,7 @@ void testConstructors()
         std::map<int, std::string> m2;
         ft::Map<int, std::string> ft_m1;
         ft::Map<int, std::string> ft_m2;
-        for(size_t i = 0; i < 100; ++i)
+        for (size_t i = 0; i < 100; ++i)
         {
             m2.insert(std::make_pair(i, "value"));
             ft_m2.insert(ft::make_pair(i, "value"));
@@ -977,10 +977,10 @@ void testIterators()
             ft_res += it->second;
         for (ft::Map<int, std::string>::const_iterator rit = ft_m2.begin(); rit != ft_m2.end(); ++rit) // fill c_ft_res from const ft_m1
             c_ft_res += rit->second;
-        
+
         int arr[] = {12, 82, 37, 64, 15};
         ft::Map<int, int> end_test;
-        for(size_t i = 0; i < 5; ++i)
+        for (size_t i = 0; i < 5; ++i)
             end_test.insert(ft::make_pair(arr[i], i));
         ft::Map<int, int>::iterator eit = end_test.end();
         eit--;
@@ -1046,7 +1046,7 @@ void testIterators()
             c_ft_res += rit->second;
         int arr[] = {12, 82, 37, 64, 15};
         ft::Map<int, int> end_test;
-        for(size_t i = 0; i < 5; ++i)
+        for (size_t i = 0; i < 5; ++i)
             end_test.insert(ft::make_pair(arr[i], i));
         ft::Map<int, int>::reverse_iterator rit = end_test.rend();
         rit--;
@@ -1523,8 +1523,8 @@ void testModifiers()
 
         cond = cond && foo.size() == ft_foo.size() && bar.size() == ft_bar.size() && compareMaps(foo.begin(), foo.end(), ft_foo.begin(), ft_foo.end()) && compareMaps(bar.begin(), bar.end(), ft_bar.begin(), ft_bar.end());
 
-        std::map<std::string, std::string, std::greater<std::string> > m1, m2;
-        ft::Map<std::string, std::string, std::greater<std::string> > ft_m1, ft_m2;
+        std::map<std::string, std::string, std::greater<std::string>> m1, m2;
+        ft::Map<std::string, std::string, std::greater<std::string>> ft_m1, ft_m2;
 
         m1["γ"] = "gamma";
         m1["β"] = "beta";
@@ -1545,9 +1545,9 @@ void testModifiers()
         ft_m2["ε"] = "epsilon";
 
         const std::pair<std::string, std::string> &ref = *(m1.begin());
-        const std::map<std::string, std::string, std::greater<std::string> >::iterator iter = std::next(m1.begin());
+        const std::map<std::string, std::string, std::greater<std::string>>::iterator iter = std::next(m1.begin());
         const ft::pair<std::string, std::string> &ft_ref = *(ft_m1.begin());
-        const ft::Map<std::string, std::string, std::greater<std::string> >::iterator ft_iter = std::next(ft_m1.begin());
+        const ft::Map<std::string, std::string, std::greater<std::string>>::iterator ft_iter = std::next(ft_m1.begin());
 
         // std::cout << "──────── before swap ────────\n"
         //           << "m1: " << m1 << "m2: " << m2 << "ref: " << ref

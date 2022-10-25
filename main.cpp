@@ -12,15 +12,36 @@
 int main()
 {
 
-            std::map<int, std::string> m;
-            ft::Map<int, std::string> ft_m;
-            for (size_t i = 0; i < 25; ++i)
-            {
-                m.insert(std::make_pair(i, "value"));
-                ft_m.insert(ft::make_pair(i, "value"));
-            }
-            ft::Map<int , std::string>::const_reverse_iterator cit = ft_m.rbegin();
-            ft::Map<int , std::string>::const_reverse_iterator op = cit;
+                  std::map<int, std::string> m1;
+        ft::Map<int, std::string> ft_m1;
+
+        for (size_t i = 0; i < 10; i++)
+        {
+            m1.insert(std::make_pair(i, "string2"));
+            ft_m1.insert(ft::make_pair(i, "string2"));
+        }
+
+        std::map<int, std::string> const m2(m1.rbegin(), m1.rend());
+        ft::Map<int, std::string> const ft_m2(ft_m1.rbegin(), ft_m1.rend());
+
+        /*-----------------------------------------------------*/
+        /*------------------ ft::Maps ---------------------*/
+        /*----------------------------------------------------*/
+        /*------------------ strings to store the results ----*/
+        std::string res, ft_res, c_res, c_ft_res;
+        ft::Map<int, std::string>::const_reverse_iterator rit = ft_m2.rbegin();
+         rit != ft_m2.rend();
+          ++rit;
+
+            // std::map<int, std::string> m;
+            // ft::Map<int, std::string> ft_m;
+            // for (size_t i = 0; i < 25; ++i)
+            // {
+            //     m.insert(std::make_pair(i, "value"));
+            //     ft_m.insert(ft::make_pair(i, "value"));
+            // }
+            // ft::Map<int , std::string>::const_reverse_iterator cit = ft_m.rbegin();
+            // ft::Map<int , std::string>::const_reverse_iterator op = cit;
          // //    ft_m.printmymap();
         //         ft::Map<int, std::string>::iterator ft_it = --ft_m.end();
         //     for (; ft_it != ft_m.begin(); --ft_it)

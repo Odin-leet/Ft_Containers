@@ -11,7 +11,7 @@
 # ************************************************************************************************** #
 
 COMPILER = g++
-FLAGS_DEBUG = --std=c++11 -fsanitize=address -g3
+FLAGS_DEBUG = --std=gnu++11 -fsanitize=address -g3
 FLAGS = -g3
 
 vector_tle:
@@ -21,7 +21,7 @@ vector:
 	@$(COMPILER) $(FLAGS)	Vector_tests.cpp -o vector.out 
 
 map:
-	@$(COMPILER) $(FLAGS)	 Map_tests.cpp -o map.out -g3
+	@$(COMPILER) $(FLAGS_DEBUG)	 Map_tests.cpp -o map.out -g3
 
 stack:
 	@$(COMPILER) $(FLAGS)	Stack_tests.cpp -o stack.out 
