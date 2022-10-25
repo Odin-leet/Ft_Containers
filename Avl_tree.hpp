@@ -28,11 +28,12 @@ namespace ft
 	template <class key, class T2, class Compare = std::less<key>, class Allocator = std::allocator<pair<key, T2> > >
 		class AVL_TREE
 		{
+			public :
 			bintree_node<key, T2> *Root;
 			bintree_node<key, T2> *imtheEnd;
+			int imroot;
 			private:
 
-			int imroot;
 			Compare cmp;
 
 			public:
@@ -54,8 +55,8 @@ namespace ft
 
 			allocator_type x;
 
-			private:
 			size_type _size;
+			private:
 			alloccc c;
 
 			public:
@@ -429,6 +430,8 @@ namespace ft
 
 			void erase (iterator first, iterator last)
 			{
+				if (Root != NULL && Root != imtheEnd)
+			{
 				ft::pair<key, T2> val;
 				std::vector<key> myvector;
 				while (first != last)
@@ -440,17 +443,20 @@ namespace ft
 				//iterator temp = first;
 				//val = ft::make_pair(position->first, position->second);
 				int i = 0;
+				key c;
 				while(i < myvector.size())
 				{
 					T2 p;
-					val = ft::make_pair(*op, p);
-					Root = deleteNode(Root, *op);
+					//val = ft::make_pair(op[i], p);
+					Root = deleteNode(Root, myvector[i]);
+					c = myvector[i];
 					//_size--;
 					//	std::cout<<op[i]<<std::endl;
 					i++;
 					//std::cout<<"lllllllllllllllllllllllllll"<<std::endl;
 					//first++;
 				}
+			}
 			}
 			// something not working here x
 			treenode *insert_elements(treenode *node, treenode *parent, const ft::pair<key, T2> &p)
@@ -582,8 +588,9 @@ namespace ft
 						}
 						else
 						{
-							temp->parent = node->parent;
-							if (cmp(temp->data->first, node->parent->data->first))
+							temp->parent = node->parent; 
+							//if (node->parent != imtheEnd)
+							if (node->parent != imtheEnd && cmp(temp->data->first, node->parent->data->first))
 								node->parent->left = temp;
 							else
 								node->parent->right = temp;

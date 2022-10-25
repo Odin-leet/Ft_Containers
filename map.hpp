@@ -19,7 +19,7 @@ namespace ft{
 					 typedef ft::pair<const Key, T>		          value_type;
 					 typedef Compare									          key_compare;
 					 typedef Allocator								          allocator_type;
-					 typedef	AVL_TREE<Key, T> 				          tree;
+					 typedef	AVL_TREE<Key, T, Compare> 				          tree;
 					 typedef bintree_node<Key,T>                bintre;
 					 typedef typename Allocator::reference			reference;
 					 typedef typename std::size_t size_type;
@@ -45,6 +45,8 @@ namespace ft{
 				 private:
 					 tree mytree;
 				 public :
+			// 	value_compare value_comp() const
+			// { return (value_compare(key_compare())); }
 					 explicit Map (const key_compare& comp = key_compare(),  const allocator_type& alloc = allocator_type())
 					 {
 						 // bintre *Root; 
@@ -155,7 +157,33 @@ namespace ft{
 					 }
 					 void swap(Map &x)
 					 {
-						 std::swap (mytree, x.mytree);
+						int tmptree;
+						size_type tmp_size;
+						bintre *tmproot;
+						bintre *tmpend;
+
+
+						tmptree = this->mytree.imroot;
+						this->mytree.imroot = x.mytree.imroot;
+						x.mytree.imroot = tmptree;
+
+
+						tmp_size = mytree._size;
+						mytree._size = x.mytree._size;
+						x.mytree._size = tmp_size;
+
+						tmproot = mytree.Root;
+						mytree.Root = x.mytree.Root;
+						x.mytree.Root = tmproot;
+
+						tmpend = mytree.imtheEnd;
+						mytree.imtheEnd = x.mytree.imtheEnd;
+						x.mytree.imtheEnd = tmpend;
+
+						//  std::swap (mytree, x.mytree);
+						//  std::swap  (mytree.Root, x.mytree.Root);
+						//  std::swap (mytree.imtheEnd, x.mytree.imtheEnd);
+						//  std::swap (mytree._size, x.mytree._size);
 					 }
 					 void clear()
 					 {
@@ -181,9 +209,9 @@ namespace ft{
 					 iterator lower_bound (const key_type& k)
 					 {
 						 iterator allo = begin();
-						 iterator alloend = end();
+						// iterator alloend = end();
 						 key_compare cmp;
-						 while (allo != alloend)
+						 while (allo.get_node() != allo.get_end())
 						 {
 							 if (cmp(allo->first, k) == false)
 								 break;
@@ -195,9 +223,9 @@ namespace ft{
 					 const_iterator lower_bound (const key_type& k) const
 					 {
 						 iterator allo = begin();
-						 iterator alloend = end();
+						// iterator alloend = end();
 						 key_compare cmp;
-						 while (allo != alloend)
+						 while (allo.get_node() != allo.get_end())
 						 {
 							 if (cmp(allo->first, k) == false)
 								 break;
@@ -208,11 +236,11 @@ namespace ft{
 					 iterator upper_bound (const key_type& k)
 					 {
 						 iterator allo = begin();
-						 iterator alloend = end();
+					//	 iterator alloend = end();
 						 key_compare cmp;
-						 while (allo != alloend)
+						 while (allo.get_node() != allo.get_end())
 						 {
-							 if (cmp(k, allo.first))
+							 if (cmp(k, allo->first))
 								 break;
 							 allo++;
 						 }
@@ -221,10 +249,29 @@ namespace ft{
 					 }
 					 const_iterator upper_bound (const key_type& k) const
 					 {
-						 return (const_iterator(upper_bound(k)));
+					 iterator allo = begin();
+						// iterator alloend = end();
+						 key_compare cmp;
+						 while (allo.get_node() !=  allo.get_end())
+						 {
+							 if (cmp(k, allo->first))
+								 break;
+							 allo++;
+						 }
+						 return const_iterator(allo.get_node());
 					 }
-					 ft::pair<iterator, iterator> equal_range (const key_type& k) const
-					 { return (ft::make_pair(this->lower_bound(k), this->upper_bound(k))); }
+					ft::pair<iterator, iterator>
+					equal_range(const key_type &k)
+					{
+						return (ft::make_pair(this->lower_bound(k), this->upper_bound(k)));
+					}
+					ft::pair<const_iterator, const_iterator>
+					equal_range(const key_type& k) const
+					{
+						return (ft::make_pair(this->lower_bound(k), this->upper_bound(k)));
+					}
+					//  ft::pair<iterator, iterator> equal_range (const key_type& k) const
+					//  { return (ft::make_pair(this->lower_bound(k), this->upper_bound(k))); }
 
 
 					 mapped_type& operator[] (const key_type& k)

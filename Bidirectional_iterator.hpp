@@ -292,7 +292,7 @@ Bidirectional_iterator(data *lop = NULL)
 		//print();		//		std::cout<<"im the root in after that place  in returning: 4 "<<root<<std::endl;
 
 		//if (node != NULL && node != end)
-		pair = node->data;
+		//pair = node->data;
 	}
 	//else
 	//{
@@ -396,6 +396,9 @@ Bidirectional_iterator(data *lop = NULL)
 	}
 	data *get_node() const{
 		return node;
+	}
+	data *get_end() const{
+		return end;
 	}
 	data *get_root() const
 	{

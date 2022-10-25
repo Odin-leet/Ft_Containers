@@ -12,27 +12,51 @@
 int main()
 {
 
-                  std::map<int, std::string> m1;
-        ft::Map<int, std::string> ft_m1;
+        //           std::map<int, std::string> m1;
+        // ft::Map<int, std::string> ft_m1;
 
-        for (size_t i = 0; i < 10; i++)
-        {
-            m1.insert(std::make_pair(i, "string2"));
-            ft_m1.insert(ft::make_pair(i, "string2"));
-        }
+        // for (size_t i = 0; i < 10; i++)
+        // {
+        //     m1.insert(std::make_pair(i, "string2"));
+        //     ft_m1.insert(ft::make_pair(i, "string2"));
+        // }
 
-        std::map<int, std::string> const m2(m1.rbegin(), m1.rend());
-        ft::Map<int, std::string> const ft_m2(ft_m1.rbegin(), ft_m1.rend());
+        // std::map<int, std::string> const m2(m1.rbegin(), m1.rend());
+        // ft::Map<int, std::string> const ft_m2(ft_m1.rbegin(), ft_m1.rend());
 
-        /*-----------------------------------------------------*/
-        /*------------------ ft::Maps ---------------------*/
-        /*----------------------------------------------------*/
-        /*------------------ strings to store the results ----*/
-        std::string res, ft_res, c_res, c_ft_res;
-        ft::Map<int, std::string>::const_reverse_iterator rit = ft_m2.rbegin();
-         rit != ft_m2.rend();
-          ++rit;
+        // /*-----------------------------------------------------*/
+        // /*------------------ ft::Maps ---------------------*/
+        // /*----------------------------------------------------*/
+        // /*------------------ strings to store the results ----*/
+        // std::string res, ft_res, c_res, c_ft_res;
+        // ft::Map<int, std::string>::const_reverse_iterator rit = ft_m2.rbegin();
+        //  rit != ft_m2.rend();
+        //   ++rit;
 
+
+  time_t start, end, diff;
+            /*------------------ std::maps ---------------------*/
+            std::map<int, std::string> m1;
+            ft::Map<int, std::string> ft_m1;
+            for (size_t i = 0; i < 1e6; i++)
+            { 
+                m1.insert(std::make_pair(i, "string2"));
+                ft_m1.insert(ft::make_pair(i, "string2"));
+            }
+            
+           // start = get_time();
+            m1.erase(m1.begin(), m1.end());
+          //  end = get_time();
+          //  diff = end - start;
+          //  diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
+            /*-----------------------------------------------------*/
+            /*------------------ ft::Maps ---------------------*/
+           // ualarm(diff * 1e3, 0);
+            ft_m1.erase(ft_m1.begin(), ft_m1.end());
+
+            std::cout<<"allo im here "<<std::endl;
+         //   ualarm(0, 0);
+            /*------------------------------------------------
             // std::map<int, std::string> m;
             // ft::Map<int, std::string> ft_m;
             // for (size_t i = 0; i < 25; ++i)
