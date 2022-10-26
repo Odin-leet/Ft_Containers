@@ -78,9 +78,7 @@ namespace ft
 				imtheEnd->right = Root;
 				imroot = 0;
 			}
-			AVL_TREE(AVL_TREE const &src)
-			{
-			}
+
 
 			treenode *newnode(const ft::pair<key, T2> &p, treenode *parent, treenode *node, const allocator_type &alloc = allocator_type())
 			{
@@ -320,8 +318,8 @@ namespace ft
 			{
 				treenode *thenode;
 				ft::pair<key, T2> p;
-				T2 c;
-				p = ft::make_pair(x, c);
+				// T2 c ;
+				p = ft::make_pair(x, T2);
 				thenode = NULL;
 				if (Root != NULL)
 					thenode = searchforkey(x, Root);
@@ -408,6 +406,9 @@ namespace ft
 				}
 			iterator insert(iterator position, const ft::pair<key, T2> &val)
 			{
+				(void)position;
+				// iterator pos1 = position;
+				//pos1 = NULL;
 				treenode *pop;
 				Root = insert_elements(Root, imtheEnd, val);
 				imtheEnd->right = Root;
@@ -418,9 +419,7 @@ namespace ft
 			size_type erase (const key_type& k)
 			{
 				size_type op = _size;
-				ft::pair<key, T2> val;
-				T2 p;
-				val = ft::make_pair(k, p);
+			
 				Root = deleteNode(Root, k);
 				if (_size != op)
 					return (1);
@@ -445,14 +444,13 @@ namespace ft
 					myvector.push_back(first->first);
 					first++;
 				}
-				typename std::vector<key>::iterator op = myvector.begin();
+			//	typename std::vector<key>::iterator op = myvector.begin();
 				//iterator temp = first;
 				//val = ft::make_pair(position->first, position->second);
-				int i = 0;
+				size_type i = 0;
 				key c;
 				while(i < myvector.size())
 				{
-					T2 p;
 					//val = ft::make_pair(op[i], p);
 					Root = deleteNode(Root, myvector[i]);
 					c = myvector[i];

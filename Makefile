@@ -11,7 +11,7 @@
 # ************************************************************************************************** #
 
 COMPILER = g++
-FLAGS_DEBUG = --std=gnu++11 -fsanitize=address -g3
+FLAGS_DEBUG = --std=gnu++11 -fsanitize=address -g3 -Wall-Wextra-Werror
 FLAGS = -g3
 
 vector_tle:

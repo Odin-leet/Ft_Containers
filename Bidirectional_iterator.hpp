@@ -81,7 +81,6 @@ namespace ft{
 			void returningmyroot(data *myreplace)
 			{
 				//data *myreplace;
-				data *replace2;
 				//	print();
 				if (myreplace->parent == NULL)
 				{	
@@ -96,7 +95,6 @@ namespace ft{
 					return;
 				}
 				end = NULL;
-				int checker = 1;
 				//	std::cout<<"im the root in after that place  in returning: "<<myreplace<<std::endl;
 				// myreplace = node;
 				while (myreplace->parent->parent != NULL)
@@ -214,7 +212,6 @@ data  *get_mySuccessor(data *node)
 {
 	data *myreplace;
 	data *replace2;
-	data *replace3;
 	if (node->right != end && node->right != end)
 	{
 		//	data * myreplace;
@@ -303,11 +300,7 @@ Bidirectional_iterator(data *lop = NULL)
 	//}
 	}
 
-	void printmyend(data *node1)
-	{
-		//		std::cout<<"|Root 3|"<<root<<std::endl;
-		//		std::cout<<"|end  3|"<<end<<std::endl;
-	}
+
 	reference operator*() const {
 		//	pair = node->data;
 

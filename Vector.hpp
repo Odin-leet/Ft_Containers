@@ -1,7 +1,6 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 # include "utilities.hpp"
-#include "utili1.hpp"
 # include <iostream>
 # include <string>
 # include "reverse_iterator.hpp"
@@ -116,9 +115,9 @@ class Vector
 			pos2 = begin();
 			int position_intial = std::distance(begin(), position);
 			int new_size = _size + n;
-			int i = 0;
-			int reminder = 0;
-			int old_size = 0;
+		//	int i = 0;
+			//int reminder = 0;
+		//	int old_size = 0;
 
 			if (new_size <= _capacity)
 			{
@@ -184,7 +183,7 @@ class Vector
 					}
 					int att;// = end() - position;
 					att = position_intial + n;
-					int i = 0;
+					//int i = 0;
 					for (int i = 0; i < n; i++)
 					{
 						x.construct(arr + position_intial + i, val);
@@ -211,9 +210,9 @@ class Vector
 			int position_intial = std::distance(begin(), position);
 			int n = std::distance(first, last);
 			int new_size = _size + std::distance(first, last);
-			int i = 0;
-			int reminder = 0;
-			int old_size = 0;
+			//int i = 0;
+			// int reminder = 0;
+			// int old_size = 0;
 
 			if (new_size <= _capacity)
 			{
@@ -282,7 +281,7 @@ class Vector
 					}
 					int att;// = end() - position;
 					att = position_intial + n;
-					int i = 0;
+				//	int i = 0;
 					for (int i = 0; i < n; i++)
 					{
 						x.construct(arr + position_intial + i, *first);
@@ -409,7 +408,7 @@ class Vector
 		void assign (typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first , InputIterator last)
 		{
 			_size = 0;
-			int i = 0;
+		//	int i = 0;
 			for (int i = 0; i < _size; i++)
 			{
 				x.destroy(arr + i);
@@ -441,7 +440,7 @@ class Vector
 		void assign (size_type n, const value_type& val)
 		{
 			//_size = 0;
-			int i = 0;
+			// int i = 0;
 			for (int i = 0; i < _size; i++)
 			{
 				x.destroy(arr + i);
@@ -548,6 +547,7 @@ class Vector
 
 		explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 		{
+			x = alloc;
 			arr = x.allocate(n);
 			_size = n;
 			_capacity = n;
@@ -561,6 +561,7 @@ class Vector
 		template <class InputIterator>
 		Vector (typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type& alloc = allocator_type())
 		{
+			x = alloc;
 			_size = 0;
 			_capacity = std::distance(first, last);
 			arr = x.allocate(_capacity);

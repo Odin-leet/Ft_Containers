@@ -46,17 +46,23 @@ namespace ft{
 				 private:
 					 tree mytree;
 					 allocator_type p;
+					 key_compare c;
 				 public :
 				
 			// { return (value_compare(key_compare())); }
 					 explicit Map (const key_compare& comp = key_compare(),  const allocator_type& alloc = allocator_type())
 					 {
+						p = alloc;
+						c = comp;
+
 						 // bintre *Root; 
 
 					 }
 					 template <class InputIterator>
 						 Map (InputIterator first, InputIterator last,const key_compare& comp = key_compare(),  const allocator_type& alloc = allocator_type())
 						 {
+							p = alloc;
+							c = comp;
 							 mytree.insert(first, last);
 						 }
 					 Map (const Map& x)
@@ -198,7 +204,7 @@ namespace ft{
 					 }
 					 const_iterator find (const key_type& k) const
 					 {
-						 return const_iterator(find);
+						 return const_iterator(find(k));
 					 }
 					 size_type count (const key_type& k) const
 					 {
@@ -327,7 +333,7 @@ template< class Key, class T, class Compare, class Alloc >
 			{
 			 typename ft::Map<Key,T>::iterator it1 = x.begin();
 			typename 	ft::Map<Key,T>::iterator it2 = y.begin();
-				for (int i = 0; i < x.size(); i++)
+				for (size_t i = 0; i < x.size(); i++)
 				{
 					
 					if (it1->first == it2->first && it1->second == it2->second )
@@ -345,18 +351,7 @@ template< class Key, class T, class Compare, class Alloc >
       template< class Key, class T, class Compare, class Alloc >
         bool operator< (const Map<Key,T,Compare,Alloc>& x, const Map<Key,T,Compare,Alloc>& y)
 		{
-			if (x.empty() == true && y.empty() == true)
-				return false;
-			else if (x.empty() == true && y.empty() != true)
-				return true;
-			else if (x.empty() == false && y.empty() == true)
-				return false;
-			else
-			{
-				if(ft::lexicographical_compare(x.begin(),x.end(), y.begin(), y.end()) == true)
-					return true;
-			}
-			return false;
+			return ft::lexicographical_compare(x.begin(),x.end(), y.begin(), y.end());
 		}
      template< class Key, class T, class Compare, class Alloc >
         bool operator!=(const Map<Key,T,Compare,Alloc>& x,  const Map<Key,T,Compare,Alloc>& y)
@@ -365,7 +360,7 @@ template< class Key, class T, class Compare, class Alloc >
 			{
 			typename	 ft::Map<Key,T>::iterator it1 = x.begin();
 			typename	ft::Map<Key,T>::iterator it2 = y.begin();
-				for (int i = 0; i < x.size(); i++)
+				for (size_t i = 0; i < x.size(); i++)
 				{
 					
 					if (it1->first == it2->first && it1->second == it2->second )
@@ -383,51 +378,18 @@ template< class Key, class T, class Compare, class Alloc >
       template< class Key, class T, class Compare, class Alloc >
         bool operator> (const Map<Key,T,Compare,Alloc>& x, const Map<Key,T,Compare,Alloc>& y)
 		{
-			if (x.empty() == true && y.empty() == true)
-				return false;
-			else if (x.empty() == true && y.empty() != true)
-				return false;
-			else if (x.empty() == false && y.empty() == true)
-				return true;
-			else
-			{
-				if(ft::lexicographical_compare(y.begin(),y.end(), x.begin(), x.end()) == true)
-					return true;
-			}
-			return false;
+			return y < x;
 		}
     template< class Key, class T, class Compare, class Alloc >
         bool operator>=(const Map<Key,T,Compare,Alloc>& x,  const Map<Key,T,Compare,Alloc>& y)
 		{
-			if (x.empty() == true && y.empty() == true)
-				return false;
-			else if (x.empty() == true && y.empty() != true)
-				return true;
-			else if (x.empty() == false && y.empty() == true)
-				return false;
-			else
-			{
-			if(ft::lexicographical_compare2(y.begin(),y.end(), x.begin(), x.end()) == true)
-					return true;
-			}
-			return false;
+			return (!(x < y));
 		}
 		
      template< class Key, class T, class Compare, class Alloc >
         bool operator<=(const Map<Key,T,Compare,Alloc>& x, const Map<Key,T,Compare,Alloc>& y)
 		{
-			if (x.empty() == true && y.empty() == true)
-				return false;
-			else if (x.empty() == true && y.empty() != true)
-				return false;
-			else if (x.empty() == false && y.empty() == true)
-				return true;
-			else
-			{
-			if(ft::lexicographical_compare2(x.begin(),x.end(), y.begin(), y.end()) == true)
-					return true;
-			}
-			return false;
+			 return (!(x > y));
 		}
 		template< class Key, class T, class Compare, class Alloc >
             void swap(Map<Key,T,Compare,Alloc>& x, Map<Key,T,Compare,Alloc>& y)
