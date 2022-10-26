@@ -18,7 +18,7 @@ vector_tle:
 	@$(COMPILER) $(FLAGS_DEBUG)	Vector_tests_tle.cpp -o vector.out 
 
 vector:
-	@$(COMPILER) $(FLAGS)	Vector_tests.cpp -o vector.out 
+	@$(COMPILER) $(FLAGS_DEBUG)	Vector_tests.cpp -o vector.out 
 
 map:
 	@$(COMPILER) $(FLAGS_DEBUG)	 Map_tests.cpp -o map.out -g3

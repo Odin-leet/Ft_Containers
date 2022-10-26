@@ -241,7 +241,7 @@ namespace ft{
 					 const_iterator lower_bound (const key_type& k) const
 					 {
 						key_compare c;
-							bintre * __y = mytree.imtheEnd; /* Last node which is not less than __k. */
+						bintre * __y = mytree.imtheEnd; /* Last node which is not less than __k. */
 					  bintre * __x = mytree.Root; /* Current node. */
 					
 					  while (__x != mytree.imtheEnd) 

@@ -1,6 +1,7 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 # include "utilities.hpp"
+#include "utili1.hpp"
 # include <iostream>
 # include <string>
 # include "reverse_iterator.hpp"
@@ -701,18 +702,9 @@ class Vector
       template <class T, class Allocator>
         bool operator< (const Vector<T,Allocator>& x, const Vector<T,Allocator>& y)
 		{
-			if (x.empty() == true && y.empty() == true)
-				return false;
-			else if (x.empty() == true && y.empty() != true)
-				return true;
-			else if (x.empty() == false && y.empty() == true)
-				return false;
-			else
-			{
-				if(ft::lexicographical_compare(x.begin(),x.end(), y.begin(), y.end()) == true)
-					return true;
-			}
-			return false;
+		
+				return ft::lexicographical_compare(x.begin(),x.end(), y.begin(), y.end());
+	
 		}
       template <class T, class Allocator>
         bool operator!=(const Vector<T,Allocator>& x,  const Vector<T,Allocator>& y)
@@ -736,51 +728,18 @@ class Vector
       template <class T, class Allocator>
         bool operator> (const Vector<T,Allocator>& x, const Vector<T,Allocator>& y)
 		{
-			if (x.empty() == true && y.empty() == true)
-				return false;
-			else if (x.empty() == true && y.empty() != true)
-				return false;
-			else if (x.empty() == false && y.empty() == true)
-				return true;
-			else
-			{
-				if(ft::lexicographical_compare(y.begin(),y.end(), x.begin(), x.end()) == true)
-					return true;
-			}
-			return false;
+			return y < x;
 		}
       template <class T, class Allocator>
         bool operator>=(const Vector<T,Allocator>& x,  const Vector<T,Allocator>& y)
 		{
-			if (x.empty() == true && y.empty() == true)
-				return false;
-			else if (x.empty() == true && y.empty() != true)
-				return true;
-			else if (x.empty() == false && y.empty() == true)
-				return false;
-			else
-			{
-			if(ft::lexicographical_compare2(y.begin(),y.end(), x.begin(), x.end()) == true)
-					return true;
-			}
-			return false;
+			return (!(x < y));
 		}
 		
       template <class T, class Allocator>
         bool operator<=(const Vector<T,Allocator>& x, const Vector<T,Allocator>& y)
 		{
-			if (x.empty() == true && y.empty() == true)
-				return false;
-			else if (x.empty() == true && y.empty() != true)
-				return false;
-			else if (x.empty() == false && y.empty() == true)
-				return true;
-			else
-			{
-			if(ft::lexicographical_compare2(x.begin(),x.end(), y.begin(), y.end()) == true)
-					return true;
-			}
-			return false;
+			 return (!(x > y));
 		}
 		template <class T, class Allocator>
             void swap(Vector<T,Allocator>& x, Vector<T,Allocator>& y)

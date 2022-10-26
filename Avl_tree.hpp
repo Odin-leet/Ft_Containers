@@ -576,11 +576,7 @@ namespace ft
 				// Find the node and delete it
 				if (node == imtheEnd)
 					return node;
-				if (cmp(p, node->data->first) )
-					node->left = deleteNode(node->left, p);
-				else if (!cmp(p, node->data->first) )
-					node->right = deleteNode(node->right, p);
-				else
+				if (node->data->first == p)
 				{
 					if ((node->left == imtheEnd) ||
 							(node->right == imtheEnd))
@@ -595,23 +591,24 @@ namespace ft
 						if (temp == imtheEnd)
 						{
 
-							//temp = node;
+							temp = node;
 						//	node = imtheEnd;
 							if (node->parent != imtheEnd && cmp(temp->data->first, node->parent->data->first))
 								node->parent->left = imtheEnd;
 							else
 								node->parent->right = imtheEnd;
-							c.deallocate(node,1);
+							c.deallocate(temp,1);
+							node = imtheEnd;
 							_size--;
 						}
 						else
 						{
-							temp->parent = node->parent;
-							if (node->parent != imtheEnd && cmp(temp->data->first, node->parent->data->first))
-								node->parent->left = temp;
-							else
-								node->parent->right = temp;
-							c.deallocate(node,1);
+							treenode *tmp2 = node->parent;
+							*node = *temp;
+							node->parent = tmp2;
+						//	temp->parent = node->parent;
+					
+							c.deallocate(temp,1);
 							_size--;
 						}
 					}
@@ -624,6 +621,55 @@ namespace ft
 								temp->data->first);
 					}
 				}
+				else if (cmp(p, node->data->first) )
+					node->left = deleteNode(node->left, p);
+				else
+					node->right = deleteNode(node->right, p);
+				// else
+				// {
+				// 	if ((node->left == imtheEnd) ||
+				// 			(node->right == imtheEnd))
+				// 	{
+				// 		treenode *temp;
+				// 		if (node->left != imtheEnd)
+				// 		{
+				// 			temp = node->left;
+				// 		}
+				// 		else
+				// 			temp = node->right;
+				// 		if (temp == imtheEnd)
+				// 		{
+
+				// 			temp = node;
+				// 		//	node = imtheEnd;
+				// 			if (node->parent != imtheEnd && cmp(temp->data->first, node->parent->data->first))
+				// 				node->parent->left = imtheEnd;
+				// 			else
+				// 				node->parent->right = imtheEnd;
+				// 			c.deallocate(temp,1);
+				// 			node = imtheEnd;
+				// 			_size--;
+				// 		}
+				// 		else
+				// 		{
+				// 			treenode *tmp2 = node->parent;
+				// 			*node = *temp;
+				// 			node->parent = tmp2;
+				// 		//	temp->parent = node->parent;
+					
+				// 			c.deallocate(temp,1);
+				// 			_size--;
+				// 		}
+				// 	}
+				// 	else
+				// 	{
+				// 		treenode *temp = nodeWithMimumValue(node->right);
+				// 		node->data = temp->data;
+				// 		//node->parent = temp->parent;
+				// 		node->right = deleteNode(node->right,
+				// 				temp->data->first);
+				// 	}
+				// }
 					 if (node == imtheEnd)
     					return node;
 				
