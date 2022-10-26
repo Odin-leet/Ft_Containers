@@ -54,7 +54,7 @@ int main()
            // ualarm(diff * 1e3, 0);
             ft_m1.erase(ft_m1.begin(), ft_m1.end());
 
-            std::cout<<"allo im here "<<std::endl;
+          //  std::cout<<"allo im here "<<std::endl;
          //   ualarm(0, 0);
             /*------------------------------------------------
             // std::map<int, std::string> m;

@@ -2250,7 +2250,7 @@ int main()
     TEST_CASE(testObservers)
     std::cout << std::endl;
 
-    std::cout << YELLOW << "Testing Operations Methods;" << RESET << std::endl;
+    std::cout << YELLOW << "Testing Operations Methods;" << RESET << svtd::endl;
     TEST_CASE(testOperations)
     std::cout << std::endl;
 

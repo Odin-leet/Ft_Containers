@@ -326,7 +326,11 @@ namespace ft
 				if (Root != NULL)
 					thenode = searchforkey(x, Root);
 				if (thenode == NULL)
+				
+					{
 					Root = insert_elements(Root, imtheEnd, p);
+					imtheEnd->right = Root;
+					}
 				else
 					return thenode->data->second;
 				thenode = searchforkey(x, Root);
@@ -400,11 +404,13 @@ namespace ft
 						Root = insert_elements(Root, imtheEnd, P);
 						first++;
 					}
+						imtheEnd->right = Root;
 				}
 			iterator insert(iterator position, const ft::pair<key, T2> &val)
 			{
 				treenode *pop;
 				Root = insert_elements(Root, imtheEnd, val);
+				imtheEnd->right = Root;
 				pop = searchforkey(val.first, Root);
 				return iterator(pop);
 			}
@@ -564,10 +570,17 @@ namespace ft
 			// }
 			treenode *deleteNode(treenode *node, key_type p)
 			{
+
+
+
 				// Find the node and delete it
 				if (node == imtheEnd)
 					return node;
-				if (node->data->first == p)
+				if (cmp(p, node->data->first) )
+					node->left = deleteNode(node->left, p);
+				else if (!cmp(p, node->data->first) )
+					node->right = deleteNode(node->right, p);
+				else
 				{
 					if ((node->left == imtheEnd) ||
 							(node->right == imtheEnd))
@@ -579,26 +592,28 @@ namespace ft
 						}
 						else
 							temp = node->right;
-						//treenode *temp = node->left ? node->left : node->right;
 						if (temp == imtheEnd)
 						{
-							temp = node;
-							//temp->parent = node->parent;
-							node = imtheEnd;
+
+							//temp = node;
+						//	node = imtheEnd;
+							if (node->parent != imtheEnd && cmp(temp->data->first, node->parent->data->first))
+								node->parent->left = imtheEnd;
+							else
+								node->parent->right = imtheEnd;
+							c.deallocate(node,1);
+							_size--;
 						}
 						else
 						{
-							temp->parent = node->parent; 
-							//if (node->parent != imtheEnd)
+							temp->parent = node->parent;
 							if (node->parent != imtheEnd && cmp(temp->data->first, node->parent->data->first))
 								node->parent->left = temp;
 							else
 								node->parent->right = temp;
-							temp->parent = node->parent;
-							*node = *temp;
+							c.deallocate(node,1);
+							_size--;
 						}
-						c.deallocate(temp,1);
-						_size--;
 					}
 					else
 					{
@@ -609,16 +624,79 @@ namespace ft
 								temp->data->first);
 					}
 				}
-				else
-				{
-					if (node == imtheEnd)
-						return node;
-					if (cmp(p, node->data->first))
-						node->left = deleteNode(node->left, p);
-					else 
-						node->right = deleteNode(node->right, p);
+					 if (node == imtheEnd)
+    					return node;
+				
 
-				}
+
+
+
+
+
+
+
+
+
+
+
+				// if (node->data->first == p) 
+				// {
+				// 	if ((node->left == imtheEnd) ||
+				// 			(node->right == imtheEnd))
+				// 	{
+				// 		treenode *temp;
+				// 		if (node->left != imtheEnd)
+				// 		{
+				// 			temp = node->left;
+				// 		}
+				// 		else
+				// 			temp = node->right;
+				// 		//treenode *temp = node->left ? node->left : node->right;
+				// 		if (temp == imtheEnd)
+				// 		{
+				// 			temp = node;
+				// 			//temp->parent = node->parent;
+				// 			node = imtheEnd;
+				// 			if (node->parent != imtheEnd && cmp(temp->data->first, node->parent->data->first))
+				// 				node->parent->left = imtheEnd;
+				// 			else
+				// 				node->parent->right = imtheEnd;
+				// 		}
+				// 		else
+				// 		{
+				// 			temp->parent = node->parent; 
+				// 			//if (node->parent != imtheEnd)
+				// 			if (node->parent != imtheEnd && cmp(temp->data->first, node->parent->data->first))
+				// 				node->parent->left = temp;
+				// 			else
+				// 				node->parent->right = temp;
+				// 			temp->parent = node->parent;
+				// 			*node = *temp;
+				// 			node->left = imtheEnd;
+				// 			node->right = imtheEnd;
+				// 		}
+				// 		c.deallocate(temp,1);
+				// 		_size--;
+				// 	}
+				// 	else
+				// 	{
+				// 		treenode *temp = nodeWithMimumValue(node->right);
+				// 		node->data = temp->data;
+				// 		//node->parent = temp->parent;
+				// 		node->right = deleteNode(node->right,
+				// 				temp->data->first);
+				// 	}
+				// }
+				// else
+				// {
+				// 	if (node == imtheEnd || node == NULL)
+				// 		return node;
+				// 	if (cmp(p, node->data->first) && node->left != imtheEnd &&  node->left != NULL)
+				// 		node->left = deleteNode(node->left, p);
+				// 	else 
+				// 		node->right = deleteNode(node->right, p);
+
+				// }
 
 				// Update the balance factor of each node and
 				// balance the tree
@@ -650,8 +728,8 @@ namespace ft
 					}
 				}
 				return node;
+			
 			}
-
 			~AVL_TREE()
 			{
 			}

@@ -4,6 +4,7 @@
 
 # include <iostream>
 # include <string>
+# include "utili1.hpp"
 #include "Avl_tree.hpp"
 namespace ft{
 	template < class Key,                                     // Map::key_type
@@ -44,8 +45,9 @@ namespace ft{
 						 };
 				 private:
 					 tree mytree;
+					 allocator_type p;
 				 public :
-			// 	value_compare value_comp() const
+				
 			// { return (value_compare(key_compare())); }
 					 explicit Map (const key_compare& comp = key_compare(),  const allocator_type& alloc = allocator_type())
 					 {
@@ -93,7 +95,7 @@ namespace ft{
 					 {
 						 return reverse_iterator(begin());
 					 }
-					 bool empty()
+					 bool empty() const
 					 {
 						 return mytree.empty();
 					 }
@@ -206,59 +208,88 @@ namespace ft{
 					 {
 						 return key_compare();
 					 }
+					 value_compare value_comp() const	
+					{
+						key_compare c;
+						 return value_compare(c);
+					}
 					 iterator lower_bound (const key_type& k)
 					 {
-						 iterator allo = begin();
-						// iterator alloend = end();
-						 key_compare cmp;
-						 while (allo.get_node() != allo.get_end())
-						 {
-							 if (cmp(allo->first, k) == false)
-								 break;
-							 allo++;
-						 }
-						 return (allo);
+						key_compare c;
+						bintre * __y = mytree.imtheEnd; /* Last node which is not less than __k. */
+					  bintre * __x = mytree.Root; /* Current node. */
+					
+					  while (__x != mytree.imtheEnd) 
+					    if (!c(__x->data->first, k))
+					      __y = __x, __x = __x->left;
+					    else
+					      __x = __x->right;
+					
+					  return const_iterator(__y);
+						//  iterator allo = begin();
+						// // iterator alloend = end();
+						//  key_compare cmp;
+						//  while (allo.get_node() != allo.get_end())
+						//  {
+						// 	 if (cmp(allo->first, k) == false)
+						// 		 break;
+						// 	 allo++;
+						//  }
+						//  return (allo);
 
 					 }
 					 const_iterator lower_bound (const key_type& k) const
 					 {
-						 iterator allo = begin();
-						// iterator alloend = end();
-						 key_compare cmp;
-						 while (allo.get_node() != allo.get_end())
-						 {
-							 if (cmp(allo->first, k) == false)
-								 break;
-							 allo++;
-						 }
-						 return const_iterator(allo.get_node());
+						key_compare c;
+							bintre * __y = mytree.imtheEnd; /* Last node which is not less than __k. */
+					  bintre * __x = mytree.Root; /* Current node. */
+					
+					  while (__x != mytree.imtheEnd) 
+					    if (!c(__x->data->first, k))
+					      __y = __x, __x = __x->left;
+					    else
+					      __x = __x->right;
+					
+					  return const_iterator(__y);
+						//  iterator allo = begin();
+						// // iterator alloend = end();
+						//  key_compare cmp;
+						//  while (allo.get_node() != allo.get_end())
+						//  {
+						// 	 if (cmp(allo->first, k) == false)
+						// 		 break;
+						// 	 allo++;
+						//  }
+						//  return const_iterator(allo.get_node());
 					 }
 					 iterator upper_bound (const key_type& k)
 					 {
-						 iterator allo = begin();
-					//	 iterator alloend = end();
-						 key_compare cmp;
-						 while (allo.get_node() != allo.get_end())
-						 {
-							 if (cmp(k, allo->first))
-								 break;
-							 allo++;
-						 }
-						 return (allo);
+						key_compare c;
+						 bintre * __y = mytree.imtheEnd; /* Last node which is greater than __k. */
+						  bintre * __x = mytree.Root; /* Current node. */
+
+						   while (__x != mytree.imtheEnd) 
+						     if (c(k, __x->data->first))
+						       __y = __x, __x = __x->left;
+						     else
+						       __x = __x->right;
+
+						   return iterator(__y);
 
 					 }
 					 const_iterator upper_bound (const key_type& k) const
 					 {
-					 iterator allo = begin();
-						// iterator alloend = end();
-						 key_compare cmp;
-						 while (allo.get_node() !=  allo.get_end())
-						 {
-							 if (cmp(k, allo->first))
-								 break;
-							 allo++;
-						 }
-						 return const_iterator(allo.get_node());
+					 key_compare c;
+						 bintre * __y = mytree.imtheEnd; /* Last node which is greater than __k. */
+						  bintre * __x = mytree.Root; /* Current node. */
+
+						   while (__x != mytree.imtheEnd) 
+						     if (c(k, __x->data->first))
+						       __y = __x, __x = __x->left;
+						     else
+						       __x = __x->right;
+
+						   return const_iterator(__y);
 					 }
 					ft::pair<iterator, iterator>
 					equal_range(const key_type &k)
@@ -272,7 +303,10 @@ namespace ft{
 					}
 					//  ft::pair<iterator, iterator> equal_range (const key_type& k) const
 					//  { return (ft::make_pair(this->lower_bound(k), this->upper_bound(k))); }
-
+					allocator_type get_allocator() const
+					{
+						return p;
+					}
 
 					 mapped_type& operator[] (const key_type& k)
 					 {
@@ -286,5 +320,119 @@ namespace ft{
 						 mytree.print();
 					 }
 			 };
+template< class Key, class T, class Compare, class Alloc >
+        bool operator==(const Map<Key,T,Compare,Alloc>& x, const Map<Key,T,Compare,Alloc>& y)
+		{
+			if (x.size() == y.size())
+			{
+			 typename ft::Map<Key,T>::iterator it1 = x.begin();
+			typename 	ft::Map<Key,T>::iterator it2 = y.begin();
+				for (int i = 0; i < x.size(); i++)
+				{
+					
+					if (it1->first == it2->first && it1->second == it2->second )
+						continue;
+					else
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+			return true;
+		}; 
+      template< class Key, class T, class Compare, class Alloc >
+        bool operator< (const Map<Key,T,Compare,Alloc>& x, const Map<Key,T,Compare,Alloc>& y)
+		{
+			if (x.empty() == true && y.empty() == true)
+				return false;
+			else if (x.empty() == true && y.empty() != true)
+				return true;
+			else if (x.empty() == false && y.empty() == true)
+				return false;
+			else
+			{
+				if(ft::lexicographical_compare(x.begin(),x.end(), y.begin(), y.end()) == true)
+					return true;
+			}
+			return false;
+		}
+     template< class Key, class T, class Compare, class Alloc >
+        bool operator!=(const Map<Key,T,Compare,Alloc>& x,  const Map<Key,T,Compare,Alloc>& y)
+		{
+			if (x.size() == y.size())
+			{
+			typename	 ft::Map<Key,T>::iterator it1 = x.begin();
+			typename	ft::Map<Key,T>::iterator it2 = y.begin();
+				for (int i = 0; i < x.size(); i++)
+				{
+					
+					if (it1->first == it2->first && it1->second == it2->second )
+						continue;
+					else
+					return true;
+				}
+			}
+			else
+			{
+				return true;
+			}
+			return false;
+		}
+      template< class Key, class T, class Compare, class Alloc >
+        bool operator> (const Map<Key,T,Compare,Alloc>& x, const Map<Key,T,Compare,Alloc>& y)
+		{
+			if (x.empty() == true && y.empty() == true)
+				return false;
+			else if (x.empty() == true && y.empty() != true)
+				return false;
+			else if (x.empty() == false && y.empty() == true)
+				return true;
+			else
+			{
+				if(ft::lexicographical_compare(y.begin(),y.end(), x.begin(), x.end()) == true)
+					return true;
+			}
+			return false;
+		}
+    template< class Key, class T, class Compare, class Alloc >
+        bool operator>=(const Map<Key,T,Compare,Alloc>& x,  const Map<Key,T,Compare,Alloc>& y)
+		{
+			if (x.empty() == true && y.empty() == true)
+				return false;
+			else if (x.empty() == true && y.empty() != true)
+				return true;
+			else if (x.empty() == false && y.empty() == true)
+				return false;
+			else
+			{
+			if(ft::lexicographical_compare2(y.begin(),y.end(), x.begin(), x.end()) == true)
+					return true;
+			}
+			return false;
+		}
+		
+     template< class Key, class T, class Compare, class Alloc >
+        bool operator<=(const Map<Key,T,Compare,Alloc>& x, const Map<Key,T,Compare,Alloc>& y)
+		{
+			if (x.empty() == true && y.empty() == true)
+				return false;
+			else if (x.empty() == true && y.empty() != true)
+				return false;
+			else if (x.empty() == false && y.empty() == true)
+				return true;
+			else
+			{
+			if(ft::lexicographical_compare2(x.begin(),x.end(), y.begin(), y.end()) == true)
+					return true;
+			}
+			return false;
+		}
+		template< class Key, class T, class Compare, class Alloc >
+            void swap(Map<Key,T,Compare,Alloc>& x, Map<Key,T,Compare,Alloc>& y)
+			{			
+				x.swap(y);
+			}
 }
 #endif /* ************************************************************* Map_H */
