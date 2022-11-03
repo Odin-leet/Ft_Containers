@@ -3,8 +3,8 @@
 //#include "map.hpp"
 #include <iostream>
 #include <string>
-#include "Pair.hpp"
-#include <vector>
+#include "pair.hpp"
+#include "vector.hpp"
 #include "reverse_iterator.hpp"
 #include "Bidirectional_iterator.hpp"
 template <class Type>
@@ -12,38 +12,39 @@ struct rebind
 {
 	typedef std::allocator<Type> other;
 };
+ int cglobal ;
+ int jglobal ;
 namespace ft
 {
 
-	template <class key, class T2>
+	template <class Tc>
 		struct bintree_node
 		{
 			bintree_node *left;
 			bintree_node *right;
 			bintree_node *parent;
-			pair<key, T2> *data;
+			Tc data;
 			bool inserted;
 			int height;
 		};
-	template <class key, class T2, class Compare = std::less<key>, class Allocator = std::allocator<pair<key, T2> > >
+	template <class key, class T2, class Compare = std::less<key>, class Allocator = std::allocator<ft::pair<key, T2> > >
 		class AVL_TREE
 		{
 			public :
-			bintree_node<key, T2> *Root;
-			bintree_node<key, T2> *imtheEnd;
+
 			int imroot;
 			private:
 
 			Compare cmp;
 
 			public:
-			typedef typename Allocator::template rebind<bintree_node<key, T2> >::other alloccc;
-			typedef bintree_node<key, T2> treenode;
+			typedef ft::pair<key, T2> value;
+			typedef typename Allocator::template rebind<bintree_node<value> >::other alloccc;
+			typedef bintree_node<value> treenode;
 			typedef typename Allocator::reference reference;
 			typedef typename Allocator::const_reference const_reference;
 			typedef T2 value_type;
 			typedef key key_type;
-			typedef pair<key, T2> value;
 			typedef typename Allocator::pointer pointer;
 			typedef Allocator allocator_type;
 			typedef typename std::size_t size_type;
@@ -52,7 +53,8 @@ namespace ft
 			typedef ft::Bidirectional_iterator<const value, treenode, Compare> const_iterator;
 			typedef ft::reverse_iterator<iterator> reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
-
+			bintree_node<value> *Root;
+			bintree_node<value> *imtheEnd;
 			allocator_type x;
 
 			size_type _size;
@@ -62,21 +64,19 @@ namespace ft
 			public:
 			AVL_TREE(treenode *node = NULL)
 			{
+				cglobal = 0;
+				jglobal = 0;
 				Root = node;
 				//	alloccc c;
+				imroot = 0;
 				_size = 0;
 				imtheEnd = c.allocate(1);
+				jglobal++;
 				imtheEnd->parent = NULL;
 				imtheEnd->left = NULL;
-
-				Root = c.allocate(1);
-				Root->parent = imtheEnd;
-				Root->left = imtheEnd;
-				Root->right = imtheEnd;
-				Root->data = NULL;
 				imtheEnd->left = NULL;
 				imtheEnd->right = Root;
-				imroot = 0;
+				//imroot = 0;
 			}
 
 
@@ -84,28 +84,38 @@ namespace ft
 			{
 				x = alloc;
 				alloccc c;
-				if (imroot == 0)
-				{
-					node->data  = x.allocate(1);
-					x.construct(node->data, p);
-					node->height = 1;
-					imroot = 1;
-					return node;
-				}
+				(void)node;
 				treenode *newno = c.allocate(1);
+				jglobal ++;
 				newno->left = imtheEnd;
 				newno->right = imtheEnd;
 				newno->parent = parent;
-				newno->data  = x.allocate(1);
-				x.construct(newno->data, p);
+				x.construct(&newno->data, p);
+				// newno->data  = x.construct(p÷;
 				newno->height = 1;
 				newno->inserted = true;
 				return newno;
 			}
-			void free_tree1()
+				void free_tree2()
 			{
+				if (_size != 0 && Root != NULL && Root != imtheEnd)
 				free_tree(Root);
 				//imroot = 0;
+				imroot = 1;
+				_size = 0;
+				Root = NULL;
+			}
+			void free_tree1()
+			{
+				if (_size != 0 && Root != NULL && Root != imtheEnd)
+				free_tree(Root);
+				if (imtheEnd != NULL)
+				{
+				c.deallocate(imtheEnd, 1);
+				imtheEnd = NULL;
+				}
+				//imroot = 0;
+				imroot = 1;
 				_size = 0;
 				Root = NULL;
 			}
@@ -117,6 +127,8 @@ namespace ft
 				tmp1 = node->right;
 				tmp2 = node->left;
 				c.deallocate(tmp, 1);
+				tmp = NULL;
+				cglobal++;
 				if (tmp1 != imtheEnd)
 				{
 					free_tree(tmp1);
@@ -125,6 +137,7 @@ namespace ft
 				{
 					free_tree(tmp2);
 				}
+				//tmp = NULL;
 				return;
 			}
 			treenode *searchforkey(const key_type &x, treenode *node) const
@@ -133,12 +146,12 @@ namespace ft
 				int a = 0;
 				int b = 0;
 				replace = node;
-				if(node->data != NULL)
-					if (node->data->first == x)
+				if(node != NULL && node != imtheEnd)
+					if (node->data.first == x)
 						return replace;
 				// if (replace->left != imtheEnd && replace-> right != imtheEnd)
 				//{
-				if (replace->left != imtheEnd && (cmp(x, replace->data->first)))
+				if (replace->left != imtheEnd && (cmp(x, replace->data.first)))
 				{
 					a = 1;
 					replace = searchforkey(x, replace->left);
@@ -151,13 +164,8 @@ namespace ft
 						replace = searchforkey(x, replace->right);
 
 					}
-					// if(replace->right != imtheEnd)
 				}
-				//}
-				// else
-				//{
-				//	if (replace != NULL)
-				// replace = NULL;
+				//
 				if (a == 0 && b == 0)
 					replace = NULL;
 				return replace;
@@ -168,12 +176,12 @@ namespace ft
 				treenode *replace = root1;
 				// replace = root;
 				if (replace->left != imtheEnd)
-					if (!(cmp(replace->data->first, replace->left->data->first)))
+					if (!(cmp(replace->data.first, replace->left->data.first)))
 					{
 						replace = lowkeyofroot(replace->left);
 					};
 				if (replace->right != imtheEnd)
-					if (!(cmp(replace->data->first, replace->right->data->first)))
+					if (!(cmp(replace->data.first, replace->right->data.first)))
 					{
 						replace = lowkeyofroot(replace->right);
 					};
@@ -198,7 +206,7 @@ namespace ft
 					replace = node->parent;
 					while (replace->parent != imtheEnd)
 					{
-						if (cmp(get_myPredecessor(replace->parent)->data->first, node->data->first))
+						if (cmp(get_myPredecessor(replace->parent)->data.first, node->data.first))
 							return get_myPredecessor(replace->parent);
 					}
 					// else
@@ -297,6 +305,14 @@ namespace ft
 					return iterator(imtheEnd);
 				return (iterator(node));
 			}
+			const_iterator find (const key_type& k) const
+			{
+				treenode *node;
+				node =  searchforkey(k, Root);
+				if (node == NULL)
+					return const_iterator(imtheEnd);
+				return (const_iterator(node));
+			}
 			// { CAPACITY }
 			bool empty() const
 			{
@@ -318,8 +334,8 @@ namespace ft
 			{
 				treenode *thenode;
 				ft::pair<key, T2> p;
-				// T2 c ;
-				p = ft::make_pair(x, T2);
+				 
+				p = ft::make_pair(x, T2());
 				thenode = NULL;
 				if (Root != NULL)
 					thenode = searchforkey(x, Root);
@@ -330,10 +346,36 @@ namespace ft
 					imtheEnd->right = Root;
 					}
 				else
-					return thenode->data->second;
+					return thenode->data.second;
 				thenode = searchforkey(x, Root);
-				return thenode->data->second;
+				return thenode->data.second;
 			}
+			 T2& at (const key_type& k)
+			 {
+				treenode *thenode;
+				thenode = NULL;
+				if (Root != NULL)
+					thenode = searchforkey(k, Root);
+				if (thenode == NULL)
+				{
+					throw std::out_of_range("ERROR");
+				}
+				return thenode->data.first;
+				
+			 }
+			 const T2& at (const key_type& k) const
+			 {
+				treenode *thenode;
+
+				thenode = NULL;
+				if (Root != NULL)
+					thenode = searchforkey(k, Root);
+				if (thenode == NULL)
+				{
+					throw std::out_of_range("ERROR");
+				}
+				return thenode->data.first;
+			 }
 			iterator end()
 			{
 				if(Root == NULL)
@@ -438,53 +480,44 @@ namespace ft
 				if (Root != NULL && Root != imtheEnd)
 			{
 				ft::pair<key, T2> val;
-				std::vector<key> myvector;
+				ft::vector<key> myvector;
 				while (first != last)
 				{
 					myvector.push_back(first->first);
 					first++;
 				}
-			//	typename std::vector<key>::iterator op = myvector.begin();
-				//iterator temp = first;
-				//val = ft::make_pair(position->first, position->second);
+;
 				size_type i = 0;
 				key c;
 				while(i < myvector.size())
 				{
-					//val = ft::make_pair(op[i], p);
 					Root = deleteNode(Root, myvector[i]);
 					c = myvector[i];
-					//_size--;
-					//	std::cout<<op[i]<<std::endl;
 					i++;
-					//std::cout<<"lllllllllllllllllllllllllll"<<std::endl;
-					//first++;
+
 				}
 			}
 			}
+
 			// something not working here x
 			treenode *insert_elements(treenode *node, treenode *parent, const ft::pair<key, T2> &p)
 			{
-				if ((node == NULL || node == imtheEnd) || imroot == 0)
+				if ((node == NULL || node == imtheEnd))
 				{
 					_size++;
-					return newnode(p, parent, node);
+					return newnode(p, parent, NULL);
 				}
 				else if (node != imtheEnd && node != NULL)
-
 				{
-					//	//std::cout<<"||||"<<node->data->first<<std::endl;
-					//std::cout << p.first << std::endl;
 
-					if (node->data->first == p.first)
+					if (node->data.first == p.first)
 					{
-						//node->data->second = p.second;
 						node->inserted = false;
 						return node;
 					}
 				}
 
-				if (cmp(p.first, node->data->first))
+				if (cmp(p.first, node->data.first))
 				{
 					node->left = insert_elements(node->left, node, p);
 				}
@@ -498,7 +531,7 @@ namespace ft
 				int balanceFactor = getBalanceFactor(node);
 				if (balanceFactor > 1)
 				{
-					if (cmp(p.first,node->left->data->first))
+					if (cmp(p.first,node->left->data.first))
 					{
 						return rightRotate(node);
 					}
@@ -510,7 +543,7 @@ namespace ft
 				}
 				if (balanceFactor < -1)
 				{
-					if (!cmp(p.first,node->right->data->first))
+					if (!cmp(p.first,node->right->data.first))
 					{
 						return leftRotate(node);
 					}
@@ -530,6 +563,28 @@ namespace ft
 					return 0;
 				return 1;
 			}
+			AVL_TREE &operator=(const AVL_TREE& rhs) 
+        {
+				if (Root != NULL)
+				{
+
+				free_tree(Root);
+				}
+				Root = NULL;
+			insert(rhs.begin(), rhs.end());
+			_size = rhs._size;
+            return (*this);
+        };
+		 void insert_nodes(treenode *node, treenode *theend)
+        {
+            if (node == theend)
+                return;
+            insert1(node->data);
+            if (node->left != theend)
+                insert_nodes(node->left, theend);
+            if (node->right != theend)
+                insert_nodes(node->right, theend);
+        }
 			void print()
 			{
 				printTree(Root, "", true);
@@ -545,16 +600,16 @@ namespace ft
 						std::cout << "R----";
 						indent += "   ";
 						if(node->parent->data != NULL)
-							std::cout << "parent : " << node->parent->data->first << std::endl;
+							std::cout << "parent : " << node->parent->data.first << std::endl;
 					}
 					else
 					{
 						std::cout << "L----";
 						indent += "|  ";
 						if(node->parent->data != NULL)
-							std::cout << "parent : " << node->parent->data->first << std::endl;
+							std::cout << "parent : " << node->parent->data.first << std::endl;
 					}
-					std::cout << node->data->first << std::endl;
+					std::cout << node->data.first << std::endl;
 
 					printTree(node->left, indent, false);
 					printTree(node->right, indent, true);
@@ -568,14 +623,14 @@ namespace ft
 			// }
 			treenode *deleteNode(treenode *node, key_type p)
 			{
-
-
-
-				// Find the node and delete it
-				if (node == imtheEnd)
+                if (node == imtheEnd)
 					return node;
-				if (node->data->first == p)
-				{
+                if (cmp(p, node->data.first) )
+					node->left = deleteNode(node->left, p);
+				else if (cmp (node->data.first,p) )
+					node->right = deleteNode(node->right, p);
+        
+                else{
 					if ((node->left == imtheEnd) ||
 							(node->right == imtheEnd))
 					{
@@ -590,23 +645,26 @@ namespace ft
 						{
 
 							temp = node;
-						//	node = imtheEnd;
-							if (node->parent != imtheEnd && cmp(temp->data->first, node->parent->data->first))
+							if (node->parent != imtheEnd && cmp(temp->data.first, node->parent->data.first))
 								node->parent->left = imtheEnd;
 							else
 								node->parent->right = imtheEnd;
-							c.deallocate(temp,1);
-							node = imtheEnd;
+							c.deallocate(node,1);
+							cglobal++;
+							
+						//	node = imtheEnd;
 							_size--;
+							return imtheEnd;
 						}
 						else
 						{
 							treenode *tmp2 = node->parent;
+
 							*node = *temp;
 							node->parent = tmp2;
-						//	temp->parent = node->parent;
-					
+							//x.deallocate(temp->data, 1);
 							c.deallocate(temp,1);
+							cglobal++;
 							_size--;
 						}
 					}
@@ -616,134 +674,13 @@ namespace ft
 						node->data = temp->data;
 						//node->parent = temp->parent;
 						node->right = deleteNode(node->right,
-								temp->data->first);
+								temp->data.first);
 					}
 				}
-				else if (cmp(p, node->data->first) )
-					node->left = deleteNode(node->left, p);
-				else
-					node->right = deleteNode(node->right, p);
-				// else
-				// {
-				// 	if ((node->left == imtheEnd) ||
-				// 			(node->right == imtheEnd))
-				// 	{
-				// 		treenode *temp;
-				// 		if (node->left != imtheEnd)
-				// 		{
-				// 			temp = node->left;
-				// 		}
-				// 		else
-				// 			temp = node->right;
-				// 		if (temp == imtheEnd)
-				// 		{
-
-				// 			temp = node;
-				// 		//	node = imtheEnd;
-				// 			if (node->parent != imtheEnd && cmp(temp->data->first, node->parent->data->first))
-				// 				node->parent->left = imtheEnd;
-				// 			else
-				// 				node->parent->right = imtheEnd;
-				// 			c.deallocate(temp,1);
-				// 			node = imtheEnd;
-				// 			_size--;
-				// 		}
-				// 		else
-				// 		{
-				// 			treenode *tmp2 = node->parent;
-				// 			*node = *temp;
-				// 			node->parent = tmp2;
-				// 		//	temp->parent = node->parent;
-					
-				// 			c.deallocate(temp,1);
-				// 			_size--;
-				// 		}
-				// 	}
-				// 	else
-				// 	{
-				// 		treenode *temp = nodeWithMimumValue(node->right);
-				// 		node->data = temp->data;
-				// 		//node->parent = temp->parent;
-				// 		node->right = deleteNode(node->right,
-				// 				temp->data->first);
-				// 	}
-				// }
+				
 					 if (node == imtheEnd)
     					return node;
 				
-
-
-
-
-
-
-
-
-
-
-
-
-				// if (node->data->first == p) 
-				// {
-				// 	if ((node->left == imtheEnd) ||
-				// 			(node->right == imtheEnd))
-				// 	{
-				// 		treenode *temp;
-				// 		if (node->left != imtheEnd)
-				// 		{
-				// 			temp = node->left;
-				// 		}
-				// 		else
-				// 			temp = node->right;
-				// 		//treenode *temp = node->left ? node->left : node->right;
-				// 		if (temp == imtheEnd)
-				// 		{
-				// 			temp = node;
-				// 			//temp->parent = node->parent;
-				// 			node = imtheEnd;
-				// 			if (node->parent != imtheEnd && cmp(temp->data->first, node->parent->data->first))
-				// 				node->parent->left = imtheEnd;
-				// 			else
-				// 				node->parent->right = imtheEnd;
-				// 		}
-				// 		else
-				// 		{
-				// 			temp->parent = node->parent; 
-				// 			//if (node->parent != imtheEnd)
-				// 			if (node->parent != imtheEnd && cmp(temp->data->first, node->parent->data->first))
-				// 				node->parent->left = temp;
-				// 			else
-				// 				node->parent->right = temp;
-				// 			temp->parent = node->parent;
-				// 			*node = *temp;
-				// 			node->left = imtheEnd;
-				// 			node->right = imtheEnd;
-				// 		}
-				// 		c.deallocate(temp,1);
-				// 		_size--;
-				// 	}
-				// 	else
-				// 	{
-				// 		treenode *temp = nodeWithMimumValue(node->right);
-				// 		node->data = temp->data;
-				// 		//node->parent = temp->parent;
-				// 		node->right = deleteNode(node->right,
-				// 				temp->data->first);
-				// 	}
-				// }
-				// else
-				// {
-				// 	if (node == imtheEnd || node == NULL)
-				// 		return node;
-				// 	if (cmp(p, node->data->first) && node->left != imtheEnd &&  node->left != NULL)
-				// 		node->left = deleteNode(node->left, p);
-				// 	else 
-				// 		node->right = deleteNode(node->right, p);
-
-				// }
-
-				// Update the balance factor of each node and
-				// balance the tree
 				node->height = 1 + max(height(node->left),
 						height(node->right));
 				int balanceFactor = getBalanceFactor(node);
@@ -772,13 +709,40 @@ namespace ft
 					}
 				}
 				return node;
-			
 			}
+				void swap(AVL_TREE &x)
+				{
+
+				 std::swap(Root, x.Root);
+				 
+          		  std::swap(_size, x._size);
+				  std::swap(imtheEnd, x.imtheEnd);
+           	//  std::swap(mytree.cmp, x.mytree.cmp);
+         	//    std::swap(this->_alloc, other._alloc);//to check
+        	//     std::swap(this->_alloc_node, other._alloc_node);//to check
+						//  std::swap (mytree, x.mytree);
+						//  std::swap  (mytree.Root, x.mytree.Root);ƒƒ
+						//  std::swap (mytree.imtheEnd, x.mytree.imtheEnd);
+						//  std::swap (mytree._size, x.mytree._size);
+					 
+				}
+			
+			
 			~AVL_TREE()
-			{
+			{	
+				//if (imroot == 0)
+				//	std::cout <<"im distr tree"<<std::endl;
+					free_tree1();
+				//while (1);
+				//std::cout<<"what i allocated = " <<jglobal<<"   what i freed  == "<<cglobal<<std::endl;
+				//jglobal = 0;
+				//cglobal = 0;
+			//	c.deallocate(imtheEnd, 1);
+			//	while (1);
+				//if ()
 			}
 
-			//	AVL_TREE &		operator=( AVL_TREE const & rhs );
+			
 			};
 		}
 

@@ -1,3 +1,6 @@
+#ifndef UTILI1_HPP
+#define UTILI1_HPP  
+
 namespace ft{
 
 
@@ -15,3 +18,4 @@ template <class InputIterator1, class InputIterator2>
 }
 
 }
+#endif

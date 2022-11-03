@@ -25,37 +25,18 @@ namespace ft{
 			pointer pair;
 			Compare cmp;
 			// hnaya 
-			void print()
-			{
-				printTree(root, "",true);
-			}
-			void printTree( data *node, std::string indent, bool last) {
-				//	bintree_node *node ;
-				if (node != end) {
-					std::cout << indent;
-					if (last) {
-						std::cout << "R----";
-						indent += "   ";
-					} else {
-						std::cout << "L----";
-						indent += "|  ";
-					}
-					std::cout << node->data->first << std::endl;
-					printTree(node->left, indent, false);
-					printTree(node->right, indent, true);
-				}
-			}
+
 			data *highkeyofroot(data *root1)
 			{
 				data* replace = root1;
 				//replace = root;
 				if (replace->left != end)
-					if ((cmp(replace->data->first, replace->left->data->first)))
+					if ((cmp(replace->data.first, replace->left->data.first)))
 					{
 						replace = highkeyofroot(replace->left);
 					};
 				if (replace->right != end)
-					if ((cmp(replace->data->first, replace->right->data->first)))
+					if ((cmp(replace->data.first, replace->right->data.first)))
 					{
 						replace = highkeyofroot(replace->right);
 					};
@@ -66,12 +47,12 @@ namespace ft{
 				data* replace = root1;
 				//replace = root;
 				if (replace->left != end)
-					if (!(cmp(replace->data->first, replace->left->data->first)))
+					if (!(cmp(replace->data.first, replace->left->data.first)))
 					{
 						replace = highkeyofroot(replace->left);
 					};
 				if (replace->right != end)
-					if (!(cmp(replace->data->first, replace->right->data->first)))
+					if (!(cmp(replace->data.first, replace->right->data.first)))
 					{
 						replace = highkeyofroot(replace->right);
 					};
@@ -159,7 +140,7 @@ namespace ft{
 					replace2 = myreplace->parent;
 
 
-					while (replace2->left != end && myreplace->data->first == replace2->left->data->first && replace2 ->parent != NULL)
+					while (replace2->left != end && myreplace->data.first == replace2->left->data.first && replace2 ->parent != NULL)
 					{
 						myreplace = replace2;
 						replace2 = replace2->parent;
@@ -304,7 +285,7 @@ Bidirectional_iterator(data *lop = NULL)
 	reference operator*() const {
 		//	pair = node->data;
 
-		return *(node->data);
+		return (node->data);
 	}
 	data*  base() const { return node; }
 	template<typename _iterator, typename Data1, typename Compare1>
@@ -312,7 +293,7 @@ Bidirectional_iterator(data *lop = NULL)
 
 			node = i.get_node();
 			//node->data = i.node->data;
-			pair = node->data;
+			//pair = node->data;
 			root = i.get_root();
 			if (root != NULL)
 			{
@@ -324,7 +305,7 @@ Bidirectional_iterator(data *lop = NULL)
 	{
 		node = rhs.node;
 		node->data = rhs.node->data;
-		pair = rhs.node->data;
+		//pair = rhs.node->data;
 		root = rhs.root;
 		end = rhs.end;
 		return *this;
@@ -355,7 +336,7 @@ Bidirectional_iterator(data *lop = NULL)
 		else
 		{
 			node = get_mySuccessor(node);
-			pair = node->data;
+			//pair = node->data;
 
 		}
 		return *this;
@@ -397,9 +378,13 @@ Bidirectional_iterator(data *lop = NULL)
 	{
 		return root;
 	}
+	bool operator!=(const Bidirectional_iterator &rhs)
+	{
+		return (get_node() != rhs.get_node());
+	}
 	pointer operator->() const
 	{
-		return this->node->data;
+		return &(this->node->data);
 	}
 
 };

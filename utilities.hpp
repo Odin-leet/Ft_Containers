@@ -5,6 +5,7 @@
 //  typedef typename iterator_traits<Inputiterator>:: iterator_category iter;
 //
 //};0
+namespace ft{
 template <class T, T v>
 struct integral_constant {
   static const T value = v;
@@ -23,10 +24,10 @@ template <>
 struct is_integral <char> : true_type {};
 template <>
 struct is_integral <int> : true_type {};
-// template <>
-// struct is_integral <char16_t> : true_type {};
-// template <>
-// struct is_integral <char32_t> : true_type {};
+template <>
+struct is_integral <char16_t> : true_type {};
+template <>
+struct is_integral <char32_t> : true_type {};
 template <>
 struct is_integral <wchar_t> : true_type {};
 template <>
@@ -50,3 +51,4 @@ struct is_integral <unsigned long long int> : true_type {};
 
 template<bool Cond, class T = void> struct enable_if {};
 template<class T> struct enable_if<true, T> { typedef T type; };
+}

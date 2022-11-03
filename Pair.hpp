@@ -24,6 +24,7 @@ struct pair{
   pair& operator= (const pair& pr) {
 			if (this != &pr) {
 				first = pr.first;
+      //  std::cout <<first<< std::endl;
 				second = pr.second;
 			}
 			return *this;
